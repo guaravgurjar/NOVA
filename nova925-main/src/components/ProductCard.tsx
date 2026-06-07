@@ -1,0 +1,97 @@
+import { Heart } from 'lucide-react';
+import { Product } from '../types';
+import { useToast } from '../contexts/ToastContext';
+import { useState, useRef } from 'react';
+
+export function ProductCard({ product }: { product: Product }) {
+  const { addToast } = useToast();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setMousePos({ x, y });
+  };
+
+  return (
+    <div 
+      className="group relative bg-[#0b0e17] border border-nova-gold/10 rounded-xl overflow-hidden hover:border-nova-gold/30 transition-all duration-500 hover:shadow-[0_15px_30px_-10px_rgba(197,168,128,0.15)] flex flex-col h-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setTimeout(() => setMousePos({ x: 50, y: 50 }), 400); 
+      }}
+    >
+      {/* Image container */}
+      <div 
+        ref={containerRef}
+        className="relative aspect-square overflow-hidden bg-[#07090f] p-4 flex items-center justify-center cursor-zoom-in"
+        onMouseMove={handleMouseMove}
+      >
+        <img 
+          src={product.image} 
+          alt={product.name}
+          className="w-full h-full object-cover rounded-lg pointer-events-none transition-transform duration-700 ease-out"
+          style={{
+            transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
+            transform: isHovered ? 'scale(1.15)' : 'scale(1)'
+          }}
+        />
+        
+        {/* Wishlist Button */}
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setIsWishlisted(!isWishlisted);
+            addToast(isWishlisted ? 'Removed from Wishlist' : 'Added to Wishlist');
+          }}
+          className={`absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 ${
+            isWishlisted 
+              ? 'bg-red-500/20 border-red-500/30 text-red-500' 
+              : 'bg-[#0f121d]/60 border-white/10 text-white/70 hover:text-white hover:border-white/30'
+          }`}
+          aria-label="Wishlist"
+        >
+          <Heart className={`w-4 h-4 transition-transform duration-300 active:scale-75 ${isWishlisted ? 'fill-current' : ''}`} />
+        </button>
+        
+        {/* Category Badge */}
+        {product.category && (
+          <span className="absolute bottom-4 left-4 text-[9px] uppercase tracking-[0.2em] bg-[#0f121d]/80 text-nova-gold border border-nova-gold/20 px-2 py-0.5 rounded backdrop-blur-sm font-medium">
+            {product.category}
+          </span>
+        )}
+      </div>
+      
+      {/* Details */}
+      <div className="p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <h3 className="font-serif text-lg text-nova-gold font-medium mb-1.5 tracking-wide">
+            Rs. {product.price.toLocaleString('en-IN')}/-
+          </h3>
+          <p className="text-white/80 font-sans text-xs md:text-sm font-light leading-relaxed mb-4 line-clamp-2">
+            {product.name}
+          </p>
+        </div>
+        
+        {/* Action Button */}
+        <button 
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            addToast('Added to Cart');
+          }}
+          className="w-full bg-transparent hover:bg-nova-gold text-nova-gold hover:text-nova-darker border border-nova-gold/30 hover:border-nova-gold py-2.5 rounded-lg font-sans font-medium tracking-[0.15em] text-[10px] uppercase transition-all duration-300 shadow-md flex items-center justify-center gap-2"
+        >
+          Add To Cart
+        </button>
+      </div>
+    </div>
+  );
+}
