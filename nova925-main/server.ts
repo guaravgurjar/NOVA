@@ -3,7 +3,7 @@ import path from "path";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
-import { clerkMiddleware, requireAuth } from '@clerk/express';
+import admin from "firebase-admin";
 
 dotenv.config();
 
@@ -16,21 +16,54 @@ const ai = new GoogleGenAI({
   }
 });
 
+// Initialize Firebase Admin SDK
+const hasFirebase = process.env.FIREBASE_PROJECT_ID && 
+                    process.env.FIREBASE_PROJECT_ID !== 'your_project_id' &&
+                    process.env.FIREBASE_PROJECT_ID !== '';
+
+if (hasFirebase) {
+  admin.initializeApp({
+    projectId: process.env.FIREBASE_PROJECT_ID
+  });
+} else {
+  console.warn("⚠️ Firebase configuration keys are missing in .env. Running server in unauthenticated dev mode.");
+}
+
 async function startServer() {
   const app = express();
   const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
   app.use(express.json());
-  
-  // Register clerkMiddleware globally to authenticate requests
-  app.use(clerkMiddleware());
 
   // API routes FIRST
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
   });
 
-  app.post("/api/chat", requireAuth(), async (req, res) => {
+  // Express middleware to verify Firebase ID tokens
+  const requireFirebaseAuth = async (req: any, res: any, next: any) => {
+    if (!hasFirebase) {
+      return next(); // Bypass in dev mode if keys are not set
+    }
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+    try {
+      const decodedToken = await admin.auth().verifyIdToken(token);
+      req.user = decodedToken;
+      next();
+    } catch (err: any) {
+      console.error("Firebase ID Token Verification Failed:", err.message || err);
+      return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
+  };
+
+  // Secure API endpoint using requireFirebaseAuth route guard
+  app.post("/api/chat", requireFirebaseAuth, async (req, res) => {
     try {
       const { history, message } = req.body;
       

@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, User, Sparkles, Loader2 } from 'lucide-react';
 import Markdown from 'react-markdown';
-import { useAuth } from '@clerk/clerk-react';
+import { useAuth } from '../contexts/AuthContext';
 import { Link } from 'react-router-dom';
+import { auth } from '../lib/firebase';
 
 type Message = {
   role: 'user' | 'model';
@@ -10,7 +11,8 @@ type Message = {
 };
 
 export function ChatBot() {
-  const { getToken, isSignedIn } = useAuth();
+  const { user } = useAuth();
+  const isSignedIn = !!user;
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -53,7 +55,7 @@ export function ChatBot() {
       // Add empty model message for streaming
       setMessages(prev => [...prev, { role: 'model', content: '' }]);
 
-      const token = await getToken();
+      const token = auth.currentUser ? await auth.currentUser.getIdToken() : '';
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 

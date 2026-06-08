@@ -1,12 +1,41 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Heart, MapPin, User, ShoppingCart } from 'lucide-react';
+import { Search, Heart, MapPin, User, ShoppingCart, Share2 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../contexts/ToastContext';
 
 export function Header() {
   const { user } = useAuth();
+  const { addToast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const handleShare = async () => {
+    const shareData = {
+      title: 'NOVA Jewellery',
+      text: 'Discover timeless 925 sterling silver jewelry at NOVA.',
+      url: window.location.origin
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+        addToast('Shared successfully!');
+      } catch (err: any) {
+        if (err.name !== 'AbortError') {
+          console.error('Share failed:', err);
+          fallbackShare();
+        }
+      }
+    } else {
+      fallbackShare();
+    }
+  };
+
+  const fallbackShare = () => {
+    navigator.clipboard.writeText(window.location.origin);
+    addToast('Website link copied to clipboard!');
+  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,6 +84,9 @@ export function Header() {
           <Link to="/wishlist" className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Wishlist">
             <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </Link>
+          <button onClick={handleShare} className="hover:text-nova-gold transition-colors duration-300 relative group cursor-pointer" aria-label="Share Website">
+            <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+          </button>
           <button className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Stores">
             <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </button>
@@ -109,6 +141,11 @@ export function Header() {
           <li>
             <Link to="/category/sets" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
               Sets
+            </Link>
+          </li>
+          <li>
+            <Link to="/category/astro" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
+              Astro Jewellery
             </Link>
           </li>
         </ul>

@@ -4,12 +4,12 @@ import sharp from 'sharp';
 
 // Google Drive subfolders for categories
 const CATEGORIES = [
-  { name: 'Chains', id: '1jY1wEqWEbdqgYVPJxGlw4prrhXQteEeW', key: 'chains' },
-  { name: 'Ear-rings', id: '1miV7rUZAO-suUx3UlzDfEmpQiFao24QQ', key: 'earrings' },
-  { name: 'Bracelets', id: '1-zVnOwRgNlY86oqZuh1IhpqHKISWSfSm', key: 'bracelets' },
-  { name: 'Bangles', id: '1tw7EUh5dOh21iCbzJpT5M9rfH6JEjrHM', key: 'bangles' },
-  { name: 'Pendants', id: '1_uUC0ldDvMpdP-RBOP3j9Fc0yk2-9A8E', key: 'pendants' },
-  { name: 'Sets', id: '199vGnkprAkJoY3sjywbpzH7KzbIFRspk', key: 'sets' }
+  { name: 'Chains', id: '1_BAAgkEJ03SQ1duB6_80Qb1QZ5Eirkih', key: 'chains' },
+  { name: 'Ear-rings', id: '1mjGBAktH5jK_DFwPhd9gpYL1-NhkkRKX', key: 'earrings' },
+  { name: 'Bracelets', id: '1cceqm-UNTu6saNB9Q2SaWNaETtx73qVk', key: 'bracelets' },
+  { name: 'Bangles', id: '1xxkUgLtxWLaHX6hoCOR-q5joPdHFwGtw', key: 'bangles' },
+  { name: 'Pendants', id: '1oGk3_c13Qz5fLDCGvejFd5LTThu82eeJ', key: 'pendants' },
+  { name: 'Sets', id: '1yNg7t537MvOQgUAJWRw9oocj82F3TK6g', key: 'sets' }
 ];
 
 interface ProductData {
@@ -17,6 +17,7 @@ interface ProductData {
   name: string;
   price: number;
   image: string;
+  images: string[];
   category: string;
 }
 
@@ -29,27 +30,125 @@ async function downloadFile(fileId: string): Promise<Buffer> {
   return Buffer.from(await response.arrayBuffer());
 }
 
-async function scrapeFolderFiles(folderId: string): Promise<{ id: string; name: string }[]> {
-  const url = `https://drive.google.com/drive/folders/${folderId}?usp=sharing`;
+interface DriveItem {
+  id: string;
+  name: string;
+  isFolder: boolean;
+  isImage: boolean;
+}
+
+function parseFolderItems(html: string): DriveItem[] {
+  const idRegex = /\b(1[a-zA-Z0-9_-]{32})\b/g;
+  const matches = new Set<string>();
+  let match;
+  while ((match = idRegex.exec(html)) !== null) {
+    matches.add(match[1]);
+  }
+
+  const items: DriveItem[] = [];
+  for (const id of matches) {
+    const idx = html.indexOf(id);
+    if (idx === -1) continue;
+    
+    const chunk = html.substring(idx, idx + 3000);
+    const labelMatch = chunk.match(/aria-label="([^"]+)"/i);
+    
+    if (labelMatch) {
+      const label = labelMatch[1];
+      let isFolder = false;
+      let isImage = false;
+      let name = '';
+      
+      if (label.toLowerCase().includes('folder')) {
+        isFolder = true;
+        name = label.replace(/shared folder/i, '').trim();
+      } else if (label.toLowerCase().includes('image')) {
+        isImage = true;
+        name = label.replace(/image shared/i, '').trim();
+        name = name.split(' ')[0];
+      }
+      
+      if (isFolder || isImage) {
+        items.push({ id, name, isFolder, isImage });
+      }
+    }
+  }
+  
+  const uniqueItems: DriveItem[] = [];
+  const visited = new Set<string>();
+  for (const item of items) {
+    if (!visited.has(item.id)) {
+      visited.add(item.id);
+      uniqueItems.push(item);
+    }
+  }
+  return uniqueItems;
+}
+
+interface ScrapedProduct {
+  id: string;
+  name: string;
+  files: { id: string; name: string }[];
+}
+
+async function scrapeProductsForCategory(catId: string, catKey: string): Promise<ScrapedProduct[]> {
+  const url = `https://drive.google.com/drive/folders/${catId}?usp=sharing`;
   const response = await fetch(url, {
     headers: {
       'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     }
   });
   if (!response.ok) {
-    throw new Error(`Failed to fetch folder page: ${response.statusText}`);
+    throw new Error(`Failed to fetch category folder page: ${response.statusText}`);
   }
   const html = await response.text();
+  const items = parseFolderItems(html);
   
-  // Extract file items
-  const regex = /\[\[null,"([a-zA-Z0-9_-]{28,38})"\][^{}]*?\[\[\["([^"]+?\.(?:jpe?g|jpg|png|webp))",/gi;
-  let match;
-  const filesMap = new Map<string, string>();
-  while ((match = regex.exec(html)) !== null) {
-    filesMap.set(match[1], match[2]);
+  const productsList: ScrapedProduct[] = [];
+  const folders = items.filter(item => item.isFolder);
+  const directImages = items.filter(item => item.isImage);
+  
+  if (folders.length > 0) {
+    for (const folder of folders) {
+      console.log(`Scraping product subfolder: ${folder.name} (${folder.id})...`);
+      try {
+        const subUrl = `https://drive.google.com/drive/folders/${folder.id}?usp=sharing`;
+        const subRes = await fetch(subUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+          }
+        });
+        if (subRes.ok) {
+          const subHtml = await subRes.text();
+          const subItems = parseFolderItems(subHtml);
+          const subImages = subItems.filter(item => item.isImage);
+          if (subImages.length > 0) {
+            // Sort image files alphabetically to ensure consistent sequence (e.g. 01.png first)
+            subImages.sort((a, b) => a.name.localeCompare(b.name));
+            productsList.push({
+              id: `${catKey}_${folder.name.replace(/[^a-zA-Z0-9_-]/g, '')}`,
+              name: folder.name,
+              files: subImages.map(img => ({ id: img.id, name: img.name }))
+            });
+          }
+        }
+      } catch (err: any) {
+        console.error(`Failed to scrape subfolder ${folder.name}:`, err.message || err);
+      }
+    }
+  } else {
+    // If no folders, treat direct images as individual products
+    directImages.sort((a, b) => a.name.localeCompare(b.name));
+    directImages.forEach((img, idx) => {
+      productsList.push({
+        id: `${catKey}_${idx + 1}`,
+        name: img.name,
+        files: [{ id: img.id, name: img.name }]
+      });
+    });
   }
   
-  return Array.from(filesMap.entries()).map(([id, name]) => ({ id, name }));
+  return productsList;
 }
 
 // Generate realistic pricing based on category
@@ -63,7 +162,6 @@ function getPriceForCategory(catKey: string, index: number): number {
     sets: 5500
   };
   const base = basePrices[catKey] || 2000;
-  // Introduce some variations
   return base + (index * 150) % 1200;
 }
 
@@ -98,11 +196,11 @@ async function sync() {
   for (const cat of CATEGORIES) {
     console.log(`\nProcessing category: ${cat.name} (${cat.id})...`);
     try {
-      const files = await scrapeFolderFiles(cat.id);
-      console.log(`Found ${files.length} images in Google Drive.`);
+      const scrapedProducts = await scrapeProductsForCategory(cat.id, cat.key);
+      console.log(`Found ${scrapedProducts.length} products in category ${cat.name}.`);
       
-      if (files.length === 0) {
-        console.warn(`No files found in category ${cat.name}. Skipping...`);
+      if (scrapedProducts.length === 0) {
+        console.warn(`No products found in category ${cat.name}. Skipping...`);
         continue;
       }
       
@@ -110,54 +208,54 @@ async function sync() {
       fs.mkdirSync(catSubdir, { recursive: true });
       
       const categoryProducts: ProductData[] = [];
-      let convertedCount = 0;
+      let productIndex = 0;
       
-      // Limit parallelism to avoid throttling
-      const batchSize = 5;
-      for (let i = 0; i < files.length; i += batchSize) {
-        const batch = files.slice(i, i + batchSize);
-        await Promise.all(batch.map(async (file, idx) => {
-          const index = i + idx;
-          const productId = `${cat.key}_${index + 1}`;
+      for (const sp of scrapedProducts) {
+        console.log(`Syncing product ${sp.name} (${sp.files.length} images)...`);
+        const productImages: string[] = [];
+        
+        // Process each image file for this product
+        for (const file of sp.files) {
           const webpFilename = `${file.id}.webp`;
           const webpPath = path.join(catSubdir, webpFilename);
           const relativeImageSrc = `/images/products/${cat.key}/${webpFilename}`;
           
           try {
-            // Check if file already exists locally to speed up subsequent syncs
             if (!fs.existsSync(webpPath)) {
               const fileBuffer = await downloadFile(file.id);
-              
               // Convert to optimized WebP using sharp
               await sharp(fileBuffer)
                 .resize({ width: 800, height: 800, fit: 'cover', withoutEnlargement: true })
                 .webp({ quality: 80 })
                 .toFile(webpPath);
             }
-            
-            const name = getNameForCategory(cat.key, index);
-            const price = getPriceForCategory(cat.key, index);
-            
-            categoryProducts.push({
-              id: productId,
-              name,
-              price,
-              image: relativeImageSrc,
-              category: cat.key
-            });
-            convertedCount++;
+            productImages.push(relativeImageSrc);
           } catch (err: any) {
-            console.error(`Error processing file ${file.id} (${file.name}):`, err.message || err);
+            console.error(`Error processing image ${file.id} for product ${sp.name}:`, err.message || err);
           }
-        }));
-        process.stdout.write(`Progress: ${Math.min(i + batchSize, files.length)}/${files.length} processed...\r`);
+        }
+        
+        if (productImages.length > 0) {
+          const name = getNameForCategory(cat.key, productIndex);
+          const price = getPriceForCategory(cat.key, productIndex);
+          
+          categoryProducts.push({
+            id: sp.id,
+            name,
+            price,
+            image: productImages[0], // first image as main cover
+            images: productImages,
+            category: cat.key
+          });
+          productIndex++;
+        }
       }
       
-      console.log(`\nCategory ${cat.name} complete! Successfully synced ${categoryProducts.length} images.`);
+      console.log(`Category ${cat.name} complete! Successfully synced ${categoryProducts.length} products.`);
       
       if (categoryProducts.length > 0) {
         allProducts.push(...categoryProducts);
-        // Use the first image as the category cover
+        // Use the first image of the first product as category cover
         activeCategories.push({
           id: cat.key,
           name: cat.name,
@@ -172,6 +270,45 @@ async function sync() {
   
   console.log(`\nSync complete. Total products synced: ${allProducts.length}`);
   
+  // Generate Astro Jewellery Collection (12 Zodiac Pendants)
+  console.log('\nGenerating Astro Jewellery Collection...');
+  const zodiacSigns = [
+    { name: 'Aries' }, { name: 'Taurus' }, { name: 'Gemini' },
+    { name: 'Cancer' }, { name: 'Leo' }, { name: 'Virgo' },
+    { name: 'Libra' }, { name: 'Scorpio' }, { name: 'Sagittarius' },
+    { name: 'Capricorn' }, { name: 'Aquarius' }, { name: 'Pisces' }
+  ];
+
+  const pendantProducts = allProducts.filter(p => p.category === 'pendants');
+  const astroProducts: ProductData[] = [];
+
+  zodiacSigns.forEach((z, idx) => {
+    // Map each Zodiac sign to one of our synced pendant image arrays
+    const matchedPendant = pendantProducts[idx % pendantProducts.length];
+    const images = matchedPendant && matchedPendant.images.length > 0
+      ? matchedPendant.images
+      : ['/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp'];
+
+    astroProducts.push({
+      id: `astro_${z.name.toLowerCase()}`,
+      name: `${z.name} Zodiac Silver Pendant`,
+      price: 1850 + (idx * 50) % 250,
+      image: images[0],
+      images: images,
+      category: 'astro'
+    });
+  });
+
+  allProducts.push(...astroProducts);
+
+  // Add Astro Jewellery to category listing
+  activeCategories.push({
+    id: 'astro',
+    name: 'Astro Jewellery',
+    key: 'astro',
+    image: astroProducts[4].image // Use Leo pendant as the category cover
+  });
+
   // Prepare Featured Products (take 2 from each category, up to 8 total)
   const featuredProducts: ProductData[] = [];
   const categoriesList = Array.from(new Set(allProducts.map(p => p.category)));
@@ -194,16 +331,16 @@ async function sync() {
   
   // Write src/data.ts
   const dataTsContent = `import { Product, Category, Review } from './types';
-
+ 
 export const products: Product[] = ${JSON.stringify(allProducts, null, 2)};
-
+ 
 export const featuredProducts: Product[] = ${JSON.stringify(featuredProducts.slice(0, 8), null, 2)};
-
+ 
 export const shopCategories: Category[] = ${JSON.stringify(activeCategories, null, 2)};
-
+ 
 export const reviews: Review[] = ${JSON.stringify(reviewsData, null, 2)};
 `;
-
+ 
   fs.writeFileSync(path.join(process.cwd(), 'src', 'data.ts'), dataTsContent, 'utf-8');
   console.log('Successfully updated src/data.ts with new product data.');
 }

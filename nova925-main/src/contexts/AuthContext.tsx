@@ -1,5 +1,15 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useUser, useClerk } from '@clerk/clerk-react';
+import { 
+  onAuthStateChanged, 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  updateProfile as updateFirebaseProfile, 
+  signOut, 
+  GoogleAuthProvider, 
+  signInWithPopup,
+  User as FirebaseUser
+} from 'firebase/auth';
+import { auth } from '../lib/firebase';
 
 export type UserProfile = {
   firstName: string;
@@ -14,102 +24,140 @@ export type UserProfile = {
 
 type AuthContextType = {
   user: UserProfile | null;
-  loginWithGmail: (email: string, firstName: string, lastName: string) => void;
-  loginWithPhone: (phoneNumber: string) => void;
-  registerUser: (details: Omit<UserProfile, 'isAuthenticated' | 'authMethod'>) => void;
-  updateProfile: (details: Partial<Omit<UserProfile, 'isAuthenticated' | 'authMethod'>>) => void;
-  logout: () => void;
+  isLoading: boolean;
+  loginWithGmail: () => Promise<void>;
+  loginWithEmail: (email: string, password: string) => Promise<void>;
+  signUpWithEmail: (email: string, password: string, firstName: string, lastName: string, phoneNumber?: string) => Promise<void>;
+  updateProfile: (details: Partial<Omit<UserProfile, 'isAuthenticated' | 'authMethod'>>) => Promise<void>;
+  logout: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { user: clerkUser, isLoaded, isSignedIn } = useUser();
-  const { signOut } = useClerk();
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
-  // Local profile details that Clerk doesn't store directly
+  // Local profile details that Firebase doesn't store directly
   const [localDetails, setLocalDetails] = useState<{
     dob?: string;
     gender?: 'male' | 'female' | 'others' | null;
   }>({});
 
-  // Sync local details from localStorage based on clerk user id
+  // Listen to auth state changes
   useEffect(() => {
-    if (isSignedIn && clerkUser) {
-      const stored = localStorage.getItem(`nova_clerk_details_${clerkUser.id}`);
-      if (stored) {
-        try {
-          setLocalDetails(JSON.parse(stored));
-        } catch (e) {
-          // ignore
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
+      setIsLoading(true);
+      if (firebaseUser) {
+        // Load custom local details
+        const stored = localStorage.getItem(`nova_firebase_details_${firebaseUser.uid}`);
+        let parsedDetails: any = {};
+        if (stored) {
+          try {
+            parsedDetails = JSON.parse(stored);
+            setLocalDetails(parsedDetails);
+          } catch (e) {
+            // ignore
+          }
+        } else {
+          setLocalDetails({});
         }
+
+        const nameParts = firebaseUser.displayName ? firebaseUser.displayName.split(' ') : [];
+        const firstName = nameParts[0] || 'Member';
+        const lastName = nameParts.slice(1).join(' ') || '';
+
+        const providerId = firebaseUser.providerData[0]?.providerId;
+        const authMethod = providerId === 'google.com' ? 'gmail' : 'email';
+
+        setUser({
+          firstName,
+          lastName,
+          email: firebaseUser.email || '',
+          phoneNumber: firebaseUser.phoneNumber || parsedDetails.phoneNumber || '',
+          dob: parsedDetails.dob,
+          gender: parsedDetails.gender,
+          authMethod,
+          isAuthenticated: true
+        });
       } else {
+        setUser(null);
         setLocalDetails({});
       }
-    } else {
-      setLocalDetails({});
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const loginWithGmail = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
+
+  const loginWithEmail = async (email: string, password: string) => {
+    await signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const signUpWithEmail = async (email: string, password: string, firstName: string, lastName: string, phoneNumber?: string) => {
+    const credential = await createUserWithEmailAndPassword(auth, email, password);
+    if (credential.user) {
+      // Update display name
+      await updateFirebaseProfile(credential.user, {
+        displayName: `${firstName} ${lastName}`
+      });
+      // Save phone number if provided or store it locally
+      if (phoneNumber) {
+        const currentStored = localStorage.getItem(`nova_firebase_details_${credential.user.uid}`);
+        const current = currentStored ? JSON.parse(currentStored) : {};
+        localStorage.setItem(
+          `nova_firebase_details_${credential.user.uid}`, 
+          JSON.stringify({ ...current, phoneNumber })
+        );
+      }
     }
-  }, [isSignedIn, clerkUser]);
-
-  // Construct UserProfile from Clerk state
-  let user: UserProfile | null = null;
-  if (isLoaded && isSignedIn && clerkUser) {
-    user = {
-      firstName: clerkUser.firstName || '',
-      lastName: clerkUser.lastName || '',
-      email: clerkUser.primaryEmailAddress?.emailAddress || '',
-      phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber || '',
-      dob: localDetails.dob,
-      gender: localDetails.gender,
-      authMethod: clerkUser.externalAccounts.length > 0 ? 'gmail' : 'email',
-      isAuthenticated: true
-    };
-  }
-
-  // Fallback / simulated functions for compatibility
-  const loginWithGmail = () => {
-    // Under Clerk, login is done via Clerk UI components, so this is a no-op
-  };
-
-  const loginWithPhone = () => {
-    // Under Clerk, login is done via Clerk UI components, so this is a no-op
-  };
-
-  const registerUser = () => {
-    // Under Clerk, registration is done via Clerk UI components, so this is a no-op
   };
 
   const updateProfile = async (details: Partial<Omit<UserProfile, 'isAuthenticated' | 'authMethod'>>) => {
-    if (!clerkUser) return;
+    const firebaseUser = auth.currentUser;
+    if (!firebaseUser) return;
 
-    // Update firstName and lastName in Clerk
-    try {
-      const updates: any = {};
-      if (details.firstName !== undefined) updates.firstName = details.firstName;
-      if (details.lastName !== undefined) updates.lastName = details.lastName;
-      if (Object.keys(updates).length > 0) {
-        await clerkUser.update(updates);
-      }
-    } catch (err) {
-      console.error("Failed to update name in Clerk:", err);
+    // Update name in Firebase Auth
+    if (details.firstName !== undefined || details.lastName !== undefined) {
+      const newFirstName = details.firstName !== undefined ? details.firstName : (user?.firstName || '');
+      const newLastName = details.lastName !== undefined ? details.lastName : (user?.lastName || '');
+      await updateFirebaseProfile(firebaseUser, {
+        displayName: `${newFirstName} ${newLastName}`
+      });
     }
 
-    // Save DOB and Gender locally keyed by clerk ID
+    // Save DOB, Gender locally keyed by Firebase UID
     const newDetails = {
       ...localDetails,
       ...(details.dob !== undefined ? { dob: details.dob } : {}),
       ...(details.gender !== undefined ? { gender: details.gender } : {}),
     };
     setLocalDetails(newDetails);
-    localStorage.setItem(`nova_clerk_details_${clerkUser.id}`, JSON.stringify(newDetails));
+    localStorage.setItem(`nova_firebase_details_${firebaseUser.uid}`, JSON.stringify(newDetails));
+
+    // Sync local React user state
+    setUser(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        ...details,
+        firstName: details.firstName !== undefined ? details.firstName : prev.firstName,
+        lastName: details.lastName !== undefined ? details.lastName : prev.lastName,
+      };
+    });
   };
 
   const logout = async () => {
-    await signOut();
+    await signOut(auth);
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginWithGmail, loginWithPhone, registerUser, updateProfile, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, loginWithGmail, loginWithEmail, signUpWithEmail, updateProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,6 @@
 import { featuredProducts } from '../data';
 import { ProductCard } from '../components/ProductCard';
+import { PromoStrip } from '../components/PromoStrip';
 import { Heart } from 'lucide-react';
 
 export function Wishlist() {
@@ -18,13 +19,7 @@ export function Wishlist() {
       </div>
       
       {/* Promo Strip */}
-      <div className="bg-nova-gold text-nova-darker py-2.5 font-medium border-b border-nova-gold/15">
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl flex flex-wrap justify-between items-center text-[10px] md:text-xs tracking-[0.15em] uppercase gap-2 font-semibold">
-          <span>✨ 7-day easy returns</span>
-          <span>✨ Free Delivery over ₹2000</span>
-          <span>✨ Extra 5% OFF Above ₹3,000</span>
-        </div>
-      </div>
+      <PromoStrip />
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl flex-1">
         {featuredProducts.length > 0 ? (

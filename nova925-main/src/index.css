@@ -12,6 +12,19 @@
   --color-nova-gold-dark: #9e7f56;
   --color-nova-gray: #5e6475;
   --color-nova-light: #FAF9F6;
+
+  --animate-marquee: marquee 30s linear infinite;
+  --animate-fade-in: fade-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @keyframes marquee {
+    0% { transform: translateX(0%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 }
 
 body {
@@ -43,6 +56,13 @@ h1, h2, h3, h4, h5, h6, .font-serif {
 /* Gradients */
 .text-gold-gradient {
   background: linear-gradient(135deg, #c5a880 0%, #f3e6cd 40%, #9e7f56 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-silver-gradient {
+  background: linear-gradient(135deg, #e2e8f0 0%, #ffffff 30%, #94a3b8 70%, #f1f5f9 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -141,3 +161,4 @@ h1, h2, h3, h4, h5, h6, .font-serif {
 .glow-border:hover::after {
   opacity: 1;
 }
+

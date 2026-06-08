@@ -50,12 +50,20 @@ export function Footer() {
               <p className="font-semibold text-white">Utkarsh Jewellers</p>
               <p>Ground Floor, Kurawali</p>
               <p>Mainpuri, Uttar Pradesh - 205265</p>
+              <p className="pt-2">
+                <span className="text-white/40 font-semibold block text-[10px] uppercase tracking-wider">Phone</span>
+                <a href="tel:+919027368625" className="hover:text-nova-gold transition-colors text-white font-medium">+91 9027368625</a>
+              </p>
+              <p>
+                <span className="text-white/40 font-semibold block text-[10px] uppercase tracking-wider">Email</span>
+                <a href="mailto:contact@novajewels.info" className="hover:text-nova-gold transition-colors text-white font-medium">contact@novajewels.info</a>
+              </p>
               
               <div className="flex space-x-4 pt-4 text-nova-gold/75">
-                <a href="tel:+919999999999" aria-label="Phone" className="p-2 bg-white/5 hover:bg-nova-gold hover:text-nova-darker rounded-lg transition-all duration-300 border border-white/5">
+                <a href="tel:+919027368625" aria-label="Phone" className="p-2 bg-white/5 hover:bg-nova-gold hover:text-nova-darker rounded-lg transition-all duration-300 border border-white/5">
                   <Phone className="w-4 h-4" />
                 </a>
-                <a href="mailto:info@novajewellery.com" aria-label="Mail" className="p-2 bg-white/5 hover:bg-nova-gold hover:text-nova-darker rounded-lg transition-all duration-300 border border-white/5">
+                <a href="mailto:contact@novajewels.info" aria-label="Mail" className="p-2 bg-white/5 hover:bg-nova-gold hover:text-nova-darker rounded-lg transition-all duration-300 border border-white/5">
                   <Mail className="w-4 h-4" />
                 </a>
                 <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="p-2 bg-white/5 hover:bg-nova-gold hover:text-nova-darker rounded-lg transition-all duration-300 border border-white/5">
@@ -75,6 +83,7 @@ export function Footer() {
           <p>© {new Date().getFullYear()} NOVA Jewellery. Powered by Utkarsh Jewellers Group.</p>
           <div className="flex space-x-6">
             <Link to="/privacy" className="hover:text-nova-gold transition-colors">Privacy Policy</Link>
+            <Link to="/cookies" className="hover:text-nova-gold transition-colors">Cookie Policy</Link>
             <Link to="/terms" className="hover:text-nova-gold transition-colors">Terms & Conditions</Link>
           </div>
         </div>
