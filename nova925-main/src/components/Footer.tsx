@@ -28,6 +28,7 @@ export function Footer() {
             <ul className="space-y-4 text-xs font-light tracking-wider text-white/70">
               <li><Link to="/contact" className="hover:text-nova-gold transition-colors duration-300">Submit an Inquiry</Link></li>
               <li><Link to="/faq" className="hover:text-nova-gold transition-colors duration-300">Frequently Asked Questions</Link></li>
+              <li><a href="https://support.novajewels.info" target="_blank" rel="noopener noreferrer" className="hover:text-nova-gold transition-colors duration-300">Raise a Ticket</a></li>
               <li><Link to="/track" className="hover:text-nova-gold transition-colors duration-300">Track Order Status</Link></li>
               <li><Link to="/terms" className="hover:text-nova-gold transition-colors duration-300">Terms of Service</Link></li>
             </ul>
