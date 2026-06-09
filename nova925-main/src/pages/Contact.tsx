@@ -40,11 +40,18 @@ export function Contact() {
     const templateParams = {
       from_name: formData.name,
       from_email: formData.email,
+      name: formData.name,
+      email: formData.email,
       phone: formData.phone || 'N/A',
       order_number: formData.orderNumber || 'N/A',
       subject: formData.subject,
       message: formData.message,
-      to_name: 'NOVA Jewellery Support'
+      to_name: formData.name,
+      to_email: formData.email,
+      reply_to: formData.email,
+      recipient_email: formData.email,
+      shop_email: 'contact@novajewels.info',
+      support_email: 'contact@novajewels.info'
     };
 
     try {
