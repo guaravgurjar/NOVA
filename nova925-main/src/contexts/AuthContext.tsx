@@ -7,7 +7,9 @@ import {
   signOut, 
   GoogleAuthProvider, 
   signInWithPopup,
-  User as FirebaseUser
+  User as FirebaseUser,
+  RecaptchaVerifier,
+  signInWithPhoneNumber
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
@@ -27,6 +29,7 @@ type AuthContextType = {
   isLoading: boolean;
   loginWithGmail: () => Promise<void>;
   loginWithEmail: (email: string, password: string) => Promise<void>;
+  loginWithPhone: (phoneNumber: string, recaptchaContainerId: string) => Promise<any>;
   signUpWithEmail: (email: string, password: string, firstName: string, lastName: string, phoneNumber?: string) => Promise<void>;
   updateProfile: (details: Partial<Omit<UserProfile, 'isAuthenticated' | 'authMethod'>>) => Promise<void>;
   logout: () => Promise<void>;
@@ -71,16 +74,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
 
         const nameParts = firebaseUser.displayName ? firebaseUser.displayName.split(' ') : [];
-        const firstName = nameParts[0] || 'Member';
-        const lastName = nameParts.slice(1).join(' ') || '';
+        const firstName = nameParts[0] || (firebaseUser.phoneNumber ? 'Guest' : 'Member');
+        const lastName = nameParts.slice(1).join(' ') || (firebaseUser.phoneNumber ? 'Collector' : '');
 
         const providerId = firebaseUser.providerData[0]?.providerId;
-        const authMethod = providerId === 'google.com' ? 'gmail' : 'email';
+        const authMethod = providerId === 'google.com' ? 'gmail' : (providerId === 'phone' || firebaseUser.phoneNumber) ? 'phone' : 'email';
 
         setUser({
           firstName,
           lastName,
-          email: firebaseUser.email || '',
+          email: firebaseUser.email || `${firebaseUser.phoneNumber?.replace(/\+/g, '') || firebaseUser.uid}@nova-phone.local`,
           phoneNumber: firebaseUser.phoneNumber || parsedDetails.phoneNumber || '',
           dob: parsedDetails.dob,
           gender: parsedDetails.gender,
@@ -112,6 +115,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     await signInWithEmailAndPassword(auth, email, password);
+  };
+
+  const loginWithPhone = async (phoneNumber: string, recaptchaContainerId: string): Promise<any> => {
+    if (!auth || (auth as any).name === 'mockAuth') {
+      // Mock mode for local dev / unconfigured Firebase
+      console.log("Mock Phone Sign-In triggered for:", phoneNumber);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return {
+        confirm: async (code: string) => {
+          if (code === '123456' || code === '925925') {
+            setUser({
+              firstName: 'Guest',
+              lastName: 'Collector',
+              email: `${phoneNumber.replace(/\+/g, '')}@nova-phone.local`,
+              phoneNumber: phoneNumber,
+              authMethod: 'phone',
+              isAuthenticated: true
+            });
+          } else {
+            throw new Error('Invalid verification code. Enter 123456 or 925925.');
+          }
+        }
+      };
+    }
+
+    const recaptchaVerifier = new RecaptchaVerifier(auth, recaptchaContainerId, {
+      size: 'invisible',
+      callback: () => {}
+    });
+
+    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
+    return confirmationResult;
   };
 
   const signUpWithEmail = async (email: string, password: string, firstName: string, lastName: string, phoneNumber?: string) => {
@@ -181,7 +216,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, loginWithGmail, loginWithEmail, signUpWithEmail, updateProfile, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, loginWithGmail, loginWithEmail, loginWithPhone, signUpWithEmail, updateProfile, logout }}>
       {children}
     </AuthContext.Provider>
   );

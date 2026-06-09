@@ -19,10 +19,17 @@ export function Login() {
   const [regPassword, setRegPassword] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Phone Login States
+  const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [confirmationResult, setConfirmationResult] = useState<any>(null);
 
   const { addToast } = useToast();
   const navigate = useNavigate();
-  const { loginWithGmail, loginWithEmail, signUpWithEmail } = useAuth();
+  const { loginWithGmail, loginWithEmail, loginWithPhone, signUpWithEmail } = useAuth();
 
   const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +45,57 @@ export function Login() {
     } catch (err: any) {
       console.error(err);
       addToast(err.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSendOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phoneNumber) {
+      addToast('Please enter a valid mobile number.');
+      return;
+    }
+
+    let formattedPhone = phoneNumber.trim();
+    if (!formattedPhone.startsWith('+')) {
+      if (formattedPhone.length === 10) {
+        formattedPhone = `+91${formattedPhone}`;
+      } else {
+        addToast('Please enter a valid country code prefix (e.g. +91 99999 99999).');
+        return;
+      }
+    }
+
+    setIsLoading(true);
+    try {
+      const confirmResult = await loginWithPhone(formattedPhone, 'recaptcha-container');
+      setConfirmationResult(confirmResult);
+      setOtpSent(true);
+      addToast('Verification code (OTP) sent successfully!');
+    } catch (err: any) {
+      console.error(err);
+      addToast(err.message || 'Failed to send OTP code. Please check your phone number.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!otpCode) {
+      addToast('Please enter the 6-digit verification code.');
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      await confirmationResult.confirm(otpCode);
+      addToast('Authenticated with mobile successfully!');
+      navigate('/profile');
+    } catch (err: any) {
+      console.error(err);
+      addToast(err.message || 'Invalid verification code. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -134,50 +192,145 @@ export function Login() {
                 <span className="text-[10px] text-white/30 uppercase tracking-[0.2em] px-4">or use credentials</span>
                 <div className="flex-1 h-[1px] bg-white/10"></div>
               </div>
+
+              {/* Login Method Toggle */}
+              <div className="flex justify-center gap-6 mb-6 text-[10px] uppercase tracking-wider font-semibold">
+                <button 
+                  type="button"
+                  onClick={() => { setLoginMethod('email'); setOtpSent(false); }}
+                  className={`pb-1 cursor-pointer transition-colors ${loginMethod === 'email' ? 'text-nova-gold border-b-2 border-nova-gold font-bold' : 'text-white/40 hover:text-white/70'}`}
+                >
+                  Email
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => { setLoginMethod('phone'); }}
+                  className={`pb-1 cursor-pointer transition-colors ${loginMethod === 'phone' ? 'text-nova-gold border-b-2 border-nova-gold font-bold' : 'text-white/40 hover:text-white/70'}`}
+                >
+                  Mobile Number
+                </button>
+              </div>
             </div>
 
             {/* EMAIL LOGIN FLOW */}
-            <form onSubmit={handleEmailLogin} className="flex flex-col gap-4 animate-fade-in">
-              <div>
-                <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Email Address</label>
-                <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
-                  <Mail className="w-4 h-4 text-white/30 mr-3" />
-                  <input 
-                    type="email" 
-                    placeholder="Enter Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    disabled={isLoading}
-                    required
-                    className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
-                  />
+            {loginMethod === 'email' && (
+              <form onSubmit={handleEmailLogin} className="flex flex-col gap-4 animate-fade-in">
+                <div>
+                  <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Email Address</label>
+                  <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
+                    <Mail className="w-4 h-4 text-white/30 mr-3" />
+                    <input 
+                      type="email" 
+                      placeholder="Enter Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      disabled={isLoading}
+                      required
+                      className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Password</label>
-                <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
-                  <Lock className="w-4 h-4 text-white/30 mr-3" />
-                  <input 
-                    type="password" 
-                    placeholder="Enter Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    disabled={isLoading}
-                    required
-                    className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
-                  />
+                <div>
+                  <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Password</label>
+                  <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
+                    <Lock className="w-4 h-4 text-white/30 mr-3" />
+                    <input 
+                      type="password" 
+                      placeholder="Enter Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      disabled={isLoading}
+                      required
+                      className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <button 
-                type="submit"
-                disabled={isLoading}
-                className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all mt-3 cursor-pointer disabled:opacity-55"
-              >
-                {isLoading ? 'Verifying...' : 'Verify & Sign In'}
-              </button>
-            </form>
+                <button 
+                  type="submit"
+                  disabled={isLoading}
+                  className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all mt-3 cursor-pointer disabled:opacity-55"
+                >
+                  {isLoading ? 'Verifying...' : 'Verify & Sign In'}
+                </button>
+              </form>
+            )}
+
+            {/* PHONE LOGIN FLOW */}
+            {loginMethod === 'phone' && (
+              <div className="animate-fade-in">
+                {!otpSent ? (
+                  /* Form to enter mobile number and send OTP */
+                  <form onSubmit={handleSendOtp} className="flex flex-col gap-4">
+                    <div>
+                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Mobile Number</label>
+                      <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
+                        <Phone className="w-4 h-4 text-white/30 mr-3" />
+                        <input 
+                          type="tel" 
+                          placeholder="e.g. 99999 99999 (or with +91)"
+                          value={phoneNumber}
+                          onChange={(e) => setPhoneNumber(e.target.value)}
+                          disabled={isLoading}
+                          required
+                          className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
+                        />
+                      </div>
+                      <p className="text-[9px] text-white/40 mt-1">For Indian numbers, you can omit the +91 prefix.</p>
+                    </div>
+
+                    <div id="recaptcha-container" className="my-2"></div>
+
+                    <button 
+                      type="submit"
+                      disabled={isLoading || !phoneNumber.trim()}
+                      className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all mt-1 cursor-pointer disabled:opacity-55"
+                    >
+                      {isLoading ? 'Sending OTP...' : 'Send Verification OTP'}
+                    </button>
+                  </form>
+                ) : (
+                  /* Form to enter OTP and verify */
+                  <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4">
+                    <div>
+                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Enter 6-Digit OTP *</label>
+                      <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
+                        <Lock className="w-4 h-4 text-white/30 mr-3" />
+                        <input 
+                          type="text" 
+                          maxLength={6}
+                          placeholder="Enter Code"
+                          value={otpCode}
+                          onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
+                          disabled={isLoading}
+                          required
+                          className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full tracking-[0.5em] text-center font-bold"
+                        />
+                      </div>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-[10px] text-white/50 font-light">Sent to {phoneNumber}</span>
+                        <button 
+                          type="button" 
+                          onClick={() => { setOtpSent(false); setOtpCode(''); }}
+                          className="text-[10px] text-nova-gold hover:underline font-semibold cursor-pointer"
+                        >
+                          Change Number
+                        </button>
+                      </div>
+                    </div>
+
+                    <button 
+                      type="submit"
+                      disabled={isLoading || otpCode.length !== 6}
+                      className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all mt-2 cursor-pointer disabled:opacity-55"
+                    >
+                      {isLoading ? 'Verifying OTP...' : 'Verify OTP & Log In'}
+                    </button>
+                  </form>
+                )}
+              </div>
+            )}
           </div>
         ) : (
           // REGISTRATION FLOW
