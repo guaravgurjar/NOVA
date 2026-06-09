@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -12,17 +13,19 @@ const firebaseConfig = {
 
 let app: any;
 let auth: any;
+let db: any;
 
 try {
   if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "your_api_key_placeholder") {
     app = initializeApp(firebaseConfig);
     auth = getAuth(app);
+    db = getFirestore(app);
   } else {
     throw new Error("Missing Firebase API key or using placeholder.");
   }
 } catch (error) {
   console.warn("Firebase initialization failed. Running in offline/demo auth mode.", error);
-  // Provide safe dummy exports that mimic Firebase Auth without throwing module-load errors
+  // Provide safe dummy exports that mimic Firebase SDKs without throwing module-load errors
   app = {
     name: '[MockApp]',
     options: {},
@@ -46,6 +49,9 @@ try {
       return () => {};
     }
   };
+  db = {
+    name: 'mockDb'
+  };
 }
 
-export { app, auth };
+export { app, auth, db };

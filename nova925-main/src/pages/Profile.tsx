@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { doc, getDocs, collection, setDoc, deleteDoc } from 'firebase/firestore';
+import { db, auth } from '../lib/firebase';
 
 interface DeliveryAddress {
   id: string;
@@ -148,34 +150,87 @@ export function Profile() {
     }
   };
 
-  // Load addresses from localStorage on mount/user change
+  // Load addresses from Firestore or localStorage on mount/user change
   useEffect(() => {
-    if (user) {
-      const stored = localStorage.getItem(`nova_addresses_${user.email}`);
-      if (stored) {
+    if (!user) return;
+    
+    const loadAddresses = async () => {
+      const isFirebaseActive = auth && db && (auth as any).name !== 'mockAuth' && auth.currentUser;
+      
+      if (isFirebaseActive) {
         try {
-          setAddresses(JSON.parse(stored));
-        } catch (e) {
-          console.error("Failed to parse addresses", e);
+          const uid = auth.currentUser.uid;
+          const addrColl = collection(db, 'users', uid, 'addresses');
+          const snap = await getDocs(addrColl);
+          const list: DeliveryAddress[] = [];
+          snap.forEach((doc) => {
+            list.push(doc.data() as DeliveryAddress);
+          });
+          
+          if (list.length > 0) {
+            // Sort so default is first
+            list.sort((a, b) => (a.isDefault ? -1 : 1));
+            setAddresses(list);
+          } else {
+            // Load local storage fallback or initial default
+            const localStored = localStorage.getItem(`nova_addresses_${user.email}`);
+            let initialList: DeliveryAddress[] = [];
+            if (localStored) {
+              initialList = JSON.parse(localStored);
+            } else {
+              initialList = [
+                {
+                  id: 'addr-default',
+                  fullName: `${user.firstName || 'Guest'} ${user.lastName || ''}`.trim(),
+                  phone: user.phoneNumber || '+91 9027368625',
+                  streetAddress: 'Ground Floor, Kurawali',
+                  city: 'Mainpuri',
+                  state: 'Uttar Pradesh',
+                  pinCode: '205265',
+                  isDefault: true
+                }
+              ];
+            }
+            setAddresses(initialList);
+            // Sync fallback to Firestore
+            for (const addr of initialList) {
+              await setDoc(doc(db, 'users', uid, 'addresses', addr.id), addr);
+            }
+          }
+        } catch (err) {
+          console.error("Failed to load addresses from Firestore", err);
+          const stored = localStorage.getItem(`nova_addresses_${user.email}`);
+          if (stored) setAddresses(JSON.parse(stored));
         }
       } else {
-        // Provide a default pre-filled address to simulate account data
-        const initialAddresses: DeliveryAddress[] = [
-          {
-            id: 'addr-default',
-            fullName: `${user.firstName || 'Guest'} ${user.lastName || ''}`.trim(),
-            phone: user.phoneNumber || '+91 9027368625',
-            streetAddress: 'Ground Floor, Kurawali',
-            city: 'Mainpuri',
-            state: 'Uttar Pradesh',
-            pinCode: '205265',
-            isDefault: true
+        // Local Storage Fallback
+        const stored = localStorage.getItem(`nova_addresses_${user.email}`);
+        if (stored) {
+          try {
+            setAddresses(JSON.parse(stored));
+          } catch (e) {
+            console.error("Failed to parse addresses", e);
           }
-        ];
-        setAddresses(initialAddresses);
-        localStorage.setItem(`nova_addresses_${user.email}`, JSON.stringify(initialAddresses));
+        } else {
+          const initialAddresses: DeliveryAddress[] = [
+            {
+              id: 'addr-default',
+              fullName: `${user.firstName || 'Guest'} ${user.lastName || ''}`.trim(),
+              phone: user.phoneNumber || '+91 9027368625',
+              streetAddress: 'Ground Floor, Kurawali',
+              city: 'Mainpuri',
+              state: 'Uttar Pradesh',
+              pinCode: '205265',
+              isDefault: true
+            }
+          ];
+          setAddresses(initialAddresses);
+          localStorage.setItem(`nova_addresses_${user.email}`, JSON.stringify(initialAddresses));
+        }
       }
-    }
+    };
+
+    loadAddresses();
   }, [user]);
 
   // Helper to save addresses to state and localStorage
@@ -186,7 +241,7 @@ export function Profile() {
     }
   };
 
-  const handleAddressSubmit = (e: React.FormEvent) => {
+  const handleAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!addressForm.fullName || !addressForm.phone || !addressForm.streetAddress || !addressForm.city || !addressForm.state || !addressForm.pinCode) {
@@ -195,6 +250,8 @@ export function Profile() {
     }
 
     let updatedAddresses = [...addresses];
+    let activeId = addressForm.id;
+    let isNew = false;
 
     if (addressForm.id) {
       // Edit mode
@@ -204,27 +261,49 @@ export function Profile() {
         }
         return addr;
       });
-      addToast('Address updated successfully!');
     } else {
       // Add mode
+      isNew = true;
+      activeId = `addr-${Date.now()}`;
       const newAddr: DeliveryAddress = {
         ...addressForm,
-        id: `addr-${Date.now()}`,
+        id: activeId,
       };
       updatedAddresses.push(newAddr);
-      addToast('Address added successfully!');
     }
 
-    // If set as default, unset other defaults
+    // Set default triggers
     if (addressForm.isDefault) {
-      const activeId = addressForm.id || updatedAddresses[updatedAddresses.length - 1].id;
       updatedAddresses = updatedAddresses.map(addr => ({
         ...addr,
         isDefault: addr.id === activeId
       }));
     } else if (updatedAddresses.length === 1) {
-      // Force first address to be default
       updatedAddresses[0].isDefault = true;
+    }
+
+    // Cloud Sync
+    const isFirebaseActive = auth && db && (auth as any).name !== 'mockAuth' && auth.currentUser;
+    if (isFirebaseActive) {
+      try {
+        const uid = auth.currentUser.uid;
+        if (addressForm.isDefault || updatedAddresses.length === 1) {
+          for (const addr of updatedAddresses) {
+            await setDoc(doc(db, 'users', uid, 'addresses', addr.id), { ...addr, isDefault: addr.id === activeId });
+          }
+        } else {
+          const targetAddr = updatedAddresses.find(a => a.id === activeId);
+          if (targetAddr) {
+            await setDoc(doc(db, 'users', uid, 'addresses', activeId), targetAddr);
+          }
+        }
+        addToast(isNew ? 'Address saved to cloud!' : 'Address updated in cloud!');
+      } catch (err) {
+        console.error("Firestore save failed", err);
+        addToast('Saved locally. Cloud sync failed.');
+      }
+    } else {
+      addToast(isNew ? 'Address added successfully!' : 'Address updated successfully!');
     }
 
     saveAddressesToStorage(updatedAddresses);
@@ -232,7 +311,7 @@ export function Profile() {
     resetAddressForm();
   };
 
-  const handleDeleteAddress = (id: string) => {
+  const handleDeleteAddress = async (id: string) => {
     const toDelete = addresses.find(a => a.id === id);
     let updatedAddresses = addresses.filter(addr => addr.id !== id);
     
@@ -240,17 +319,51 @@ export function Profile() {
       updatedAddresses[0].isDefault = true;
     }
     
+    const isFirebaseActive = auth && db && (auth as any).name !== 'mockAuth' && auth.currentUser;
+    if (isFirebaseActive) {
+      try {
+        const uid = auth.currentUser.uid;
+        await deleteDoc(doc(db, 'users', uid, 'addresses', id));
+        if (toDelete?.isDefault && updatedAddresses.length > 0) {
+          for (const addr of updatedAddresses) {
+            await setDoc(doc(db, 'users', uid, 'addresses', addr.id), addr);
+          }
+        }
+        addToast('Address deleted from cloud.');
+      } catch (err) {
+        console.error("Firestore delete failed", err);
+        addToast('Deleted locally. Cloud sync failed.');
+      }
+    } else {
+      addToast('Address removed successfully.');
+    }
+
     saveAddressesToStorage(updatedAddresses);
-    addToast('Address removed successfully.');
   };
 
-  const handleSetDefaultAddress = (id: string) => {
+  const handleSetDefaultAddress = async (id: string) => {
     const updated = addresses.map(addr => ({
       ...addr,
       isDefault: addr.id === id
     }));
+
+    const isFirebaseActive = auth && db && (auth as any).name !== 'mockAuth' && auth.currentUser;
+    if (isFirebaseActive) {
+      try {
+        const uid = auth.currentUser.uid;
+        for (const addr of updated) {
+          await setDoc(doc(db, 'users', uid, 'addresses', addr.id), addr);
+        }
+        addToast('Default address updated in cloud.');
+      } catch (err) {
+        console.error("Firestore default update failed", err);
+        addToast('Updated locally. Cloud sync failed.');
+      }
+    } else {
+      addToast('Default delivery address updated.');
+    }
+
     saveAddressesToStorage(updated);
-    addToast('Default delivery address updated.');
   };
 
   const resetAddressForm = () => {
