@@ -43,6 +43,111 @@ export function Profile() {
     isDefault: false
   });
 
+  const [isLocating, setIsLocating] = useState(false);
+  const [isFetchingPincode, setIsFetchingPincode] = useState(false);
+
+  const fetchAddressByGeolocation = () => {
+    if (!navigator.geolocation) {
+      addToast('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    setIsLocating(true);
+    addToast('Retrieving your location...');
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&addressdetails=1`,
+            {
+              headers: {
+                'Accept': 'application/json',
+                'User-Agent': 'NOVA-Sterling-Silver-Boutique'
+              }
+            }
+          );
+          if (!response.ok) throw new Error('Geocoding service error');
+          const data = await response.json();
+          
+          if (data && data.address) {
+            const addr = data.address;
+            const street = [
+              addr.road || addr.suburb || '',
+              addr.neighbourhood || addr.neighbourhood_level2 || '',
+              addr.subdivision || ''
+            ].filter(Boolean).join(', ');
+
+            const city = addr.city || addr.town || addr.village || addr.county || addr.state_district || '';
+            const state = addr.state || '';
+            const pinCode = addr.postcode || '';
+
+            setAddressForm(prev => ({
+              ...prev,
+              streetAddress: street || prev.streetAddress,
+              city: city || prev.city,
+              state: state || prev.state,
+              pinCode: pinCode || prev.pinCode
+            }));
+            
+            addToast('Location details auto-filled!');
+          } else {
+            addToast('Could not resolve address details for this location.');
+          }
+        } catch (error) {
+          console.error("Reverse geocoding failed", error);
+          addToast('Failed to resolve address from geocoding service.');
+        } finally {
+          setIsLocating(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation failed", error);
+        setIsLocating(false);
+        if (error.code === error.PERMISSION_DENIED) {
+          addToast('Location access denied by user.');
+        } else {
+          addToast('Failed to retrieve your current location.');
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
+  };
+
+  const fetchAddressByPincode = async (pincode: string) => {
+    const cleanPin = pincode.trim().replace(/\s/g, '');
+    if (cleanPin.length !== 6 || isNaN(Number(cleanPin))) {
+      return;
+    }
+
+    setIsFetchingPincode(true);
+    try {
+      const response = await fetch(`https://api.postalpincode.in/pincode/${cleanPin}`);
+      if (!response.ok) throw new Error('Postal API error');
+      const data = await response.json();
+
+      if (data && data[0] && data[0].Status === 'Success') {
+        const postOffice = data[0].PostOffice[0];
+        const district = postOffice.District;
+        const state = postOffice.State;
+        
+        setAddressForm(prev => ({
+          ...prev,
+          city: district,
+          state: state
+        }));
+        addToast(`Pincode verified! Auto-filled ${district}, ${state}`);
+      } else {
+        addToast('Invalid Pincode or no data found.');
+      }
+    } catch (error) {
+      console.error("Pincode fetch failed", error);
+    } finally {
+      setIsFetchingPincode(false);
+    }
+  };
+
   // Load addresses from localStorage on mount/user change
   useEffect(() => {
     if (user) {
@@ -401,10 +506,18 @@ export function Profile() {
                   {isEditingAddress ? (
                     /* Add / Edit Address Form */
                     <form onSubmit={handleAddressSubmit} className="flex flex-col gap-4">
-                      <div className="border-b border-white/5 pb-2 mb-2">
+                      <div className="flex justify-between items-center border-b border-white/5 pb-2 mb-2">
                         <h4 className="text-sm font-semibold tracking-wide text-white/80">
                           {addressForm.id ? "Edit Delivery Address" : "Add New Delivery Address"}
                         </h4>
+                        <button
+                          type="button"
+                          onClick={fetchAddressByGeolocation}
+                          disabled={isLocating}
+                          className="text-[10px] text-nova-gold hover:text-nova-gold-light transition-colors flex items-center gap-1 font-semibold uppercase tracking-wider cursor-pointer disabled:opacity-55"
+                        >
+                          {isLocating ? "Locating..." : "📍 Use Current Location"}
+                        </button>
                       </div>
 
                       <div>
@@ -432,12 +545,21 @@ export function Profile() {
                           />
                         </div>
                         <div>
-                          <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Pin Code *</label>
+                          <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">
+                            Pin Code * {isFetchingPincode && <span className="text-nova-gold text-[9px] lowercase animate-pulse ml-1">(fetching...)</span>}
+                          </label>
                           <input 
                             type="text" 
                             required
+                            maxLength={6}
                             value={addressForm.pinCode}
-                            onChange={(e) => setAddressForm(prev => ({ ...prev, pinCode: e.target.value }))}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setAddressForm(prev => ({ ...prev, pinCode: val }));
+                              if (val.length === 6) {
+                                fetchAddressByPincode(val);
+                              }
+                            }}
                             placeholder="e.g. 205265" 
                             className="w-full bg-[#121522] border border-white/10 focus:border-nova-gold rounded-xl py-2.5 px-4 text-sm text-white focus:outline-none transition-colors" 
                           />
