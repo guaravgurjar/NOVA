@@ -1,6 +1,5 @@
 import { products } from '../data';
 import { ProductCard } from '../components/ProductCard';
-import { PromoStrip } from '../components/PromoStrip';
 import { Heart } from 'lucide-react';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useEffect } from 'react';
@@ -28,9 +27,7 @@ export function Wishlist() {
            <h1 className="text-2xl md:text-4xl font-serif tracking-wide font-light">My Saved Wishlist</h1>
         </div>
       </div>
-      
-      {/* Promo Strip */}
-      <PromoStrip />
+
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl flex-1">
         {savedProducts.length > 0 ? (
