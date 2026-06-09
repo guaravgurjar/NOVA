@@ -46,6 +46,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Listen to auth state changes
   useEffect(() => {
+    // Prevent calling the real Firebase SDK if keys are unconfigured or using the mock auth implementation
+    if (!auth || (auth as any).name === 'mockAuth') {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       setIsLoading(true);
       if (firebaseUser) {
@@ -91,15 +98,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const loginWithGmail = async () => {
+    if (!auth || (auth as any).name === 'mockAuth') {
+      alert("Firebase Authentication is not configured. Please add environment variables in your Vercel project dashboard.");
+      return;
+    }
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
   };
 
   const loginWithEmail = async (email: string, password: string) => {
+    if (!auth || (auth as any).name === 'mockAuth') {
+      alert("Firebase Authentication is not configured. Please add environment variables in your Vercel project dashboard.");
+      return;
+    }
     await signInWithEmailAndPassword(auth, email, password);
   };
 
   const signUpWithEmail = async (email: string, password: string, firstName: string, lastName: string, phoneNumber?: string) => {
+    if (!auth || (auth as any).name === 'mockAuth') {
+      alert("Firebase Authentication is not configured. Please add environment variables in your Vercel project dashboard.");
+      return;
+    }
     const credential = await createUserWithEmailAndPassword(auth, email, password);
     if (credential.user) {
       // Update display name
@@ -119,6 +138,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const updateProfile = async (details: Partial<Omit<UserProfile, 'isAuthenticated' | 'authMethod'>>) => {
+    if (!auth || (auth as any).name === 'mockAuth') return;
     const firebaseUser = auth.currentUser;
     if (!firebaseUser) return;
 
@@ -153,6 +173,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const logout = async () => {
+    if (!auth || (auth as any).name === 'mockAuth') {
+      setUser(null);
+      return;
+    }
     await signOut(auth);
   };
 

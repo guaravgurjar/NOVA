@@ -1,13 +1,15 @@
 import { Heart } from 'lucide-react';
 import { Product } from '../types';
 import { useToast } from '../contexts/ToastContext';
+import { useWishlist } from '../contexts/WishlistContext';
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 export function ProductCard({ product }: { product: Product }) {
   const { addToast } = useToast();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = isInWishlist(product.id);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -50,8 +52,7 @@ export function ProductCard({ product }: { product: Product }) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              setIsWishlisted(!isWishlisted);
-              addToast(isWishlisted ? 'Removed from Wishlist' : 'Added to Wishlist');
+              toggleWishlist(product.id);
             }}
             className={`absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 z-10 ${
               isWishlisted 

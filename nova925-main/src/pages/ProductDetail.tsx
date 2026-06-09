@@ -3,6 +3,7 @@ import { products, shopCategories } from '../data';
 import { ProductCard } from '../components/ProductCard';
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from '../contexts/ToastContext';
+import { useWishlist } from '../contexts/WishlistContext';
 import { 
   Heart, 
   ShoppingBag, 
@@ -27,9 +28,10 @@ export function ProductDetail() {
   const product = products.find(p => p.id === id);
   
   // State variables
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = product ? isInWishlist(product.id) : false;
   const [pincode, setPincode] = useState('');
   const [deliveryStatus, setDeliveryStatus] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
@@ -304,8 +306,7 @@ export function ProductDetail() {
               </button>
               <button 
                 onClick={() => {
-                  setIsWishlisted(!isWishlisted);
-                  addToast(isWishlisted ? 'Removed from Wishlist' : 'Added to Wishlist');
+                  if (product) toggleWishlist(product.id);
                 }}
                 className={`px-6 py-4 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2 ${
                   isWishlisted 

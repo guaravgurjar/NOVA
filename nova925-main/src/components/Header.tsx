@@ -3,10 +3,12 @@ import { Search, Heart, MapPin, User, ShoppingCart, Share2 } from 'lucide-react'
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
+import { useWishlist } from '../contexts/WishlistContext';
 
 export function Header() {
   const { user } = useAuth();
   const { addToast } = useToast();
+  const { wishlistCount } = useWishlist();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -83,6 +85,11 @@ export function Header() {
         <div className="flex items-center space-x-6 text-white">
           <Link to="/wishlist" className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Wishlist">
             <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-nova-gold text-nova-darker text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center border border-nova-darker shadow-sm">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
           <button onClick={handleShare} className="hover:text-nova-gold transition-colors duration-300 relative group cursor-pointer" aria-label="Share Website">
             <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform" />

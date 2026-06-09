@@ -1,9 +1,20 @@
-import { featuredProducts } from '../data';
+import { products } from '../data';
 import { ProductCard } from '../components/ProductCard';
 import { PromoStrip } from '../components/PromoStrip';
 import { Heart } from 'lucide-react';
+import { useWishlist } from '../contexts/WishlistContext';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 export function Wishlist() {
+  const { wishlist } = useWishlist();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  const savedProducts = products.filter((p) => wishlist.includes(p.id));
+
   return (
     <div className="flex flex-col min-h-screen bg-nova-darker text-white">
       
@@ -22,20 +33,20 @@ export function Wishlist() {
       <PromoStrip />
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl flex-1">
-        {featuredProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {featuredProducts.slice(0, 4).map((product) => (
+        {savedProducts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 animate-fade-in">
+            {savedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (
           <div className="text-center py-20 glass-dark rounded-2xl border border-white/5 max-w-lg mx-auto">
-             <Heart className="w-10 h-10 mx-auto text-nova-gold/40 mb-4" />
+             <Heart className="w-10 h-10 mx-auto text-nova-gold/40 mb-4 animate-pulse" />
              <h3 className="font-serif text-lg mb-2">Your Wishlist is Empty</h3>
              <p className="text-white/50 text-xs font-light mb-6">Explore our catalog to save your favorite silver pieces.</p>
-             <a href="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider">
+             <Link to="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider">
                Browse Shop
-             </a>
+             </Link>
           </div>
         )}
       </div>
