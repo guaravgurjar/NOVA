@@ -1,25 +1,32 @@
-import { featuredProducts } from '../data';
+import { products, featuredProducts } from '../data';
 import { ProductCard } from '../components/ProductCard';
-import { useState } from 'react';
+import { useCart } from '../contexts/CartContext';
 import { useToast } from '../contexts/ToastContext';
 import { Trash2, Tag, Gift, Lock } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Product } from '../types';
 
 export function Cart() {
   const { addToast } = useToast();
-  const [quantity, setQuantity] = useState(1);
-  const [itemRemoved, setItemRemoved] = useState(false);
-  
-  const targetProduct = featuredProducts[0];
+  const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
 
-  const handleIncrement = () => setQuantity(prev => prev + 1);
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(prev => prev - 1);
-    }
+  // Resolve products from data source
+  const getProductById = (id: string): Product | undefined => {
+    return products.find(p => p.id === id) || featuredProducts.find(p => p.id === id);
   };
 
-  const itemPrice = targetProduct ? targetProduct.price : 0;
-  const totalMrp = itemPrice * quantity;
+  const resolvedItems = cartItems
+    .map(item => {
+      const product = getProductById(item.id);
+      return {
+        product,
+        quantity: item.quantity
+      };
+    })
+    .filter(item => item.product !== undefined) as { product: Product; quantity: number }[];
+
+  // Dynamic calculations
+  const totalMrp = resolvedItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   const discount = Math.round(totalMrp * 0.05); // 5% discount
   const finalAmount = totalMrp - discount;
 
@@ -34,74 +41,83 @@ export function Cart() {
           Shopping Bag
         </h1>
         
-        {!itemRemoved && targetProduct ? (
+        {resolvedItems.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             
             {/* Cart Items List */}
-            <div className="lg:col-span-2">
-              <div className="glass-dark rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-start border border-white/5 shadow-xl relative animate-fade-in">
-                
-                {/* Product Image */}
-                <div className="w-full md:w-44 aspect-square bg-[#07090f] rounded-xl overflow-hidden relative border border-white/5">
-                  <img src={targetProduct.image} alt={targetProduct.name} className="w-full h-full object-cover" />
-                  <div className="absolute bottom-0 left-0 w-full bg-nova-gold/90 text-nova-darker text-[9px] font-bold text-center py-1 uppercase tracking-widest">
-                    Free Delivery
-                  </div>
-                </div>
-                
-                {/* Product Info */}
-                <div className="flex-1 w-full flex flex-col justify-between self-stretch">
-                  <div>
-                    <div className="flex justify-between items-start mb-2">
-                       <h3 className="font-serif text-lg text-nova-gold font-medium tracking-wide">
-                         {targetProduct.name}
-                       </h3>
-                       <button 
-                         onClick={() => {
-                           setItemRemoved(true);
-                           addToast('Item removed from cart');
-                         }}
-                         className="text-white/40 hover:text-red-400 transition-colors p-1"
-                         aria-label="Remove Item"
-                       >
-                         <Trash2 className="w-4 h-4" />
-                       </button>
-                    </div>
+            <div className="lg:col-span-2 space-y-6">
+              {resolvedItems.map(item => {
+                const product = item.product;
+                const itemQuantity = item.quantity;
+                const itemTotal = product.price * itemQuantity;
+                const itemDiscount = Math.round(itemTotal * 0.05);
+                const itemFinal = itemTotal - itemDiscount;
+
+                return (
+                  <div key={product.id} className="glass-dark rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-start border border-white/5 shadow-xl relative animate-fade-in">
                     
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4 font-medium">925 Sterling Silver Purity</p>
+                    {/* Product Image */}
+                    <Link to={`/product/${product.id}`} className="w-full md:w-44 aspect-square bg-[#07090f] rounded-xl overflow-hidden relative border border-white/5 block shrink-0">
+                      <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                      <div className="absolute bottom-0 left-0 w-full bg-nova-gold/90 text-nova-darker text-[9px] font-bold text-center py-1 uppercase tracking-widest">
+                        Free Delivery
+                      </div>
+                    </Link>
                     
-                    <div className="text-lg font-bold text-white mb-6">
-                      Rs. {finalAmount.toLocaleString('en-IN')}/-{' '}
-                      <span className="text-white/30 line-through text-sm font-normal ml-2">
-                        (Rs. {totalMrp.toLocaleString('en-IN')}/-)
-                      </span>
+                    {/* Product Info */}
+                    <div className="flex-1 w-full flex flex-col justify-between self-stretch">
+                      <div>
+                        <div className="flex justify-between items-start mb-2">
+                           <Link to={`/product/${product.id}`} className="hover:text-nova-gold transition-colors">
+                             <h3 className="font-serif text-lg text-nova-gold font-medium tracking-wide">
+                               {product.name}
+                             </h3>
+                           </Link>
+                           <button 
+                             onClick={() => removeFromCart(product.id)}
+                             className="text-white/40 hover:text-red-400 transition-colors p-1 cursor-pointer"
+                             aria-label="Remove Item"
+                           >
+                             <Trash2 className="w-4 h-4" />
+                           </button>
+                        </div>
+                        
+                        <p className="text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4 font-medium">925 Sterling Silver Purity</p>
+                        
+                        <div className="text-lg font-bold text-white mb-6">
+                          Rs. {itemFinal.toLocaleString('en-IN')}/-{' '}
+                          <span className="text-white/30 line-through text-sm font-normal ml-2">
+                            (Rs. {itemTotal.toLocaleString('en-IN')}/-)
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Quantity & Badges */}
+                      <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
+                        <div className="flex bg-[#181c2b] border border-white/10 rounded-lg overflow-hidden items-center">
+                           <button onClick={() => updateQuantity(product.id, itemQuantity - 1)} className="px-3.5 py-1.5 hover:bg-white/5 text-white/75 transition-colors font-bold cursor-pointer">-</button>
+                           <span className="px-4 py-1.5 font-mono text-xs font-semibold text-nova-gold">{String(itemQuantity).padStart(2, '0')}</span>
+                           <button onClick={() => updateQuantity(product.id, itemQuantity + 1)} className="px-3.5 py-1.5 hover:bg-white/5 text-white/75 transition-colors font-bold cursor-pointer">+</button>
+                        </div>
+                        
+                        <div className="flex gap-2 text-[8px] uppercase tracking-wider text-white/50">
+                           <span className="px-2.5 py-1 bg-white/5 rounded border border-white/5">7-day returns</span>
+                           <span className="px-2.5 py-1 bg-white/5 rounded border border-white/5">Lab certified</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  
-                  {/* Quantity & Badges */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 mt-auto">
-                    <div className="flex bg-[#181c2b] border border-white/10 rounded-lg overflow-hidden items-center">
-                       <button onClick={handleDecrement} className="px-3.5 py-1.5 hover:bg-white/5 text-white/75 transition-colors font-bold">-</button>
-                       <span className="px-4 py-1.5 font-mono text-xs font-semibold text-nova-gold">{String(quantity).padStart(2, '0')}</span>
-                       <button onClick={handleIncrement} className="px-3.5 py-1.5 hover:bg-white/5 text-white/75 transition-colors font-bold">+</button>
-                    </div>
-                    
-                    <div className="flex gap-2 text-[8px] uppercase tracking-wider text-white/50">
-                       <span className="px-2.5 py-1 bg-white/5 rounded border border-white/5">7-day returns</span>
-                       <span className="px-2.5 py-1 bg-white/5 rounded border border-white/5">Lab certified</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
 
             {/* Checkout Pricing Panel */}
             <div>
-              <button onClick={() => addToast('Coupon applied!')} className="w-full bg-[#181c2b] hover:bg-white/5 border border-white/10 hover:border-nova-gold/30 rounded-xl py-3.5 mb-3.5 flex items-center justify-center gap-2.5 text-xs font-medium uppercase tracking-widest text-white/95 transition-all">
+              <button onClick={() => addToast('Coupon applied!')} className="w-full bg-[#181c2b] hover:bg-white/5 border border-white/10 hover:border-nova-gold/30 rounded-xl py-3.5 mb-3.5 flex items-center justify-center gap-2.5 text-xs font-medium uppercase tracking-widest text-white/95 transition-all cursor-pointer">
                 <Tag className="w-4 h-4 text-nova-gold" />
                 <span>Apply Promo Coupon</span>
               </button>
-              <button onClick={() => addToast('Gift card linked!')} className="w-full bg-[#181c2b] hover:bg-white/5 border border-white/10 hover:border-nova-gold/30 rounded-xl py-3.5 mb-8 flex items-center justify-center gap-2.5 text-xs font-medium uppercase tracking-widest text-white/95 transition-all">
+              <button onClick={() => addToast('Gift card linked!')} className="w-full bg-[#181c2b] hover:bg-white/5 border border-white/10 hover:border-nova-gold/30 rounded-xl py-3.5 mb-8 flex items-center justify-center gap-2.5 text-xs font-medium uppercase tracking-widest text-white/95 transition-all cursor-pointer">
                 <Gift className="w-4 h-4 text-nova-gold" />
                 <span>Redeem Gift Card</span>
               </button>
@@ -140,7 +156,7 @@ export function Cart() {
                 
                 <button 
                   onClick={handleCheckout}
-                  className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/25 transition-all"
+                  className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/25 transition-all cursor-pointer"
                 >
                   <Lock className="w-3.5 h-3.5" />
                   <span>Checkout Securely</span>
@@ -154,9 +170,9 @@ export function Cart() {
              <span className="text-4xl block mb-4">🛒</span>
              <h3 className="font-serif text-lg mb-2">Your Shopping Bag is Empty</h3>
              <p className="text-white/50 text-xs font-light mb-6">Looks like you haven't added any luxury pieces yet.</p>
-             <a href="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider">
+             <Link to="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider">
                Continue Shopping
-             </a>
+             </Link>
           </div>
         )}
       </div>

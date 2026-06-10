@@ -1,12 +1,12 @@
 import { Heart } from 'lucide-react';
 import { Product } from '../types';
-import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import { useCart } from '../contexts/CartContext';
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 export function ProductCard({ product }: { product: Product }) {
-  const { addToast } = useToast();
+  const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [isHovered, setIsHovered] = useState(false);
   const isWishlisted = isInWishlist(product.id);
@@ -56,8 +56,8 @@ export function ProductCard({ product }: { product: Product }) {
             }}
             className={`absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 z-10 ${
               isWishlisted 
-                ? 'bg-red-500/20 border-red-500/30 text-red-500' 
-                : 'bg-[#0f121d]/60 border-white/10 text-white/70 hover:text-white hover:border-white/30'
+                 ? 'bg-red-500/20 border-red-500/30 text-red-500' 
+                 : 'bg-[#0f121d]/60 border-white/10 text-white/70 hover:text-white hover:border-white/30'
             }`}
             aria-label="Wishlist"
           >
@@ -91,7 +91,7 @@ export function ProductCard({ product }: { product: Product }) {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            addToast('Added to Cart');
+            addToCart(product.id);
           }}
           className="w-full bg-transparent hover:bg-nova-gold text-nova-gold hover:text-nova-darker border border-nova-gold/30 hover:border-nova-gold py-2.5 rounded-lg font-sans font-medium tracking-[0.15em] text-[10px] uppercase transition-all duration-300 shadow-md flex items-center justify-center gap-2"
         >
@@ -101,3 +101,4 @@ export function ProductCard({ product }: { product: Product }) {
     </div>
   );
 }
+

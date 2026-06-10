@@ -4,6 +4,7 @@ import { ProductCard } from '../components/ProductCard';
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import { useCart } from '../contexts/CartContext';
 import { 
   Heart, 
   ShoppingBag, 
@@ -23,6 +24,7 @@ export function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToast } = useToast();
+  const { addToCart } = useCart();
   
   // Find the product
   const product = products.find(p => p.id === id);
@@ -298,9 +300,10 @@ export function ProductDetail() {
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <button 
-                onClick={() => addToast(`Added ${quantity} item(s) to Cart`)}
+                onClick={() => addToCart(product.id, quantity)}
                 className="flex-1 bg-nova-gold hover:bg-nova-gold-light text-nova-darker py-4 rounded-xl font-sans font-bold tracking-[0.2em] text-xs uppercase transition-all duration-300 shadow-md shadow-nova-gold/15 flex items-center justify-center gap-2"
               >
+
                 <ShoppingBag className="w-4.5 h-4.5" />
                 <span>Add to Cart</span>
               </button>

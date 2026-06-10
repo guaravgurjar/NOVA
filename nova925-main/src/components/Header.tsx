@@ -4,11 +4,13 @@ import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import { useCart } from '../contexts/CartContext';
 
 export function Header() {
   const { user } = useAuth();
   const { addToast } = useToast();
   const { wishlistCount } = useWishlist();
+  const { cartCount } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
@@ -108,9 +110,15 @@ export function Header() {
           )}
           <Link to="/cart" className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Cart">
             <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-nova-gold text-nova-darker text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center border border-nova-darker shadow-sm">
+                {cartCount}
+              </span>
+            )}
           </Link>
         </div>
       </div>
+
 
       {/* Navigation */}
       <nav className="bg-nova-darker text-white border-b border-nova-gold/15 uppercase text-xs tracking-[0.15em] font-medium">
