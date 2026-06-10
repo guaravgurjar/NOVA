@@ -55,7 +55,14 @@ export function ChatBot() {
       // Add empty model message for streaming
       setMessages(prev => [...prev, { role: 'model', content: '' }]);
 
-      const token = auth.currentUser ? await auth.currentUser.getIdToken() : '';
+      // Fall back to a mock-token when using client-side mock authentication
+      let token = '';
+      if (auth && auth.currentUser) {
+        token = await auth.currentUser.getIdToken();
+      } else if (isSignedIn) {
+        token = 'mock-token';
+      }
+
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 

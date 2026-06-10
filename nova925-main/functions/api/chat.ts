@@ -159,8 +159,9 @@ export const onRequestPost = async (context: any) => {
       });
 
       const responseStream = await ai.models.generateContentStream({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash",
         contents: formattedContents,
+
         config: {
           systemInstruction: "You are NOVA, a helpful and knowledgeable jewelry assistant for NOVA Jewellery. You can answer questions about silver, jewelry care, our products, shipping, and more.",
         }
