@@ -1,8 +1,9 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { products, shopCategories } from '../data';
 import { ProductCard } from '../components/ProductCard';
-import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, X, Check, SlidersHorizontal, RefreshCw } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ChevronDown, X, SlidersHorizontal, RefreshCw } from 'lucide-react';
+import { Product } from '../types';
 
 // Helper to derive luxury attributes dynamically for the products
 function getProductAttributes(product: any, index: number) {
@@ -58,6 +59,9 @@ export function Shop() {
 
   // Open dropdown state
   const [openFilter, setOpenFilter] = useState<string | null>(null);
+  
+  // Mobile drawer state
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
 
   // Filter selections
   const [selectedProductTypes, setSelectedProductTypes] = useState<string[]>([]);
@@ -329,18 +333,20 @@ export function Shop() {
         
         {/* Horizontal Dropdowns Filters & Sorting Row */}
         <div className="relative border-b border-white/10 pb-6 mb-8 flex flex-col gap-4">
-          <div className="flex flex-wrap items-center justify-between gap-4 text-xs font-light">
+          
+          {/* 1. Desktop Filters (md and above) */}
+          <div className="hidden md:flex flex-wrap items-center justify-between gap-4 text-xs font-light">
             
             {/* Click-away overlay when a dropdown is open */}
             {openFilter && (
               <div 
-                className="fixed inset-0 z-40 bg-transparent" 
+                className="fixed inset-0 z-20 bg-transparent" 
                 onClick={() => setOpenFilter(null)}
               ></div>
             )}
 
             {/* Horizontal Filter Options */}
-            <div className="flex flex-wrap items-center gap-1 sm:gap-2 relative z-50">
+            <div className="flex flex-wrap items-center gap-1 sm:gap-2 relative z-30">
               
               {/* 1. Product Type */}
               <div className="relative">
@@ -354,7 +360,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'type' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'type' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {productTypeOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -387,7 +393,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'price' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'price' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {priceRangeOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -420,7 +426,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'shopfor' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'shopfor' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {shopForOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -453,7 +459,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'color' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'color' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {colorOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -486,7 +492,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'metal' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'metal' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {metalOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -519,7 +525,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'stone' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'stone' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {stoneOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -552,7 +558,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'style' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'style' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {styleOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -585,7 +591,7 @@ export function Shop() {
                   <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'subcat' ? 'rotate-180' : ''}`} />
                 </button>
                 {openFilter === 'subcat' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
                     <div className="space-y-2.5">
                       {subCategoryOptions.map(opt => (
                         <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
@@ -609,11 +615,11 @@ export function Shop() {
             </div>
 
             {/* Right: Sort by Dropdown */}
-            <div className="relative z-50 flex items-center gap-2">
+            <div className="relative z-30 flex items-center gap-2">
               <span className="text-white/40 font-light">Sort by:</span>
               <button 
                 onClick={() => toggleFilterDropdown('sort')}
-                className="flex items-center gap-1.5 px-3 py-2 bg-[#181c2b] border border-white/10 hover:border-nova-gold/40 rounded-lg text-white/95 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 bg-[#181c2b] border border-white/10 hover:border-nova-gold/40 rounded-lg text-white/95 transition-colors cursor-pointer"
               >
                 <span>{
                   sortBy === "best-selling" ? "Best selling" :
@@ -623,7 +629,7 @@ export function Shop() {
                 <ChevronDown className={`w-3.5 h-3.5 text-nova-gold transition-transform ${openFilter === 'sort' ? 'rotate-180' : ''}`} />
               </button>
               {openFilter === 'sort' && (
-                <div className="absolute right-0 top-full mt-2 w-48 bg-[#0f121d] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden text-xs">
+                <div className="absolute right-0 top-full mt-2 w-48 bg-[#0f121d] border border-white/10 rounded-xl shadow-2xl z-30 overflow-hidden text-xs">
                   <button 
                     onClick={() => { setSortBy("best-selling"); setOpenFilter(null); }}
                     className={`w-full text-left py-2.5 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors ${sortBy === 'best-selling' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
@@ -654,6 +660,70 @@ export function Shop() {
 
           </div>
 
+          {/* 2. Mobile Filters Bar (sm and max-md) */}
+          <div className="flex md:hidden items-center justify-between gap-3 text-xs w-full relative z-30">
+            
+            {/* Click-away overlay when a dropdown is open */}
+            {openFilter === 'sort-mobile' && (
+              <div 
+                className="fixed inset-0 z-20 bg-transparent" 
+                onClick={() => setOpenFilter(null)}
+              ></div>
+            )}
+
+            {/* Mobile Sort Dropdown Toggle */}
+            <button 
+              onClick={() => toggleFilterDropdown('sort-mobile')}
+              className="flex-1 flex items-center justify-between gap-1.5 px-4 py-2.5 bg-[#181c2b] border border-white/10 rounded-xl text-white/90 transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <span className="truncate">Sort: {
+                sortBy === "best-selling" ? "Best selling" :
+                sortBy === "price-low" ? "Low to High" :
+                sortBy === "price-high" ? "High to Low" : "New Arrivals"
+              }</span>
+              <ChevronDown className={`w-3.5 h-3.5 text-nova-gold shrink-0 transition-transform ${openFilter === 'sort-mobile' ? 'rotate-180' : ''}`} />
+            </button>
+
+            {/* Mobile Filter Button */}
+            <button 
+              onClick={() => setIsMobileFilterOpen(true)}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#181c2b] border border-white/10 hover:border-nova-gold/30 rounded-xl text-white transition-all active:scale-[0.98] cursor-pointer"
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5 text-nova-gold shrink-0" />
+              <span className="font-medium">Filter {activeFilterTags.length > 0 ? `(${activeFilterTags.length})` : ''}</span>
+            </button>
+
+            {/* Mobile Sort Dropdown Menu */}
+            {openFilter === 'sort-mobile' && (
+              <div className="absolute left-0 right-0 top-full mt-2 bg-[#0f121d] border border-white/10 rounded-xl shadow-2xl z-30 overflow-hidden text-xs animate-fade-in">
+                <button 
+                  onClick={() => { setSortBy("best-selling"); setOpenFilter(null); }}
+                  className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'best-selling' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                >
+                  Best selling
+                </button>
+                <button 
+                  onClick={() => { setSortBy("price-low"); setOpenFilter(null); }}
+                  className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'price-low' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                >
+                  Price: Low to High
+                </button>
+                <button 
+                  onClick={() => { setSortBy("price-high"); setOpenFilter(null); }}
+                  className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'price-high' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                >
+                  Price: High to Low
+                </button>
+                <button 
+                  onClick={() => { setSortBy("new-arrivals"); setOpenFilter(null); }}
+                  className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'new-arrivals' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                >
+                  New Arrivals
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Active Filter Tags Row */}
           {hasActiveFilters && (
             <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-white/5 animate-fade-in text-xs">
@@ -667,7 +737,7 @@ export function Shop() {
                   <span className="font-medium">{tag.label}</span>
                   <button 
                     onClick={tag.clearFn}
-                    className="p-0.5 hover:bg-white/10 rounded-full text-nova-gold/75 hover:text-nova-gold transition-colors"
+                    className="p-0.5 hover:bg-white/10 rounded-full text-nova-gold/75 hover:text-nova-gold transition-colors cursor-pointer"
                     title="Remove filter"
                   >
                     <X className="w-3 h-3" />
@@ -676,9 +746,9 @@ export function Shop() {
               ))}
               <button 
                 onClick={clearAllFilters}
-                className="text-[10px] uppercase tracking-wider text-nova-gold hover:text-white font-semibold ml-2 transition-colors flex items-center gap-1"
+                className="text-[10px] uppercase tracking-wider text-nova-gold hover:text-white font-semibold ml-2 transition-colors flex items-center gap-1 cursor-pointer"
               >
-                <RefreshCw className="w-3 h-3" />
+                <RefreshCw className="w-3 h-3 animate-spin-slow" />
                 <span>Clear All</span>
               </button>
             </div>
@@ -701,6 +771,247 @@ export function Shop() {
         )}
 
       </div>
+
+      {/* Mobile Filter Drawer Overlay */}
+      {isMobileFilterOpen && (
+        <div className="fixed inset-0 z-[150] flex justify-end">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setIsMobileFilterOpen(false)}
+          ></div>
+          
+          {/* Drawer Body */}
+          <div className="relative w-full max-w-md h-full bg-[#0b0e17] border-l border-white/10 shadow-2xl flex flex-col z-50 animate-in slide-in-from-right duration-300">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+              <div className="flex items-center gap-2">
+                <SlidersHorizontal className="w-4.5 h-4.5 text-nova-gold" />
+                <h2 className="font-serif text-lg tracking-wide text-white">Filters</h2>
+              </div>
+              <button 
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="p-1.5 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-colors cursor-pointer"
+                aria-label="Close filters"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Scrolling Filters Content */}
+            <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+              
+              {/* Accordions for each filter option */}
+              <MobileFilterAccordion title="Product Type" count={selectedProductTypes.length}>
+                <div className="space-y-2.5 pt-2">
+                  {productTypeOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedProductTypes.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedProductTypes, setSelectedProductTypes)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Price" count={selectedPriceRanges.length}>
+                <div className="space-y-2.5 pt-2">
+                  {priceRangeOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedPriceRanges.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedPriceRanges, setSelectedPriceRanges)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Shop For" count={selectedShopFor.length}>
+                <div className="space-y-2.5 pt-2">
+                  {shopForOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedShopFor.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedShopFor, setSelectedShopFor)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Color" count={selectedColors.length}>
+                <div className="space-y-2.5 pt-2">
+                  {colorOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedColors.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedColors, setSelectedColors)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Metal" count={selectedMetals.length}>
+                <div className="space-y-2.5 pt-2">
+                  {metalOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedMetals.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedMetals, setSelectedMetals)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Stone" count={selectedStones.length}>
+                <div className="space-y-2.5 pt-2">
+                  {stoneOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedStones.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedStones, setSelectedStones)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Style" count={selectedStyles.length}>
+                <div className="space-y-2.5 pt-2">
+                  {styleOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedStyles.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedStyles, setSelectedStyles)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+              <MobileFilterAccordion title="Sub Category" count={selectedSubCategories.length}>
+                <div className="space-y-2.5 pt-2">
+                  {subCategoryOptions.map(opt => (
+                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <input 
+                          type="checkbox" 
+                          checked={selectedSubCategories.includes(opt.value)} 
+                          onChange={() => toggleSelection(opt.value, selectedSubCategories, setSelectedSubCategories)}
+                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10" 
+                        />
+                        <span>{opt.label}</span>
+                      </div>
+                      <span className="text-[10px] text-white/30">({opt.count})</span>
+                    </label>
+                  ))}
+                </div>
+              </MobileFilterAccordion>
+
+            </div>
+
+            {/* Footer with actions */}
+            <div className="px-6 py-5 border-t border-white/10 bg-[#0f121d] flex items-center gap-3">
+              {hasActiveFilters && (
+                <button 
+                  onClick={clearAllFilters}
+                  className="flex-1 py-3 border border-white/10 hover:border-nova-gold hover:text-nova-gold rounded-xl text-white text-xs font-semibold uppercase tracking-wider transition-colors cursor-pointer"
+                >
+                  Clear All
+                </button>
+              )}
+              <button 
+                onClick={() => setIsMobileFilterOpen(false)}
+                className="flex-[2] py-3 bg-nova-gold hover:bg-nova-gold-light text-nova-darker rounded-xl text-xs font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Show {filtered.length} Results</span>
+              </button>
+            </div>
+            
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Helper accordion for mobile filter categories
+interface MobileFilterAccordionProps {
+  title: string;
+  count: number;
+  children: React.ReactNode;
+}
+
+function MobileFilterAccordion({ title, count, children }: MobileFilterAccordionProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <div className="border-b border-white/5 pb-3 last:border-b-0">
+      <button 
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex items-center justify-between py-2 text-left font-serif text-white hover:text-nova-gold transition-colors text-sm font-medium cursor-pointer"
+      >
+        <div className="flex items-center gap-2">
+          <span>{title}</span>
+          {count > 0 && (
+            <span className="px-2 py-0.5 bg-nova-gold/10 text-nova-gold rounded-full text-[9px] font-bold border border-nova-gold/20">
+              {count}
+            </span>
+          )}
+        </div>
+        <ChevronDown className={`w-3.5 h-3.5 text-nova-gold transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      {isOpen && (
+        <div className="animate-fade-in pl-1">
+          {children}
+        </div>
+      )}
     </div>
   );
 }

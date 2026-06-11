@@ -56,7 +56,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 w-full z-50 shadow-md">
+    <header className="sticky top-0 w-full z-[100] shadow-md">
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker py-4 px-6 md:px-12 flex items-center justify-between border-b border-nova-gold/10">
         
