@@ -90,22 +90,22 @@ export function Home() {
           <div className="w-12 h-[1px] bg-nova-gold mx-auto mt-4"></div>
         </div>
         
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
           {shopCategories.map((cat) => (
             <Link 
               to={`/category/${cat.id}`} 
               key={cat.id} 
               className="flex flex-col items-center group cursor-pointer"
             >
-              <div className="w-full aspect-square rounded-2xl overflow-hidden mb-4 shadow-xl border border-white/5 group-hover:border-nova-gold/30 transition-all duration-300 relative">
+              <div className="w-full aspect-[3/2] rounded-2xl overflow-hidden mb-4 shadow-xl border border-white/5 group-hover:border-nova-gold/45 transition-all duration-300 relative">
                 <img 
                   src={cat.image} 
                   alt={cat.name} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-nova-darker/90 via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity"></div>
-                <div className="absolute bottom-3 left-0 right-0 text-center">
-                  <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-white group-hover:text-nova-gold transition-colors">{cat.name}</span>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#07090f]/95 via-[#07090f]/20 to-transparent opacity-90 transition-opacity"></div>
+                <div className="absolute bottom-4 left-0 right-0 text-center">
+                  <span className="text-[10px] md:text-sm font-semibold tracking-[0.25em] font-sans text-white group-hover:text-nova-gold transition-colors">{cat.name}</span>
                 </div>
               </div>
             </Link>

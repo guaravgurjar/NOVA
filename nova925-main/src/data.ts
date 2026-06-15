@@ -2,6 +2,26 @@ import { Product, Category, Review } from './types';
  
 export const products: Product[] = [
   {
+    "id": "rings_01",
+    "name": "Classic Solitaire Diamond Ring",
+    "price": 28000,
+    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600&h=400",
+    "images": [
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600&h=400"
+    ],
+    "category": "rings"
+  },
+  {
+    "id": "rings_02",
+    "name": "Dainty Rose Gold Eternity Ring",
+    "price": 18500,
+    "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&q=80&w=600&h=400",
+    "images": [
+      "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&q=80&w=600&h=400"
+    ],
+    "category": "rings"
+  },
+  {
     "id": "chains_01",
     "name": "Classic Silver Link Chain",
     "price": 2200,
@@ -1163,46 +1183,52 @@ export const featuredProducts: Product[] = [
  
 export const shopCategories: Category[] = [
   {
-    "id": "chains",
-    "name": "Chains",
-    "key": "chains",
-    "image": "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp"
+    "id": "rings",
+    "name": "Rings",
+    "key": "rings",
+    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600&h=400"
   },
   {
     "id": "earrings",
-    "name": "Ear-rings",
+    "name": "Earrings",
     "key": "earrings",
-    "image": "/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp"
+    "image": "https://images.unsplash.com/photo-1630019852942-f89202989a59?auto=format&fit=crop&q=80&w=600&h=400"
   },
   {
     "id": "bracelets",
     "name": "Bracelets",
     "key": "bracelets",
-    "image": "/images/products/bracelets/1CNIq164zi5BDcdqrYAFYZJ3rIfDXfO8F.webp"
-  },
-  {
-    "id": "bangles",
-    "name": "Bangles",
-    "key": "bangles",
-    "image": "/images/products/bangles/1TQwPVBTN4IIEUgYLTzKXD_9P6v764Bl9.webp"
+    "image": "https://images.unsplash.com/photo-1599643478514-4a4e0e69528d?auto=format&fit=crop&q=80&w=600&h=400"
   },
   {
     "id": "pendants",
     "name": "Pendants",
     "key": "pendants",
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp"
+    "image": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&q=80&w=600&h=400"
+  },
+  {
+    "id": "chains",
+    "name": "Chains",
+    "key": "chains",
+    "image": "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?auto=format&fit=crop&q=80&w=600&h=400"
+  },
+  {
+    "id": "bangles",
+    "name": "Bangles",
+    "key": "bangles",
+    "image": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80&w=600&h=400"
   },
   {
     "id": "sets",
     "name": "Sets",
     "key": "sets",
-    "image": "/images/products/sets/1Ib_JDcPJZHWx0pBDArbm0mfn5_74OI6O.webp"
+    "image": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80&w=600&h=400"
   },
   {
     "id": "astro",
-    "name": "Astro Jewellery",
+    "name": "Personalised",
     "key": "astro",
-    "image": "/images/products/pendants/1_eBUp8vRtOIfKMy-lQvLno7G4nfjPuC1.webp"
+    "image": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&q=80&w=600&h=400"
   }
 ];
  

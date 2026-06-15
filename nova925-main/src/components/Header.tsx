@@ -144,6 +144,11 @@ export function Header() {
             </Link>
           </li>
           <li>
+            <Link to="/category/rings" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
+              Rings
+            </Link>
+          </li>
+          <li>
             <Link to="/category/chains" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
               Chains
             </Link>
@@ -175,7 +180,7 @@ export function Header() {
           </li>
           <li>
             <Link to="/category/astro" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              Astro Jewellery
+              Personalised
             </Link>
           </li>
         </ul>

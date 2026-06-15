@@ -106,6 +106,7 @@ export function Shop() {
 
   // 3. Compute Counts dynamically for checkboxes based on the active category products
   const productTypeOptions = [
+    { label: 'Rings', value: 'rings', count: baseProducts.filter(p => p.category === 'rings').length },
     { label: 'Chains', value: 'chains', count: baseProducts.filter(p => p.category === 'chains').length },
     { label: 'Earrings', value: 'earrings', count: baseProducts.filter(p => p.category === 'earrings').length },
     { label: 'Bracelets', value: 'bracelets', count: baseProducts.filter(p => p.category === 'bracelets').length },
