@@ -65,6 +65,13 @@ async function main() {
       baseSKU: 'ER-DRP',
       category: 'earrings',
     },
+    {
+      id: 'rings_03',
+      name: 'Elegant Peacock Silver Ring',
+      description: 'An elegant peacock-designed sterling silver ring paved with emerald green and ruby pink gemstones.',
+      baseSKU: 'RG-PCK',
+      category: 'rings',
+    },
   ];
 
   for (const p of products) {
@@ -130,6 +137,20 @@ async function main() {
       size: 'One Size',
       markup: 1800,
       stock: 25,
+    },
+    {
+      id: 'var-pck-slv-sz7',
+      sku: 'RG-PCK-S-35G-SZ7',
+      productId: 'rings_03',
+      metalType: 'SILVER',
+      metalWeight: 3.5,
+      gemstoneCarat: 1.2,
+      gemstoneCut: 'Marquise & Round',
+      gemstoneClarity: 'VS2',
+      gemstoneCost: 1800,
+      size: '7',
+      markup: 1400,
+      stock: 8,
     },
   ];
 

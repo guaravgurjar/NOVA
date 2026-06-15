@@ -22,6 +22,16 @@ export const products: Product[] = [
     "category": "rings"
   },
   {
+    "id": "rings_03",
+    "name": "Elegant Peacock Silver Ring",
+    "price": 3200,
+    "image": "/images/products/rings/peacock_ring.webp",
+    "images": [
+      "/images/products/rings/peacock_ring.webp"
+    ],
+    "category": "rings"
+  },
+  {
     "id": "chains_01",
     "name": "Classic Silver Link Chain",
     "price": 2200,

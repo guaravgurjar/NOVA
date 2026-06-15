@@ -56,6 +56,15 @@ let mockProducts: any[] = [
     category: 'earrings',
     createdAt: new Date(),
     updatedAt: new Date()
+  },
+  {
+    id: 'rings_03',
+    name: 'Elegant Peacock Silver Ring',
+    description: 'An elegant peacock-designed sterling silver ring paved with emerald green and ruby pink gemstones.',
+    baseSKU: 'RG-PCK',
+    category: 'rings',
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
 ];
 
@@ -121,6 +130,22 @@ let mockVariants: any[] = [
     size: 'One Size',
     markup: 1800,
     stock: 25,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  },
+  {
+    id: 'var-pck-slv-sz7',
+    sku: 'RG-PCK-S-35G-SZ7',
+    productId: 'rings_03',
+    metalType: 'SILVER',
+    metalWeight: 3.5,
+    gemstoneCarat: 1.2,
+    gemstoneCut: 'Marquise & Round',
+    gemstoneClarity: 'VS2',
+    gemstoneCost: 1800,
+    size: '7',
+    markup: 1400,
+    stock: 8,
     createdAt: new Date(),
     updatedAt: new Date()
   }
