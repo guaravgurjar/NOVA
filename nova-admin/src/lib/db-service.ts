@@ -14,7 +14,7 @@ let mockAdmins: any[] = [
   {
     id: 'admin-1',
     email: 'admin@nova925.com',
-    passwordHash: '240eb568770d78fb6d252a1215167664687d65604495e263d91cf9aa0543ff5c',
+    passwordHash: '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
     role: 'ADMIN'
   }
 ];
