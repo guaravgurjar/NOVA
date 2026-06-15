@@ -49,8 +49,8 @@ export function mapDbProductsToStorefront(dbProducts: any[]): Product[] {
         name: `${prod.name} (${v.metalType.replace("GOLD_", "").replace("SILVER", "Silver")}${v.size && v.size !== "OS" ? ` - Sz ${v.size}` : ""})`,
         price: v.finalPrice,
         originalPrice: v.finalPrice + Math.round(v.finalPrice * 0.15),
-        image: staticMatch ? staticMatch.image : defaultImage,
-        images: staticMatch ? staticMatch.images : [defaultImage],
+        image: prod.images && prod.images.length > 0 ? prod.images[0] : (staticMatch ? staticMatch.image : defaultImage),
+        images: prod.images && prod.images.length > 0 ? prod.images : (staticMatch ? staticMatch.images : [defaultImage]),
         category: prod.category,
         isNew: v.stock > 0 && v.stock < 5,
         // Custom properties passed down

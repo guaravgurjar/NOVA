@@ -78,6 +78,7 @@ export async function getProductsAction() {
         description: p.description,
         baseSKU: p.baseSKU,
         category: p.category,
+        images: p.images || [],
         variants: p.variants.map((v: any) => ({
           id: v.id,
           sku: v.sku,
@@ -105,7 +106,7 @@ export async function getProductsAction() {
   }
 }
 
-export async function createProductAction(data: { name: string; description: string; baseSKU: string; category: string }) {
+export async function createProductAction(data: { name: string; description: string; baseSKU: string; category: string; images?: string[] }) {
   try {
     const newProduct = await dbService.createProduct(data);
     return { success: true, product: newProduct };

@@ -36,6 +36,7 @@ let mockProducts: any[] = [
     description: 'A brilliant-cut diamond solitaire set in a luxury band.',
     baseSKU: 'RG-SLT',
     category: 'rings',
+    images: ['https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600&h=400'],
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -45,6 +46,7 @@ let mockProducts: any[] = [
     description: 'Sleek, fluid sterling silver chain laying flat against the skin.',
     baseSKU: 'CH-HRB',
     category: 'chains',
+    images: ['/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'],
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -54,6 +56,7 @@ let mockProducts: any[] = [
     description: 'Elegant drop earrings with lab certified round cut gemstones.',
     baseSKU: 'ER-DRP',
     category: 'earrings',
+    images: ['/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'],
     createdAt: new Date(),
     updatedAt: new Date()
   },
@@ -63,6 +66,7 @@ let mockProducts: any[] = [
     description: 'An elegant peacock-designed sterling silver ring paved with emerald green and ruby pink gemstones.',
     baseSKU: 'RG-PCK',
     category: 'rings',
+    images: ['/images/products/rings/peacock_ring.webp'],
     createdAt: new Date(),
     updatedAt: new Date()
   }
@@ -299,7 +303,7 @@ export const dbService = {
     });
   },
 
-  async createProduct(data: { name: string; description: string; baseSKU: string; category: string }) {
+  async createProduct(data: { name: string; description: string; baseSKU: string; category: string; images?: string[] }) {
     if (await isDbAvailable()) {
       try {
         return await prisma.product.create({ data });
@@ -307,7 +311,11 @@ export const dbService = {
     }
     const newProduct = {
       id: `prod-${Math.random().toString(36).substr(2, 9)}`,
-      ...data,
+      name: data.name,
+      description: data.description,
+      baseSKU: data.baseSKU,
+      category: data.category,
+      images: data.images || [],
       createdAt: new Date(),
       updatedAt: new Date()
     };

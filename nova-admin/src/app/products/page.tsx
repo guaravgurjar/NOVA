@@ -41,6 +41,7 @@ interface Product {
   description: string;
   baseSKU: string;
   category: string;
+  images: string[];
   variants: ProductVariant[];
 }
 
@@ -65,6 +66,7 @@ export default function ProductsPage() {
   const [prodDesc, setProdDesc] = useState("");
   const [prodSKU, setProdSKU] = useState("");
   const [prodCategory, setProdCategory] = useState("rings");
+  const [prodImages, setProdImages] = useState("");
 
   const [varProdId, setVarProdId] = useState("");
   const [varMetalType, setVarMetalType] = useState("GOLD_18K");
@@ -100,12 +102,17 @@ export default function ProductsPage() {
     e.preventDefault();
     if (!prodName || !prodSKU) return;
 
+    const imagesArray = prodImages
+      ? prodImages.split(",").map(url => url.trim()).filter(Boolean)
+      : [];
+
     startTransition(async () => {
       const res = await createProductAction({
         name: prodName,
         description: prodDesc,
         baseSKU: prodSKU,
-        category: prodCategory
+        category: prodCategory,
+        images: imagesArray
       });
 
       if (res.success && res.product) {
@@ -113,6 +120,7 @@ export default function ProductsPage() {
         setProdName("");
         setProdDesc("");
         setProdSKU("");
+        setProdImages("");
         setShowProductForm(false);
         loadData();
       } else {
@@ -294,6 +302,17 @@ export default function ProductsPage() {
                 onChange={(e) => setProdDesc(e.target.value)}
                 placeholder="Describe the craftsmanship details..." 
                 rows={3}
+                className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-gold/50"
+              />
+            </div>
+
+            <div className="space-y-1.5 md:col-span-2">
+              <label className="text-xs font-semibold uppercase tracking-wider text-zinc-400">Product Image URLs (Comma-separated)</label>
+              <input 
+                type="text" 
+                value={prodImages}
+                onChange={(e) => setProdImages(e.target.value)}
+                placeholder="e.g. https://example.com/image1.jpg, https://example.com/image2.jpg" 
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-gold/50"
               />
             </div>
@@ -549,17 +568,30 @@ export default function ProductsPage() {
                     onClick={() => toggleExpandProduct(product.id)}
                     className="p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 cursor-pointer select-none"
                   >
-                    <div>
-                      <div className="flex items-center gap-3">
-                        <span className="bg-zinc-800 border border-zinc-700 text-gold text-xs px-2.5 py-0.5 rounded font-mono uppercase tracking-wide">
-                          {product.baseSKU}
-                        </span>
-                        <span className="text-xs text-zinc-500 uppercase tracking-widest font-semibold">
-                          {product.category}
-                        </span>
+                    <div className="flex items-start gap-4">
+                      {product.images && product.images.length > 0 ? (
+                        <img 
+                          src={product.images[0]} 
+                          alt={product.name} 
+                          className="w-16 h-16 object-cover rounded-lg border border-gold/20 bg-zinc-900 shrink-0" 
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-lg border border-zinc-800 bg-zinc-900 flex items-center justify-center shrink-0">
+                          <Gem className="w-6 h-6 text-zinc-600" />
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center gap-3">
+                          <span className="bg-zinc-800 border border-zinc-700 text-gold text-xs px-2.5 py-0.5 rounded font-mono uppercase tracking-wide">
+                            {product.baseSKU}
+                          </span>
+                          <span className="text-xs text-zinc-500 uppercase tracking-widest font-semibold">
+                            {product.category}
+                          </span>
+                        </div>
+                        <h4 className="text-lg font-bold text-foreground mt-1.5">{product.name}</h4>
+                        <p className="text-xs text-zinc-400 mt-1 max-w-2xl">{product.description}</p>
                       </div>
-                      <h4 className="text-lg font-bold text-foreground mt-1.5">{product.name}</h4>
-                      <p className="text-xs text-zinc-400 mt-1 max-w-2xl">{product.description}</p>
                     </div>
                     
                     <div className="flex items-center gap-6 self-stretch sm:self-auto justify-between border-t sm:border-t-0 border-zinc-800 pt-3 sm:pt-0">

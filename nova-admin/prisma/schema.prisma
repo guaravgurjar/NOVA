@@ -33,6 +33,7 @@ model Product {
   description String
   baseSKU     String           @unique
   category    String           // E.g., "rings", "earrings", "chains", etc.
+  images      String[]         @default([])
   variants    ProductVariant[]
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
