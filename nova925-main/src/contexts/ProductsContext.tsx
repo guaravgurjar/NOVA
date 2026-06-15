@@ -74,7 +74,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/api/products');
+      const res = await fetch('https://nova-git-main-nova-adminpanel.vercel.app/api/products');
       if (res.ok) {
         const data = await res.json();
         if (data.success && data.products) {

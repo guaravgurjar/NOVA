@@ -77,7 +77,7 @@ export function Cart() {
         }))
       };
 
-      const res = await fetch('http://localhost:3000/api/orders', {
+      const res = await fetch('https://nova-git-main-nova-adminpanel.vercel.app/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
