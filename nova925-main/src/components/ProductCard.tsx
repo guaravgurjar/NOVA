@@ -34,7 +34,7 @@ export function ProductCard({ product }: { product: Product }) {
         {/* Image container */}
         <div 
           ref={containerRef}
-          className="relative aspect-square overflow-hidden bg-[#07090f] p-4 flex items-center justify-center cursor-zoom-in"
+          className="relative aspect-square overflow-hidden bg-[#07090f] p-2 md:p-4 flex items-center justify-center cursor-zoom-in"
           onMouseMove={handleMouseMove}
         >
           <img 
@@ -54,31 +54,31 @@ export function ProductCard({ product }: { product: Product }) {
               e.stopPropagation();
               toggleWishlist(product.id);
             }}
-            className={`absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 z-10 ${
+            className={`absolute top-2 right-2 md:top-4 md:right-4 w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center border transition-all duration-300 z-10 ${
               isWishlisted 
                  ? 'bg-red-500/20 border-red-500/30 text-red-500' 
                  : 'bg-[#0f121d]/60 border-white/10 text-white/70 hover:text-white hover:border-white/30'
             }`}
             aria-label="Wishlist"
           >
-            <Heart className={`w-4 h-4 transition-transform duration-300 active:scale-75 ${isWishlisted ? 'fill-current' : ''}`} />
+            <Heart className={`w-3.5 h-3.5 md:w-4 md:h-4 transition-transform duration-300 active:scale-75 ${isWishlisted ? 'fill-current' : ''}`} />
           </button>
           
           {/* Category Badge */}
           {product.category && (
-            <span className="absolute bottom-4 left-4 text-[9px] uppercase tracking-[0.2em] bg-[#0f121d]/80 text-nova-gold border border-nova-gold/20 px-2 py-0.5 rounded backdrop-blur-sm font-medium z-10">
+            <span className="absolute bottom-2 left-2 md:bottom-4 md:left-4 text-[7px] md:text-[9px] uppercase tracking-[0.25em] bg-[#0f121d]/85 text-nova-gold border border-nova-gold/20 px-1.5 py-0.5 rounded backdrop-blur-sm font-semibold z-10">
               {product.category}
             </span>
           )}
         </div>
         
         {/* Details */}
-        <div className="p-5 flex-1 flex flex-col justify-between">
+        <div className="p-3 md:p-5 flex-1 flex flex-col justify-between">
           <div>
-            <h3 className="font-serif text-lg text-nova-gold font-medium mb-1.5 tracking-wide">
+            <h3 className="font-serif text-sm md:text-lg text-nova-gold font-medium mb-1 md:mb-1.5 tracking-wide">
               Rs. {product.price.toLocaleString('en-IN')}/-
             </h3>
-            <p className="text-white/80 font-sans text-xs md:text-sm font-light leading-relaxed mb-4 line-clamp-2">
+            <p className="text-white/80 font-sans text-[10px] md:text-sm font-light leading-normal md:leading-relaxed mb-2 md:mb-4 line-clamp-2">
               {product.name}
             </p>
           </div>
@@ -86,14 +86,14 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
       
       {/* Action Button outside Link */}
-      <div className="px-5 pb-5 pt-0">
+      <div className="px-3 pb-3 pt-0 md:px-5 md:pb-5">
         <button 
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             addToCart(product.id);
           }}
-          className="w-full bg-transparent hover:bg-nova-gold text-nova-gold hover:text-nova-darker border border-nova-gold/30 hover:border-nova-gold py-2.5 rounded-lg font-sans font-medium tracking-[0.15em] text-[10px] uppercase transition-all duration-300 shadow-md flex items-center justify-center gap-2"
+          className="w-full bg-transparent hover:bg-nova-gold text-nova-gold hover:text-nova-darker border border-nova-gold/30 hover:border-nova-gold py-2 md:py-2.5 rounded-md md:rounded-lg font-sans font-medium tracking-[0.1em] md:tracking-[0.15em] text-[8px] md:text-[10px] uppercase transition-all duration-300 shadow-md flex items-center justify-center gap-1.5 md:gap-2"
         >
           Add To Cart
         </button>

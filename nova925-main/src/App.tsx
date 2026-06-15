@@ -24,45 +24,48 @@ import { Contact } from './pages/Contact';
 import { About } from './pages/About';
 import { WishlistProvider } from './contexts/WishlistContext';
 import { CartProvider } from './contexts/CartContext';
+import { ProductsProvider } from './contexts/ProductsContext';
 
 export default function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <WishlistProvider>
-          <CartProvider>
-            <Router>
-              <div className="flex flex-col min-h-screen font-sans bg-white text-[#111]">
-                <Header />
-                <main className="flex-1 flex flex-col">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/wishlist" element={<Wishlist />} />
-                    <Route path="/shop" element={<Shop />} />
-                    <Route path="/category/:id" element={<Shop />} />
-                    <Route path="/product/:id" element={<ProductDetail />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/shipping" element={<ShippingPolicy />} />
-                    <Route path="/return" element={<ReturnPolicy />} />
-                    <Route path="/kit" element={<JewelleryKit />} />
-                    <Route path="/warranty" element={<WarrantyDetails />} />
-                    <Route path="/privacy" element={<PrivacyPolicy />} />
-                    <Route path="/cookies" element={<CookiePolicy />} />
-                    <Route path="/terms" element={<TermsOfService />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/about" element={<About />} />
-                  </Routes>
-                </main>
-                <Footer />
-                <ChatBot />
-                <CookieBanner />
-              </div>
-            </Router>
-          </CartProvider>
-        </WishlistProvider>
+        <ProductsProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <Router>
+                <div className="flex flex-col min-h-screen font-sans bg-white text-[#111]">
+                  <Header />
+                  <main className="flex-1 flex flex-col">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/wishlist" element={<Wishlist />} />
+                      <Route path="/shop" element={<Shop />} />
+                      <Route path="/category/:id" element={<Shop />} />
+                      <Route path="/product/:id" element={<ProductDetail />} />
+                      <Route path="/cart" element={<Cart />} />
+                      <Route path="/profile" element={<Profile />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/shipping" element={<ShippingPolicy />} />
+                      <Route path="/return" element={<ReturnPolicy />} />
+                      <Route path="/kit" element={<JewelleryKit />} />
+                      <Route path="/warranty" element={<WarrantyDetails />} />
+                      <Route path="/privacy" element={<PrivacyPolicy />} />
+                      <Route path="/cookies" element={<CookiePolicy />} />
+                      <Route path="/terms" element={<TermsOfService />} />
+                      <Route path="/faq" element={<FAQ />} />
+                      <Route path="/contact" element={<Contact />} />
+                      <Route path="/about" element={<About />} />
+                    </Routes>
+                  </main>
+                  <Footer />
+                  <ChatBot />
+                  <CookieBanner />
+                </div>
+              </Router>
+            </CartProvider>
+          </WishlistProvider>
+        </ProductsProvider>
       </AuthProvider>
     </ToastProvider>
   );

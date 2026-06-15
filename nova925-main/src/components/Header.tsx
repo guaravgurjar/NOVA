@@ -58,18 +58,18 @@ export function Header() {
   return (
     <header className="sticky top-0 w-full z-[100] shadow-md">
       {/* Top Bar */}
-      <div className="bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker py-4 px-6 md:px-12 flex items-center justify-between border-b border-nova-gold/10">
+      <div className="bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker py-3 px-4 md:py-4 md:px-12 flex items-center justify-between border-b border-nova-gold/10">
         
         {/* Logo */}
         <Link to="/" className="flex items-center py-1 group">
           <img 
             src="/images/logo.png" 
             alt="NOVA Jewellery" 
-            className="h-9 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
+            className="h-8 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
           />
         </Link>
 
-        {/* Search */}
+        {/* Search (Desktop) */}
         <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-md mx-8 relative">
           <input 
             type="text" 
@@ -84,32 +84,32 @@ export function Header() {
         </form>
 
         {/* Action Icons */}
-        <div className="flex items-center space-x-6 text-white">
+        <div className="flex items-center space-x-3.5 md:space-x-6 text-white">
           <Link to="/wishlist" className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Wishlist">
-            <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <Heart className="w-4.5 h-4.5 md:w-5 md:h-5 group-hover:scale-110 transition-transform" />
             {wishlistCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-nova-gold text-nova-darker text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center border border-nova-darker shadow-sm">
                 {wishlistCount}
               </span>
             )}
           </Link>
-          <button onClick={handleShare} className="hover:text-nova-gold transition-colors duration-300 relative group cursor-pointer" aria-label="Share Website">
+          <button onClick={handleShare} className="hidden sm:block hover:text-nova-gold transition-colors duration-300 relative group cursor-pointer" aria-label="Share Website">
             <Share2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </button>
-          <button className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Stores">
+          <button className="hidden sm:block hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Stores">
             <MapPin className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </button>
           {user ? (
-            <Link to="/profile" className="flex items-center justify-center w-8 h-8 rounded-full bg-nova-gold/25 border border-nova-gold/40 text-nova-gold font-serif font-bold text-xs uppercase hover:bg-nova-gold/35 hover:scale-105 transition-all shadow-[0_0_10px_rgba(197,168,128,0.2)]" aria-label="Profile">
+            <Link to="/profile" className="flex items-center justify-center w-7 h-7 md:w-8 md:h-8 rounded-full bg-nova-gold/25 border border-nova-gold/40 text-nova-gold font-serif font-bold text-[10px] md:text-xs uppercase hover:bg-nova-gold/35 hover:scale-105 transition-all shadow-[0_0_10px_rgba(197,168,128,0.2)]" aria-label="Profile">
               {getInitials(user)}
             </Link>
           ) : (
             <Link to="/login" className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Login">
-              <User className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              <User className="w-4.5 h-4.5 md:w-5 md:h-5 group-hover:scale-110 transition-transform" />
             </Link>
           )}
           <Link to="/cart" className="hover:text-nova-gold transition-colors duration-300 relative group" aria-label="Cart">
-            <ShoppingCart className="w-5 h-5 group-hover:scale-110 transition-transform" />
+            <ShoppingCart className="w-4.5 h-4.5 md:w-5 md:h-5 group-hover:scale-110 transition-transform" />
             {cartCount > 0 && (
               <span className="absolute -top-1 -right-1 bg-nova-gold text-nova-darker text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center border border-nova-darker shadow-sm">
                 {cartCount}
@@ -119,10 +119,25 @@ export function Header() {
         </div>
       </div>
 
+      {/* Mobile Search Bar (visible only on mobile) */}
+      <div className="block md:hidden bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker px-4 pb-3 pt-0.5 border-b border-nova-gold/10">
+        <form onSubmit={handleSearchSubmit} className="relative w-full">
+          <input 
+            type="text" 
+            placeholder="Search rings, earrings, bracelets..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full bg-[#181c2b] text-white text-xs border border-nova-gold/20 rounded-full py-2 px-5 pr-10 focus:outline-none focus:ring-1 focus:ring-nova-gold focus:border-nova-gold transition-all duration-300"
+          />
+          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-nova-gold/60 hover:text-nova-gold transition-colors">
+            <Search className="w-3.5 h-3.5" />
+          </button>
+        </form>
+      </div>
 
       {/* Navigation */}
       <nav className="bg-nova-darker text-white border-b border-nova-gold/15 uppercase text-xs tracking-[0.15em] font-medium">
-        <ul className="flex items-center justify-center space-x-6 md:space-x-10 px-6 py-3.5 overflow-x-auto whitespace-nowrap hide-scrollbar">
+        <ul className="flex items-center justify-start md:justify-center space-x-6 md:space-x-10 px-4 md:px-6 py-2.5 md:py-3.5 overflow-x-auto whitespace-nowrap hide-scrollbar">
           <li>
             <Link to="/shop" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-[1px] after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
               All Shop

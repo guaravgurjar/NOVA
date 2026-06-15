@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+:root {
+  --background: #06080d;
+  --foreground: #f1f5f9;
+  --card-bg: #0b0e17;
+  --card-border: rgba(197, 168, 128, 0.15);
+  --gold: #c5a880;
+  --gold-light: #e2c9a1;
+  --gold-dark: #93744f;
+  --glass-dark: rgba(11, 14, 23, 0.75);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, sans-serif;
+  min-height: 100vh;
+}
+
+/* Custom premium styles */
+.glass-panel {
+  background: var(--glass-dark);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+}
+
+.gold-glow {
+  box-shadow: 0 0 15px rgba(197, 168, 128, 0.15);
+}
+
+.gold-border-glow:hover {
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(197, 168, 128, 0.2);
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
+}
+

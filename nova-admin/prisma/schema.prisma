@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model AdminUser {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model MetalRates {
+  id              String           @id // E.g., "GOLD_24K", "GOLD_22K", "GOLD_18K", "GOLD_14K", "SILVER"
+  metalName       String           // E.g., "Gold 24K", "Gold 22K", "Gold 18K", "Gold 14K", "Silver"
+  pricePerGramINR Decimal
+  pricePerGramUSD Decimal
+  updatedAt       DateTime         @updatedAt
+  variants        ProductVariant[]
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  name        String
+  description String
+  baseSKU     String           @unique
+  category    String           // E.g., "rings", "earrings", "chains", etc.
+  variants    ProductVariant[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model ProductVariant {
+  id            String      @id @default(uuid())
+  sku           String      @unique // Generated on save or creation
+  productId     String
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  metalType     String      // Foreign key matching MetalRates.id
+  metalRate     MetalRates  @relation(fields: [metalType], references: [id], onDelete: Restrict)
+  metalWeight   Float       // Weight in grams (dynamic price variable)
+  gemstoneCarat Float?
+  gemstoneCut   String?
+  gemstoneClarity String?
+  gemstoneCost  Decimal     // Static cost variable
+  size          String?     // Sizing options (e.g. Ring sizes 4 to 10)
+  markup        Decimal     // Dynamic/Static maker/markup charge
+  stock         Int         @default(0)
+  orderItems    OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  orderNumber     String      @unique // Generated, e.g., "NOV-10001"
+  buyerName       String
+  buyerEmail      String
+  shippingAddress String
+  engravingText   String?     // Custom notes (e.g., engravings)
+  totalPrice      Decimal
+  status          OrderStatus @default(PENDING)
+  trackingNumber  String?
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model OrderItem {
+  id         String         @id @default(uuid())
+  orderId    String
+  order      Order          @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  variantId  String
+  variant    ProductVariant @relation(fields: [variantId], references: [id], onDelete: Restrict)
+  quantity   Int
+  pricePaid  Decimal        // Locked-in price at purchase time
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}

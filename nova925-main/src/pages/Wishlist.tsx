@@ -1,11 +1,12 @@
-import { products } from '../data';
 import { ProductCard } from '../components/ProductCard';
+import { useProducts } from '../contexts/ProductsContext';
 import { Heart } from 'lucide-react';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 export function Wishlist() {
+  const { products } = useProducts();
   const { wishlist } = useWishlist();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export function Wishlist() {
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl flex-1">
         {savedProducts.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 animate-fade-in">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8 animate-fade-in">
             {savedProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

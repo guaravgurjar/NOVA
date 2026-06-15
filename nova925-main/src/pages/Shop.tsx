@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { products, shopCategories } from '../data';
+import { shopCategories } from '../data';
 import { ProductCard } from '../components/ProductCard';
+import { useProducts } from '../contexts/ProductsContext';
 import { useState, useEffect } from 'react';
 import { ChevronDown, X, SlidersHorizontal, RefreshCw } from 'lucide-react';
 import { Product } from '../types';
@@ -54,6 +55,7 @@ function getProductAttributes(product: any, index: number) {
 }
 
 export function Shop() {
+  const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -757,7 +759,7 @@ export function Shop() {
 
         {/* Product Grid */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-8">
             {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

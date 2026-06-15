@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { products, shopCategories } from '../data';
+import { shopCategories } from '../data';
 import { ProductCard } from '../components/ProductCard';
+import { useProducts } from '../contexts/ProductsContext';
 import { useState, useRef, useEffect } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
@@ -21,6 +22,7 @@ import {
 } from 'lucide-react';
 
 export function ProductDetail() {
+  const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addToast } = useToast();
@@ -434,7 +436,7 @@ export function ProductDetail() {
             <h2 className="text-2xl md:text-3xl font-serif tracking-wider font-light mb-10 text-center">
               Complete Your Look
             </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-8">
               {relatedProducts.map((p) => (
                 <ProductCard key={p.id} product={p} />
               ))}

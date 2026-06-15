@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { products, featuredProducts, shopCategories, reviews } from '../data';
+import { shopCategories, reviews } from '../data';
 import { ProductCard } from '../components/ProductCard';
+import { useProducts } from '../contexts/ProductsContext';
 import { PromoStrip } from '../components/PromoStrip';
 import { ShieldCheck, Award, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
@@ -21,6 +22,8 @@ const zodiacDates: Record<string, string> = {
 };
 
 export function Home() {
+  const { products } = useProducts();
+  const featuredProducts = products.slice(0, 4);
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [activeStoryTab, setActiveStoryTab] = useState<'legacy' | 'purity' | 'meaning'>('legacy');
 
@@ -146,7 +149,7 @@ export function Home() {
           <div className="w-12 h-[1px] bg-nova-gold mx-auto mt-4"></div>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
           {featuredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
