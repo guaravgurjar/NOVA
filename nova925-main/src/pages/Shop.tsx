@@ -288,18 +288,49 @@ export function Shop() {
     <div className="flex flex-col min-h-screen bg-nova-darker text-white">
       
       {/* Page Header Banner */}
-      <div className="relative w-full h-[220px] md:h-[280px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10 flex flex-col justify-center">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2">NOVA COLLECTION</span>
-          <h1 className="text-3xl md:text-5xl font-serif tracking-wider mb-3">
-            {activeCategory ? activeCategory.name : "Luxury Shop"}
-          </h1>
-          <p className="text-white/60 max-w-xl text-xs md:text-sm font-light leading-relaxed">
-            {activeCategory 
-              ? `Browse our exclusive range of certified 925 sterling silver ${activeCategory.name.toLowerCase()} crafted to elevate your style.` 
-              : "Discover hand-finished 925 sterling silver jewellery, from classic pendants to elegant bracelets."}
-          </p>
+      <div 
+        className="relative w-full min-h-[280px] md:min-h-[320px] flex items-center overflow-hidden border-b border-nova-gold/10 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/silver_glow_banner.png')" }}
+      >
+        {/* Dark overlay with left-to-right gradient to hide the background image text on the left */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0F1320] via-[#0F1320]/85 to-transparent md:to-[#0F1320]/20 z-0"></div>
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px] z-0"></div>
+        
+        <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Column: Title & Description */}
+            <div className="lg:col-span-7 flex flex-col justify-center text-left">
+              <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2">NOVA COLLECTION</span>
+              <h1 className="text-3xl md:text-5xl font-serif tracking-wider mb-3 text-white">
+                {activeCategory ? activeCategory.name : "Luxury Shop"}
+              </h1>
+              <p className="text-white/70 max-w-xl text-xs md:text-sm font-light leading-relaxed">
+                {activeCategory 
+                  ? `Browse our exclusive range of certified 925 sterling silver ${activeCategory.name.toLowerCase()} crafted to elevate your style.` 
+                  : "Discover hand-finished 925 sterling silver jewellery, from classic pendants to elegant bracelets."}
+              </p>
+            </div>
+
+            {/* Right Column: Promotional Offer Card */}
+            <div className="lg:col-span-5 flex justify-end w-full">
+              <div className="w-full max-w-md bg-[#0F1320]/80 backdrop-blur-lg border border-nova-gold/25 p-5 md:p-6 rounded-2xl shadow-xl shadow-black/40">
+                <span className="text-[9px] uppercase tracking-[0.25em] text-nova-gold font-bold block mb-1">Limited Time Offer</span>
+                <h2 className="text-xl md:text-2xl font-serif tracking-wide text-white mb-0.5">Silver Glow</h2>
+                <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-4 font-semibold">Exclusive Seasonal Sale</p>
+                
+                <div className="space-y-3 border-t border-white/10 pt-4">
+                  <div className="flex items-start gap-3 text-xs md:text-sm text-white/90">
+                    <span className="w-1.5 h-1.5 rounded-full bg-nova-gold mt-1.5 shrink-0"></span>
+                    <p className="leading-relaxed">Get <span className="text-nova-gold font-bold">5% OFF</span> on orders above ₹3,000</p>
+                  </div>
+                  <div className="flex items-start gap-3 text-xs md:text-sm text-white/90">
+                    <span className="w-1.5 h-1.5 rounded-full bg-nova-gold mt-1.5 shrink-0"></span>
+                    <p className="leading-relaxed">Get <span className="text-nova-gold font-bold">10% OFF</span> on orders above ₹8,000</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       
