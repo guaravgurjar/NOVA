@@ -4,7 +4,7 @@ import { ProductCard } from '../components/ProductCard';
 import { useProducts } from '../contexts/ProductsContext';
 import { PromoStrip } from '../components/PromoStrip';
 import { ShieldCheck, Award, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const zodiacDates: Record<string, string> = {
   astro_aries: 'Mar 21 - Apr 19',
@@ -26,6 +26,14 @@ export function Home() {
   const featuredProducts = products.slice(0, 4);
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [activeStoryTab, setActiveStoryTab] = useState<'legacy' | 'purity' | 'meaning'>('legacy');
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
 
   const nextReview = () => {
     setActiveReviewIndex((prev) => (prev + 1) % reviews.length);
@@ -38,44 +46,109 @@ export function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-nova-darker text-white">
       
-      {/* Cinematic Hero Banner */}
+      {/* Cinematic Hero Banner (Carousel Slider) */}
       <div className="relative h-[550px] md:h-[680px] w-full overflow-hidden">
-        {/* Animated Background Image (Ken Burns) */}
-        <div className="absolute inset-0 z-0">
+        {/* Slide 1 */}
+        <div className={`absolute inset-0 transition-opacity duration-1000 z-0 ${activeSlide === 0 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <img 
             src="https://images.unsplash.com/photo-1599643478514-4a4e0e69528d?auto=format&fit=crop&q=80&w=1200&h=800" 
             alt="Silver Jewelry" 
             className="w-full h-full object-cover object-right animate-kenburns opacity-60" 
           />
-        </div>
-        
-        {/* Soft elegant gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-nova-darker via-nova-dark/70 to-transparent z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-nova-darker via-transparent to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-nova-darker via-nova-dark/70 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-nova-darker via-transparent to-transparent z-10" />
 
-        <div className="relative z-20 container mx-auto px-6 md:px-12 h-full flex flex-col justify-center max-w-7xl">
-          <div className="mb-6 animate-fade-in">
-            <span className="text-nova-gold text-sm font-semibold uppercase tracking-[0.3em] block mb-2">Exclusive 925 Sterling Silver</span>
-            <div className="flex items-baseline gap-2">
-              <span className="text-white text-6xl md:text-8xl font-serif tracking-[0.15em] font-light block">NOVA</span>
-              <span className="w-2.5 h-2.5 rounded-full bg-nova-gold"></span>
+          <div className="relative z-20 container mx-auto px-6 md:px-12 h-full flex flex-col justify-center max-w-7xl">
+            <div className="mb-6">
+              <span className="text-nova-gold text-sm font-semibold uppercase tracking-[0.3em] block mb-2">Exclusive 925 Sterling Silver</span>
+              <div className="flex items-baseline gap-2">
+                <span className="text-white text-6xl md:text-8xl font-serif tracking-[0.15em] font-light block">NOVA</span>
+                <span className="w-2.5 h-2.5 rounded-full bg-nova-gold"></span>
+              </div>
+            </div>
+            
+            <h1 className="text-3xl md:text-5xl font-serif text-white/95 mb-6 tracking-wide max-w-xl font-light leading-snug">
+              Silver That Speaks Your <span className="text-nova-gold italic font-normal">Style</span>
+            </h1>
+            <p className="text-white/60 max-w-md text-xs md:text-sm mb-10 leading-relaxed font-light">
+              Discover timeless 925 sterling silver jewelry designed to reflect your individuality, celebrate your moments, and elevate your everyday style.
+            </p>
+            <div className="flex gap-4">
+              <Link to="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-8 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/25 transition-all">
+                Explore Collection
+              </Link>
+              <Link to="/category/sets" className="inline-block border border-white/20 text-white hover:text-nova-gold hover:border-nova-gold/40 px-8 py-3 rounded-lg font-medium uppercase tracking-widest text-xs transition-colors backdrop-blur-sm bg-white/5">
+                View Sets
+              </Link>
             </div>
           </div>
-          
-          <h1 className="text-3xl md:text-5xl font-serif text-white/95 mb-6 tracking-wide max-w-xl font-light leading-snug">
-            Silver That Speaks Your <span className="text-nova-gold italic font-normal">Style</span>
-          </h1>
-          <p className="text-white/60 max-w-md text-xs md:text-sm mb-10 leading-relaxed font-light">
-            Discover timeless 925 sterling silver jewelry designed to reflect your individuality, celebrate your moments, and elevate your everyday style.
-          </p>
-          <div className="flex gap-4">
-            <Link to="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-8 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/25 transition-all">
-              Explore Collection
-            </Link>
-            <Link to="/category/sets" className="inline-block border border-white/20 text-white hover:text-nova-gold hover:border-nova-gold/40 px-8 py-3 rounded-lg font-medium uppercase tracking-widest text-xs transition-colors backdrop-blur-sm bg-white/5">
-              View Sets
-            </Link>
+        </div>
+
+        {/* Slide 2: Silver Glow Sale */}
+        <div className={`absolute inset-0 transition-opacity duration-1000 z-0 ${activeSlide === 1 ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <img 
+            src="/images/silver_glow_banner.png" 
+            alt="Silver Glow Sale" 
+            className="w-full h-full object-cover object-right opacity-80" 
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-nova-darker via-nova-dark/85 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-nova-darker via-transparent to-transparent z-10" />
+
+          <div className="relative z-20 container mx-auto px-6 md:px-12 h-full flex flex-col justify-center max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center w-full">
+              <div className="lg:col-span-7 flex flex-col justify-center text-left">
+                <span className="text-nova-gold text-sm font-semibold uppercase tracking-[0.3em] block mb-2">Limited Time Offer</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-white text-5xl md:text-7xl font-serif tracking-[0.1em] font-light block uppercase">Silver Glow</span>
+                  <span className="w-2 h-2 rounded-full bg-nova-gold"></span>
+                </div>
+                <h1 className="text-2xl md:text-3xl font-serif text-white/95 mt-4 mb-6 tracking-wide max-w-xl font-light">
+                  Exclusive <span className="text-nova-gold italic font-normal">Seasonal Sale</span>
+                </h1>
+                <p className="text-white/60 max-w-md text-xs md:text-sm mb-10 leading-relaxed font-light">
+                  Elevate your style with premium 925 sterling silver jewelry. Get exclusive seasonal tier discounts on checkout automatically!
+                </p>
+                <div>
+                  <Link to="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-8 py-3 rounded-lg font-semibold uppercase tracking-widest text-xs hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/25 transition-all">
+                    Shop the Sale
+                  </Link>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-5 flex justify-end w-full">
+                <div className="w-full max-w-md bg-[#0F1320]/80 backdrop-blur-lg border border-nova-gold/25 p-5 md:p-6 rounded-2xl shadow-xl shadow-black/40">
+                  <span className="text-[9px] uppercase tracking-[0.25em] text-nova-gold font-bold block mb-1">Seasonal Tier Discounts</span>
+                  <h2 className="text-xl md:text-2xl font-serif tracking-wide text-white mb-0.5">Special Offers</h2>
+                  <p className="text-[10px] text-zinc-400 uppercase tracking-widest mb-4 font-semibold font-sans">Limited Availability</p>
+                  
+                  <div className="space-y-3 border-t border-white/10 pt-4">
+                    <div className="flex items-start gap-3 text-xs md:text-sm text-white/90">
+                      <span className="w-1.5 h-1.5 rounded-full bg-nova-gold mt-1.5 shrink-0"></span>
+                      <p className="leading-relaxed">Get <span className="text-nova-gold font-bold">5% OFF</span> on orders above ₹3,000</p>
+                    </div>
+                    <div className="flex items-start gap-3 text-xs md:text-sm text-white/90">
+                      <span className="w-1.5 h-1.5 rounded-full bg-nova-gold mt-1.5 shrink-0"></span>
+                      <p className="leading-relaxed">Get <span className="text-nova-gold font-bold">10% OFF</span> on orders above ₹8,000</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+
+        {/* Carousel indicators (dots) */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
+          <button 
+            onClick={() => setActiveSlide(0)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSlide === 0 ? 'bg-nova-gold w-6' : 'bg-white/40'}`} 
+            aria-label="Slide 1"
+          />
+          <button 
+            onClick={() => setActiveSlide(1)}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${activeSlide === 1 ? 'bg-nova-gold w-6' : 'bg-white/40'}`} 
+            aria-label="Slide 2"
+          />
         </div>
       </div>
 
