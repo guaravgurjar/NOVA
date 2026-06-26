@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, FormEvent } from 'react';
 import { MessageCircle, X, Send, User, Sparkles, Loader2 } from 'lucide-react';
 import Markdown from 'react-markdown';
 import { useAuth } from '../contexts/AuthContext';
@@ -39,7 +39,7 @@ export function ChatBot() {
     scrollToBottom();
   }, [messages, isOpen]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 

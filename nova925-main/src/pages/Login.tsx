@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { Lock, Mail, User, Phone, ChevronRight } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +31,7 @@ export function Login() {
   const navigate = useNavigate();
   const { loginWithGmail, loginWithEmail, loginWithPhone, signUpWithEmail } = useAuth();
 
-  const handleEmailLogin = async (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       addToast('Please fill in all fields');
@@ -50,7 +50,7 @@ export function Login() {
     }
   };
 
-  const handleSendOtp = async (e: React.FormEvent) => {
+  const handleSendOtp = async (e: FormEvent) => {
     e.preventDefault();
     if (!phoneNumber) {
       addToast('Please enter a valid mobile number.');
@@ -81,7 +81,7 @@ export function Login() {
     }
   };
 
-  const handleVerifyOtp = async (e: React.FormEvent) => {
+  const handleVerifyOtp = async (e: FormEvent) => {
     e.preventDefault();
     if (!otpCode) {
       addToast('Please enter the 6-digit verification code.');
@@ -101,7 +101,7 @@ export function Login() {
     }
   };
 
-  const handleRegisterSubmit = async (e: React.FormEvent) => {
+  const handleRegisterSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!regFirstName || !regLastName || !regEmail || !regPassword) {
       addToast('Please fill in all required fields');

@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { shopCategories } from '../data';
 import { ProductCard } from '../components/ProductCard';
 import { useProducts } from '../contexts/ProductsContext';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, FormEvent } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
@@ -92,7 +92,7 @@ export function ProductDetail() {
     setMousePos({ x, y });
   };
 
-  const checkDelivery = (e: React.FormEvent) => {
+  const checkDelivery = (e: FormEvent) => {
     e.preventDefault();
     if (!pincode || pincode.trim().length !== 6 || isNaN(Number(pincode))) {
       addToast('Please enter a valid 6-digit pincode');

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Heart, MapPin, User, ShoppingCart, Share2 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
@@ -41,7 +41,7 @@ export function Header() {
     addToast('Website link copied to clipboard!');
   };
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
@@ -59,21 +59,21 @@ export function Header() {
     <header className="sticky top-0 w-full z-[100] shadow-md">
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker py-3 px-4 md:py-4 md:px-12 flex items-center justify-between border-b border-nova-gold/10">
-        
+
         {/* Logo */}
         <Link to="/" className="flex items-center py-1 group">
-          <img 
-            src="/images/logo.png" 
-            alt="NOVA Jewellery" 
-            className="h-8 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]" 
+          <img
+            src="/images/logo.png"
+            alt="NOVA Jewellery"
+            className="h-8 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
           />
         </Link>
 
         {/* Search (Desktop) */}
         <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-md mx-8 relative">
-          <input 
-            type="text" 
-            placeholder="Search our luxury collection..." 
+          <input
+            type="text"
+            placeholder="Search our luxury collection..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-[#181c2b] text-white text-xs md:text-sm border border-nova-gold/20 rounded-full py-2.5 px-6 pr-10 focus:outline-none focus:ring-1 focus:ring-nova-gold focus:border-nova-gold transition-all duration-300"
@@ -122,9 +122,9 @@ export function Header() {
       {/* Mobile Search Bar (visible only on mobile) */}
       <div className="block md:hidden bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker px-4 pb-3 pt-0.5 border-b border-nova-gold/10">
         <form onSubmit={handleSearchSubmit} className="relative w-full">
-          <input 
-            type="text" 
-            placeholder="Search rings, earrings, bracelets..." 
+          <input
+            type="text"
+            placeholder="Search rings, earrings, bracelets..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-[#181c2b] text-white text-xs border border-nova-gold/20 rounded-full py-2 px-5 pr-10 focus:outline-none focus:ring-1 focus:ring-nova-gold focus:border-nova-gold transition-all duration-300"

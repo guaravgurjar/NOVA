@@ -3,7 +3,7 @@ import { useCart } from '../contexts/CartContext';
 import { useToast } from '../contexts/ToastContext';
 import { useProducts } from '../contexts/ProductsContext';
 import { useAuth } from '../contexts/AuthContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { Trash2, Tag, Gift, Lock, Truck, ClipboardSignature, Landmark } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Product } from '../types';
@@ -55,7 +55,7 @@ export function Cart() {
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };
 
-  const handlePlaceOrder = async (e: React.FormEvent) => {
+  const handlePlaceOrder = async (e: FormEvent) => {
     e.preventDefault();
     if (!buyerName || !buyerEmail || !shippingAddress) {
       addToast('Please fill in all required checkout fields.');

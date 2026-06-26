@@ -5,12 +5,12 @@ export function Footer() {
   return (
     <footer className="bg-gradient-to-b from-nova-dark to-nova-darker text-white pt-20 pb-10 px-6 md:px-12 mt-auto border-t border-nova-gold/10 relative">
       <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-nova-gold/40 to-transparent"></div>
-      
+
       <div className="max-w-7xl mx-auto">
-        
+
         {/* Core Links Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-          
+
           {/* ADVANTAGES */}
           <div>
             <h3 className="text-sm font-semibold tracking-[0.25em] mb-6 font-serif text-nova-gold uppercase">Advantages</h3>
@@ -59,7 +59,7 @@ export function Footer() {
                 <span className="text-white/40 font-semibold block text-[10px] uppercase tracking-wider">Email</span>
                 <a href="mailto:contact@novajewels.info" className="hover:text-nova-gold transition-colors text-white font-medium">contact@novajewels.info</a>
               </p>
-              
+
               <div className="flex space-x-4 pt-4 text-nova-gold/75">
                 <a href="tel:+919027368625" aria-label="Phone" className="p-2 bg-white/5 hover:bg-nova-gold hover:text-nova-darker rounded-lg transition-all duration-300 border border-white/5">
                   <Phone className="w-4 h-4" />

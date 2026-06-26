@@ -1,5 +1,5 @@
 import { User, ShoppingBag, MapPin, LogOut, ShieldCheck } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -241,7 +241,7 @@ export function Profile() {
     }
   };
 
-  const handleAddressSubmit = async (e: React.FormEvent) => {
+  const handleAddressSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     if (!addressForm.fullName || !addressForm.phone || !addressForm.streetAddress || !addressForm.city || !addressForm.state || !addressForm.pinCode) {
@@ -406,7 +406,7 @@ export function Profile() {
     return null;
   }
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = (e: FormEvent) => {
     e.preventDefault();
     updateProfile({
       firstName,
