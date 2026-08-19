@@ -1,0 +1,36 @@
+# Robots.txt for NOVA Jewellery
+# Crawl instructions for search engine spiders
+
+User-agent: *
+Allow: /
+Allow: /images/
+Allow: /shop
+Allow: /category/
+Allow: /product/
+Allow: /about
+Allow: /contact
+Allow: /faq
+Allow: /shipping
+Allow: /return
+Allow: /warranty
+Allow: /kit
+Allow: /privacy
+Allow: /cookies
+Allow: /terms
+Allow: /gifts-for-him
+
+# Disallow administrative, checkout, internal search, and private user areas
+Disallow: /admin/
+Disallow: /admin
+Disallow: /checkout
+Disallow: /cart
+Disallow: /account
+Disallow: /profile
+Disallow: /login
+Disallow: /wishlist
+Disallow: /*?*search=
+Disallow: /*?*q=
+Disallow: /*?*filter=
+
+# Specify Sitemap location
+Sitemap: https://novajewellery.in/sitemap.xml
