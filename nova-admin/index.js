@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load the environment variables from the frontend's .env file where you added them
-dotenv.config({ path: path.resolve(__dirname, '../nova925-main/.env') });
+dotenv.config({ path: path.resolve(__dirname, '../nova-admin/.env') });
 const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID;
 const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
 const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
@@ -132,134 +132,134 @@ const startAdmin = async () => {
     });
 
     const admin = new AdminJS({
-            componentLoader,
-            rootPath: '/admin',
-            dashboard: {
-                component: DashboardComponent,
-                handler: async () => ({}),
-            },
-            resources: [
-                {
-                    resource: Product,
-                    options: {
-                        properties: {
-                            description: { type: 'richtext' },
-                            productcode: {
-                                isVisible: { list: true, filter: true, show: true, edit: true },
-                                position: 2,
-                            },
+        componentLoader,
+        rootPath: '/admin',
+        dashboard: {
+            component: DashboardComponent,
+            handler: async () => ({}),
+        },
+        resources: [
+            {
+                resource: Product,
+                options: {
+                    properties: {
+                        description: { type: 'richtext' },
+                        productcode: {
+                            isVisible: { list: true, filter: true, show: true, edit: true },
+                            position: 2,
+                        },
 
-                            // Keep database metadata fields hidden from standard entry form view
-                            imageKeys: { isVisible: { list: true, filter: false, show: true, edit: false } },
-                            imageBuckets: { isVisible: false },
-                            imageMimeTypes: { isVisible: false },
-                            imageSizes: { isVisible: false },
-                        },
-                    },
-                    features: [
-                        uploadFeature({
-                            componentLoader,
-                            // 3. Use the R2 provider for image uploads
-                            provider: new R2Provider(),
-                            multiple: true,
-                            properties: {
-                                file: 'uploadFile',
-                                key: 'imageKeys',
-                                mimeType: 'imageMimeTypes',
-                                bucket: 'imageBuckets',
-                                size: 'imageSizes',
-                            },
-                            validation: {
-                                mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
-                            },
-                        }),
-                    ],
-                },
-            ],
-            locale: {
-                language: 'en',
-                translations: {
-                    en: {
-                        properties: {
-                            offerDiscountPercentage: 'Offer Discount Percentage',
-                            hasActiveOffer: 'Has Active Offer',
-                            couponCode: 'Coupon Code',
-                            productcode: 'Product Code',
-                            stockStatus: 'Stock Status',
-                            originalPrice: 'Original Price',
-                            imageKeys: 'Image Keys',
-                            imageBuckets: 'Image Buckets',
-                            imageMimeTypes: 'Image Mime Types',
-                            imageSizes: 'Image Sizes',
-                            uploadFile: 'Upload File',
-                        },
+                        // Keep database metadata fields hidden from standard entry form view
+                        imageKeys: { isVisible: { list: true, filter: false, show: true, edit: false } },
+                        imageBuckets: { isVisible: false },
+                        imageMimeTypes: { isVisible: false },
+                        imageSizes: { isVisible: false },
                     },
                 },
+                features: [
+                    uploadFeature({
+                        componentLoader,
+                        // 3. Use the R2 provider for image uploads
+                        provider: new R2Provider(),
+                        multiple: true,
+                        properties: {
+                            file: 'uploadFile',
+                            key: 'imageKeys',
+                            mimeType: 'imageMimeTypes',
+                            bucket: 'imageBuckets',
+                            size: 'imageSizes',
+                        },
+                        validation: {
+                            mimeTypes: ['image/png', 'image/jpeg', 'image/webp'],
+                        },
+                    }),
+                ],
             },
-            branding: {
-                companyName: 'NOVA Jewellery Admin',
-                withMadeWithLove: false,
+        ],
+        locale: {
+            language: 'en',
+            translations: {
+                en: {
+                    properties: {
+                        offerDiscountPercentage: 'Offer Discount Percentage',
+                        hasActiveOffer: 'Has Active Offer',
+                        couponCode: 'Coupon Code',
+                        productcode: 'Product Code',
+                        stockStatus: 'Stock Status',
+                        originalPrice: 'Original Price',
+                        imageKeys: 'Image Keys',
+                        imageBuckets: 'Image Buckets',
+                        imageMimeTypes: 'Image Mime Types',
+                        imageSizes: 'Image Sizes',
+                        uploadFile: 'Upload File',
+                    },
+                },
             },
-        });
-
-        // Watch and bundle custom feature components in development
-        admin.watch();
-
-        // Build the Express Router
-        // ─── Dashboard Stats API ──────────────────────────────────────────────
-        app.get('/admin/api/dashboard-stats', async (req, res) => {
-            try {
-                const totalProducts = await Product.countDocuments();
-                const inStock = await Product.countDocuments({ stockStatus: 'IN_STOCK' });
-                const outOfStock = await Product.countDocuments({ stockStatus: 'OUT_OF_STOCK' });
-                const withOffers = await Product.countDocuments({ hasActiveOffer: true });
-
-                // Category breakdown
-                const categoryAgg = await Product.aggregate([
-                    { $group: { _id: '$category', count: { $sum: 1 } } },
-                    { $sort: { count: -1 } }
-                ]);
-                const categoryBreakdown = {};
-                categoryAgg.forEach(c => { categoryBreakdown[c._id] = c.count; });
-
-                // Recent products (last 8)
-                const recentProducts = await Product.find()
-                    .sort({ createdAt: -1 })
-                    .limit(8)
-                    .lean();
-
-                // Total orders (from orders collection if it exists)
-                let totalOrders = 0;
-                try {
-                    totalOrders = await mongoose.connection.db.collection('orders').countDocuments();
-                } catch (e) { /* orders collection may not exist yet */ }
-
-                res.json({
-                    totalProducts,
-                    inStock,
-                    outOfStock,
-                    withOffers,
-                    categoryBreakdown,
-                    recentProducts,
-                    totalOrders,
-                });
-            } catch (err) {
-                console.error('Dashboard stats error:', err);
-                res.status(500).json({ error: 'Failed to fetch stats' });
-            }
-        });
-
-        const adminRouter = AdminJSExpress.buildRouter(admin);
-        app.use(admin.options.rootPath, adminRouter);
-        app.use(express.static('public'));
-
-        // Start the Server
-        const PORT = process.env.PORT || 3000;
-        app.listen(PORT, '0.0.0.0', () => {
-            console.log(`🚀 AdminJS running at http://0.0.0.0:${PORT}${admin.options.rootPath}`);
-        });
-    };
-
-    startAdmin().catch((err) => {
-        console.error('Failed to start AdminJS:', err);
+        },
+        branding: {
+            companyName: 'NOVA Jewellery Admin',
+            withMadeWithLove: false,
+        },
     });
+
+    // Watch and bundle custom feature components in development
+    admin.watch();
+
+    // Build the Express Router
+    // ─── Dashboard Stats API ──────────────────────────────────────────────
+    app.get('/admin/api/dashboard-stats', async (req, res) => {
+        try {
+            const totalProducts = await Product.countDocuments();
+            const inStock = await Product.countDocuments({ stockStatus: 'IN_STOCK' });
+            const outOfStock = await Product.countDocuments({ stockStatus: 'OUT_OF_STOCK' });
+            const withOffers = await Product.countDocuments({ hasActiveOffer: true });
+
+            // Category breakdown
+            const categoryAgg = await Product.aggregate([
+                { $group: { _id: '$category', count: { $sum: 1 } } },
+                { $sort: { count: -1 } }
+            ]);
+            const categoryBreakdown = {};
+            categoryAgg.forEach(c => { categoryBreakdown[c._id] = c.count; });
+
+            // Recent products (last 8)
+            const recentProducts = await Product.find()
+                .sort({ createdAt: -1 })
+                .limit(8)
+                .lean();
+
+            // Total orders (from orders collection if it exists)
+            let totalOrders = 0;
+            try {
+                totalOrders = await mongoose.connection.db.collection('orders').countDocuments();
+            } catch (e) { /* orders collection may not exist yet */ }
+
+            res.json({
+                totalProducts,
+                inStock,
+                outOfStock,
+                withOffers,
+                categoryBreakdown,
+                recentProducts,
+                totalOrders,
+            });
+        } catch (err) {
+            console.error('Dashboard stats error:', err);
+            res.status(500).json({ error: 'Failed to fetch stats' });
+        }
+    });
+
+    const adminRouter = AdminJSExpress.buildRouter(admin);
+    app.use(admin.options.rootPath, adminRouter);
+    app.use(express.static('public'));
+
+    // Start the Server
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`🚀 AdminJS running at http://0.0.0.0:${PORT}${admin.options.rootPath}`);
+    });
+};
+
+startAdmin().catch((err) => {
+    console.error('Failed to start AdminJS:', err);
+});
