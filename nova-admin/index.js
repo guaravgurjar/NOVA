@@ -248,6 +248,7 @@ const startAdmin = async () => {
 
     const adminRouter = AdminJSExpress.buildRouter(admin);
     app.use(admin.options.rootPath, adminRouter);
+    app.use(express.static('public'));
 
     // Start the Server
     const PORT = 3000;
