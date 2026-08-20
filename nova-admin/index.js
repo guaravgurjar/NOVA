@@ -126,7 +126,7 @@ const startAdmin = async () => {
     const app = express();
 
     // Connect to your MongoDB database cluster
-    mongoose.connect(process.env.MONGO_URI, {
+    mongoose.connect(process.env.MONGODB_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     });
