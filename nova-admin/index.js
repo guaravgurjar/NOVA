@@ -1,5 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import session from 'express-session';
+import ConnectMongo from 'connect-mongo';
 import AdminJS, { ComponentLoader } from 'adminjs';
 import * as AdminJSMongoose from '@adminjs/mongoose';
 import AdminJSExpress from '@adminjs/express';
@@ -21,6 +23,10 @@ const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
 const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
 const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL;
+
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const COOKIE_SECRET = process.env.COOKIE_SECRET || 'nova-jewellery-super-secret-cookie-key';
 
 const s3Client = new S3Client({
     region: 'auto',
@@ -249,14 +255,41 @@ const startAdmin = async () => {
         }
     });
 
-    const adminRouter = AdminJSExpress.buildRouter(admin);
+    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+      admin,
+      {
+        authenticate: async (email, password) => {
+          if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+            return { email };
+          }
+          return null;
+        },
+        cookieName: 'nova-admin-session',
+        cookiePassword: COOKIE_SECRET,
+      },
+      null,
+      {
+        store: ConnectMongo.create({
+          mongoUrl: process.env.MONGODB_URI,
+          collectionName: 'admin_sessions',
+          ttl: 24 * 60 * 60, // 1 day
+        }),
+        resave: false,
+        saveUninitialized: false,
+        secret: COOKIE_SECRET,
+        cookie: {
+          httpOnly: true,
+          secure: false, // set to true in production with HTTPS
+        },
+      }
+    );
     app.use(admin.options.rootPath, adminRouter);
 
 
     // Start the Server
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, '0.0.0.0', () => {
-        console.log(`🚀 AdminJS running at http://0.0.0.0:${PORT}${admin.options.rootPath}`);
+    app.listen(PORT, 'localhost', () => {
+        console.log(`🚀 AdminJS running at http://localhost:${PORT}${admin.options.rootPath}`);
     });
 };
 
