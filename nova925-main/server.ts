@@ -202,6 +202,48 @@ async function startServer() {
     }
   });
 
+  // ─── User Profile Endpoints (MongoDB) ─────────────────────────────────────
+
+  // GET /api/profile/:userId — Fetch stored personal info for a user
+  app.get("/api/profile/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+
+      if (!db) {
+        return res.json({ success: true, profile: null });
+      }
+
+      const profile = await db.collection("profiles").findOne({ userId });
+      res.json({ success: true, profile: profile || null });
+    } catch (err: any) {
+      console.error("Failed to fetch profile:", err);
+      res.status(500).json({ error: "Failed to fetch profile" });
+    }
+  });
+
+  // POST /api/profile/:userId — Create or update personal info for a user
+  app.post("/api/profile/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const profileData = req.body;
+
+      if (!db) {
+        return res.json({ success: true, profile: profileData });
+      }
+
+      await db.collection("profiles").updateOne(
+        { userId },
+        { $set: { ...profileData, userId, updatedAt: new Date().toISOString() } },
+        { upsert: true }
+      );
+
+      res.json({ success: true, profile: profileData });
+    } catch (err: any) {
+      console.error("Failed to save profile:", err);
+      res.status(500).json({ error: "Failed to save profile" });
+    }
+  });
+
   // ─── Auth Middleware (kept for chat endpoint) ───────────────────────────
 
   // Express middleware to verify auth tokens (simplified without firebase-admin)

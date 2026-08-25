@@ -203,7 +203,7 @@ export function Header() {
             </Link>
           </li>
           <li>
-            <Link to="/category/earrings" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
+            <Link to="/Astro-collection" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
               Astro Collection
             </Link>
           </li>

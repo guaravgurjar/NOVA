@@ -50,8 +50,8 @@ export function About() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-nova-darker text-white font-sans">
-      
+    <div className="flex flex-col min-h-screen bg-white text-bg-nova font-sans">
+
       {/* Page Header Banner */}
       <div className="relative w-full h-[220px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -69,10 +69,10 @@ export function About() {
       <div className="py-20 relative overflow-hidden">
         <div className="absolute -left-48 top-1/3 w-96 h-96 rounded-full bg-nova-gold/5 blur-[120px] pointer-events-none"></div>
         <div className="absolute -right-48 bottom-1/3 w-96 h-96 rounded-full bg-nova-gold/5 blur-[120px] pointer-events-none"></div>
-        
+
         <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-stretch">
-            
+
             {/* Left Box: NOVA as a Brand */}
             <div className="glass-dark rounded-2xl p-8 md:p-10 border border-white/5 shadow-2xl relative flex flex-col justify-between glow-border group">
               <div>
@@ -129,15 +129,15 @@ export function About() {
       </div>
 
       {/* Leadership Team Section */}
-      <div className="bg-[#090b12] py-24 border-t border-white/5 relative">
+      <div className="bg-white py-24 border-t border-white/5 relative">
         <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10">
-          
+
           <div className="text-center max-w-2xl mx-auto mb-16">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-nova-gold/25 bg-nova-gold/5 mb-4">
               <Users className="w-4 h-4 text-nova-gold" />
               <span className="text-[10px] text-nova-gold font-semibold uppercase tracking-wider">Leadership Team</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-serif tracking-wider font-light text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-serif tracking-wider font-light text-bg-nova mb-4">
               The Minds Behind <span className="text-silver-gradient font-normal">NOVA</span>
             </h2>
             <div className="w-12 h-[1px] bg-nova-gold mx-auto mb-4"></div>
@@ -148,7 +148,7 @@ export function About() {
 
           {/* Spotlight Editorial Showcase */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
-            
+
             {/* Left Column: Selector Stack (col-span-4) */}
             <div className="lg:col-span-4 flex flex-col gap-4">
               {teamMembers.map((member, index) => {
@@ -157,32 +157,29 @@ export function About() {
                   <button
                     key={index}
                     onClick={() => setActiveLeaderIndex(index)}
-                    className={`text-left p-4 rounded-xl border transition-all duration-300 flex items-center gap-4 cursor-pointer relative overflow-hidden group w-full ${
-                      isActive 
-                        ? 'bg-nova-dark/80 border-nova-gold/40 shadow-lg shadow-nova-gold/5' 
-                        : 'bg-nova-darker/40 border-white/5 hover:border-white/20 hover:bg-nova-darker/70'
-                    }`}
+                    className={`text-left p-4 rounded-xl border transition-all duration-300 flex items-center gap-4 cursor-pointer relative overflow-hidden group w-full ${isActive
+                      ? 'bg-nova-dark/80 border-nova-gold/40 shadow-lg shadow-nova-gold/5'
+                      : 'bg-nova-darker/40 border-white/5 hover:border-white/20 hover:bg-nova-darker/70'
+                      }`}
                   >
                     {/* Active highlight glow strip on left */}
                     {isActive && (
                       <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-nova-gold"></div>
                     )}
-                    
+
                     {/* Tiny initial icon */}
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${
-                      isActive 
-                        ? 'border-nova-gold bg-nova-gold/10' 
-                        : 'border-white/10 bg-white/5 group-hover:border-white/30'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 border transition-all duration-300 ${isActive
+                      ? 'border-nova-gold bg-nova-gold/10'
+                      : 'border-white/10 bg-white/5 group-hover:border-white/30'
+                      }`}>
                       <span className={`text-xs font-semibold font-serif ${isActive ? 'text-nova-gold' : 'text-white/60'}`}>
                         {member.initials}
                       </span>
                     </div>
 
                     <div className="flex-1">
-                      <h4 className={`text-sm font-serif font-light tracking-wide transition-colors duration-300 ${
-                        isActive ? 'text-nova-gold' : 'text-white/80 group-hover:text-white'
-                      }`}>
+                      <h4 className={`text-sm font-serif font-light tracking-wide transition-colors duration-300 ${isActive ? 'text-nova-gold' : 'text-white/80 group-hover:text-white'
+                        }`}>
                         {member.name}
                       </h4>
                       <p className="text-[9px] text-white/40 uppercase tracking-widest mt-0.5 font-medium">
@@ -190,9 +187,8 @@ export function About() {
                       </p>
                     </div>
 
-                    <ChevronRight className={`w-4 h-4 transition-all duration-300 shrink-0 ${
-                      isActive ? 'text-nova-gold translate-x-0' : 'text-white/20 opacity-0 group-hover:opacity-100 group-hover:translate-x-1'
-                    }`} />
+                    <ChevronRight className={`w-4 h-4 transition-all duration-300 shrink-0 ${isActive ? 'text-nova-gold translate-x-0' : 'text-white/20 opacity-0 group-hover:opacity-100 group-hover:translate-x-1'
+                      }`} />
                   </button>
                 );
               })}

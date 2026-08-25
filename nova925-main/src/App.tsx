@@ -3,6 +3,7 @@ import { BrowserRouter as Router, MemoryRouter, Routes, Route } from 'react-rout
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { ToastProvider } from './contexts/ToastContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { WishlistProvider } from './contexts/WishlistContext';
@@ -29,6 +30,7 @@ const Contact = lazy(() => import('./pages/Contact').then(m => ({ default: m.Con
 const About = lazy(() => import('./pages/About').then(m => ({ default: m.About })));
 const GiftsForHim = lazy(() => import('./pages/GiftsForHim').then(m => ({ default: m.GiftsForHim })));
 const GiftsForHer = lazy(() => import('./pages/GiftsForHer').then(m => ({ default: m.GiftsForHer })));
+const AstroCollection = lazy(() => import('./pages/Astro-collection').then(m => ({ default: m.AstroCollection })));
 const NotFound = lazy(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
 
 // Non-Critical Widgets Deferred
@@ -58,7 +60,7 @@ export function AppContent() {
             <Route path="/category/:id" element={<Shop />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
             <Route path="/login" element={<Login />} />
             <Route path="/shipping" element={<ShippingPolicy />} />
             <Route path="/return" element={<ReturnPolicy />} />
@@ -72,6 +74,7 @@ export function AppContent() {
             <Route path="/about" element={<About />} />
             <Route path="/gifts-for-him" element={<GiftsForHim />} />
             <Route path="/gifts-for-her" element={<GiftsForHer />} />
+            <Route path="/Astro-collection" element={<AstroCollection />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

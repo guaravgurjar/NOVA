@@ -8,10 +8,12 @@ import AdminJSExpress from '@adminjs/express';
 import uploadFeature, { BaseProvider } from '@adminjs/upload';
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
+import bcrypt from 'bcrypt';
 
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import AdminUser from './models/AdminUser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,8 +26,6 @@ const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
 const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL;
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
 const COOKIE_SECRET = process.env.COOKIE_SECRET || 'nova-jewellery-super-secret-cookie-key';
 
 const s3Client = new S3Client({
@@ -181,6 +181,61 @@ const startAdmin = async () => {
                     }),
                 ],
             },
+            // ─── Admin Users Resource (superadmin-only) ───────────────────────────
+            {
+                resource: AdminUser,
+                options: {
+                    navigation: { name: 'Access Management', icon: 'User' },
+                    // Only superadmins can see / manage the Admin Users section
+                    actions: {
+                        list:   { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        show:   { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        new:    { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        edit:   { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        delete: { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                    },
+                    properties: {
+                        email:     { position: 1 },
+                        role:      { position: 2 },
+                        isActive:  { position: 3 },
+                        createdAt: { position: 4, isVisible: { list: true, filter: false, show: true, edit: false } },
+                        // Never expose the stored hash — show a write-only password field instead
+                        password: {
+                            position: 5,
+                            isVisible: { list: false, filter: false, show: false, edit: true },
+                            type: 'password',
+                        },
+                    },
+                    // Before creating or editing, bcrypt-hash any newly supplied password
+                    actions: {
+                        list:   { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        show:   { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        delete: { isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin' },
+                        new: {
+                            isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin',
+                            before: async (request) => {
+                                if (request.payload?.password) {
+                                    request.payload.password = await bcrypt.hash(request.payload.password, 12);
+                                }
+                                return request;
+                            },
+                        },
+                        edit: {
+                            isAccessible: ({ currentAdmin }) => currentAdmin?.role === 'superadmin',
+                            before: async (request) => {
+                                // Only re-hash if the superadmin actually typed a new password
+                                if (request.payload?.password && request.payload.password.trim() !== '') {
+                                    request.payload.password = await bcrypt.hash(request.payload.password, 12);
+                                } else {
+                                    // Leave the existing hash untouched
+                                    delete request.payload.password;
+                                }
+                                return request;
+                            },
+                        },
+                    },
+                },
+            },
         ],
         locale: {
             language: 'en',
@@ -259,10 +314,19 @@ const startAdmin = async () => {
       admin,
       {
         authenticate: async (email, password) => {
-          if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-            return { email };
-          }
-          return null;
+          // Look up the admin by email in MongoDB
+          const user = await AdminUser.findOne({ email: email.toLowerCase().trim() });
+          if (!user) return null;
+
+          // Reject immediately if the account has been deactivated
+          if (!user.isActive) return null;
+
+          // Verify the supplied plaintext password against the bcrypt hash
+          const valid = await bcrypt.compare(password, user.password);
+          if (!valid) return null;
+
+          // Return the session payload — role is used for RBAC throughout AdminJS
+          return { email: user.email, role: user.role };
         },
         cookieName: 'nova-admin-session',
         cookiePassword: COOKIE_SECRET,

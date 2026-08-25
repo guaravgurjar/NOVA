@@ -1,8 +1,9 @@
-import { User, ShoppingBag, MapPin, LogOut, ShieldCheck } from 'lucide-react';
+import { User, ShoppingBag, MapPin, LogOut, ShieldCheck, Gift, Bell, Plus, Trash2, Cake, Heart, Sparkles, CalendarHeart } from 'lucide-react';
 import { useState, useEffect, FormEvent } from 'react';
 import { useToast } from '../contexts/ToastContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import type { SpecialOccasion, NotificationPrefs } from '../contexts/AuthContext';
 import { auth } from '../lib/firebase';
 import { usePageSEO } from '../lib/usePageSEO';
 
@@ -31,6 +32,17 @@ export function Profile() {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState<'male' | 'female' | 'others' | null>(null);
+
+  // Enhanced Profile Fields for CRM / Notifications
+  const [anniversary, setAnniversary] = useState("");
+  const [zodiacSign, setZodiacSign] = useState("");
+  const [occasions, setOccasions] = useState<SpecialOccasion[]>([]);
+  const [notifications, setNotifications] = useState<NotificationPrefs>({
+    birthday: true,
+    anniversary: true,
+    offers: true,
+    productSuggestions: true
+  });
 
   // Address Management States
   const [addresses, setAddresses] = useState<DeliveryAddress[]>([]);
@@ -384,22 +396,20 @@ export function Profile() {
     setIsEditingAddress(true);
   };
 
-  // Protected Route Logic: Redirect to login if user logs out or is not authenticated
+  // Sync user profile data to form state when user changes
   useEffect(() => {
-    if (!user) {
-      navigate('/login');
-    } else {
+    if (user) {
       setFirstName(user.firstName || "");
       setLastName(user.lastName || "");
       setEmail(user.email || "");
       setDob(user.dob || "");
       setGender(user.gender || null);
+      setAnniversary(user.anniversary || "");
+      setZodiacSign(user.zodiacSign || "");
+      setOccasions(user.occasions || []);
+      setNotifications(user.notifications || { birthday: true, anniversary: true, offers: true, productSuggestions: true });
     }
-  }, [user, navigate]);
-
-  if (!user) {
-    return null;
-  }
+  }, [user]);
 
   const handleSave = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -408,9 +418,58 @@ export function Profile() {
       lastName,
       email,
       dob,
-      gender
+      gender,
+      anniversary,
+      zodiacSign,
+      occasions,
+      notifications
     });
     addToast('Profile saved successfully!');
+  };
+
+  // Occasion helpers
+  const addOccasion = () => {
+    setOccasions(prev => [
+      ...prev,
+      { id: `occ-${Date.now()}`, type: 'custom', label: '', date: '' }
+    ]);
+  };
+
+  const updateOccasion = (id: string, field: keyof SpecialOccasion, value: string) => {
+    setOccasions(prev =>
+      prev.map(occ =>
+        occ.id === id ? { ...occ, [field]: value } : occ
+      )
+    );
+  };
+
+  const removeOccasion = (id: string) => {
+    setOccasions(prev => prev.filter(occ => occ.id !== id));
+  };
+
+  const toggleNotification = (key: keyof NotificationPrefs) => {
+    setNotifications(prev => ({ ...prev, [key]: !prev[key] }));
+  };
+
+  // Auto-detect zodiac from DOB
+  const getZodiacFromDate = (dateStr: string): string => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+    if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return 'Aries';
+    if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return 'Taurus';
+    if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return 'Gemini';
+    if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return 'Cancer';
+    if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return 'Leo';
+    if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
+    if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
+    if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
+    if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagittarius';
+    if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
+    if ((month === 2 && day >= 19) || (month === 3 && day <= 20)) return 'Pisces';
+    return '';
   };
 
   const handleSignOut = () => {
@@ -487,7 +546,7 @@ export function Profile() {
         </div>
         
         {/* Main Content Area */}
-        <div className="flex-1 p-8 md:p-16 flex flex-col items-center justify-center">
+        <div className="flex-1 p-8 md:p-16 flex flex-col items-center overflow-y-auto">
            <div className="w-full max-w-xl glass-dark p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl relative">
               
               <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
@@ -582,19 +641,171 @@ export function Profile() {
                       </div>
                    </div>
 
-                   <div>
-                     <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-2 font-medium">Date of Birth</label>
-                     <input 
-                       type="date" 
-                       value={dob}
-                       onChange={(e) => setDob(e.target.value)}
-                       className="w-full bg-[#121522] border border-white/10 focus:border-nova-gold rounded-xl py-3 px-5 text-sm text-white focus:outline-none transition-colors" 
-                     />
+                   {/* ─── Special Dates Section ──────────────────────────── */}
+                   <div className="pt-4 mt-2 border-t border-white/5">
+                     <div className="flex items-center gap-2 mb-5">
+                       <CalendarHeart className="w-4 h-4 text-nova-gold" />
+                       <span className="text-[10px] uppercase tracking-[0.25em] text-nova-gold font-semibold">Special Dates & Occasions</span>
+                     </div>
+
+                     {/* Birthday */}
+                     <div className="mb-5">
+                       <label className="text-sm font-medium text-white/80 block mb-1">When do you celebrate your birthday?</label>
+                       <p className="text-[10px] text-nova-gold/60 mb-2 font-light">We'll remember to send you a small surprise 🎁</p>
+                       <input 
+                         type="date" 
+                         value={dob}
+                         onChange={(e) => {
+                           setDob(e.target.value);
+                           const detected = getZodiacFromDate(e.target.value);
+                           if (detected) setZodiacSign(detected);
+                         }}
+                         className="w-full bg-[#121522] border border-white/10 focus:border-nova-gold rounded-xl py-3 px-5 text-sm text-white focus:outline-none transition-colors" 
+                       />
+                       {zodiacSign && (
+                         <div className="flex items-center gap-2 mt-2 bg-nova-gold/5 border border-nova-gold/15 rounded-lg px-3 py-2">
+                           <Sparkles className="w-3.5 h-3.5 text-nova-gold" />
+                           <span className="text-[11px] text-white/70">Your zodiac sign: <span className="text-nova-gold font-semibold">{zodiacSign}</span></span>
+                         </div>
+                       )}
+                     </div>
+
+                     {/* Anniversary */}
+                     <div className="mb-5">
+                       <label className="text-sm font-medium text-white/80 block mb-1">When do you celebrate your anniversary?</label>
+                       <p className="text-[10px] text-nova-gold/60 mb-2 font-light">Don't worry, we won't disturb your celebration! Just want to send a cute surprise 💕</p>
+                       <input 
+                         type="date" 
+                         value={anniversary}
+                         onChange={(e) => setAnniversary(e.target.value)}
+                         className="w-full bg-[#121522] border border-white/10 focus:border-nova-gold rounded-xl py-3 px-5 text-sm text-white focus:outline-none transition-colors" 
+                       />
+                     </div>
+
+                     {/* Special Occasions */}
+                     <div className="mb-5">
+                       <div className="flex items-center justify-between mb-2">
+                         <div>
+                           <label className="text-sm font-medium text-white/80 block">Other special occasions</label>
+                           <p className="text-[10px] text-white/40 mt-0.5 font-light">Tell us about occasions you don't want to forget!</p>
+                         </div>
+                         <button
+                           type="button"
+                           onClick={addOccasion}
+                           className="flex items-center gap-1.5 bg-nova-gold/10 hover:bg-nova-gold/20 border border-nova-gold/25 text-nova-gold text-[10px] font-semibold uppercase tracking-widest px-3 py-1.5 rounded-lg transition-all active:scale-95 cursor-pointer"
+                         >
+                           <Plus className="w-3 h-3" /> Add
+                         </button>
+                       </div>
+
+                       {occasions.length === 0 && (
+                         <div className="text-center py-6 bg-[#121522]/40 rounded-xl border border-white/5">
+                           <Gift className="w-6 h-6 mx-auto mb-2 text-white/15" />
+                           <p className="text-[11px] text-white/30 font-light">No special occasions added yet</p>
+                         </div>
+                       )}
+
+                       <div className="flex flex-col gap-3 mt-2">
+                         {occasions.map((occ) => (
+                           <div key={occ.id} className="bg-[#121522]/60 border border-white/5 rounded-xl p-3 flex flex-col gap-2.5 group hover:border-white/10 transition-colors">
+                             <div className="flex items-center gap-3">
+                               {/* Occasion Type */}
+                               <select
+                                 value={occ.type}
+                                 onChange={(e) => {
+                                   const val = e.target.value as SpecialOccasion['type'];
+                                   updateOccasion(occ.id, 'type', val);
+                                   // Auto-fill label for known types
+                                   if (val === 'birthday_partner') updateOccasion(occ.id, 'label', "Partner's Birthday");
+                                   if (val === 'anniversary') updateOccasion(occ.id, 'label', 'Wedding Anniversary');
+                                   if (val === 'parents_anniversary') updateOccasion(occ.id, 'label', "Parents' Anniversary");
+                                 }}
+                                 className="flex-1 bg-[#0d1019] border border-white/10 focus:border-nova-gold rounded-lg py-2 px-3 text-xs text-white focus:outline-none transition-colors appearance-none cursor-pointer"
+                               >
+                                 <option value="custom">Custom Occasion</option>
+                                 <option value="birthday_partner">Partner's Birthday</option>
+                                 <option value="anniversary">Wedding Anniversary</option>
+                                 <option value="parents_anniversary">Parents' Anniversary</option>
+                               </select>
+                               {/* Delete */}
+                               <button
+                                 type="button"
+                                 onClick={() => removeOccasion(occ.id)}
+                                 className="w-7 h-7 flex items-center justify-center rounded-lg bg-red-500/5 hover:bg-red-500/15 border border-red-500/10 text-red-400/60 hover:text-red-400 transition-all cursor-pointer"
+                               >
+                                 <Trash2 className="w-3 h-3" />
+                               </button>
+                             </div>
+                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                               <input
+                                 type="text"
+                                 placeholder="Occasion label"
+                                 value={occ.label}
+                                 onChange={(e) => updateOccasion(occ.id, 'label', e.target.value)}
+                                 className="bg-[#0d1019] border border-white/10 focus:border-nova-gold rounded-lg py-2 px-3 text-xs text-white focus:outline-none transition-colors"
+                               />
+                               <input
+                                 type="date"
+                                 value={occ.date}
+                                 onChange={(e) => updateOccasion(occ.id, 'date', e.target.value)}
+                                 className="bg-[#0d1019] border border-white/10 focus:border-nova-gold rounded-lg py-2 px-3 text-xs text-white focus:outline-none transition-colors"
+                               />
+                             </div>
+                           </div>
+                         ))}
+                       </div>
+                     </div>
+                   </div>
+
+                   {/* ─── Notification Preferences ────────────────────────── */}
+                   <div className="pt-4 mt-2 border-t border-white/5">
+                     <div className="flex items-center gap-2 mb-4">
+                       <Bell className="w-4 h-4 text-nova-gold" />
+                       <span className="text-[10px] uppercase tracking-[0.25em] text-nova-gold font-semibold">Notification Preferences</span>
+                     </div>
+                     <p className="text-[10px] text-white/40 mb-4 font-light">Choose how you'd like us to stay in touch with you</p>
+
+                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                       {[
+                         { key: 'birthday' as const, icon: Cake, label: 'Birthday Wishes', desc: 'Special surprise on your birthday' },
+                         { key: 'anniversary' as const, icon: Heart, label: 'Anniversary Reminders', desc: 'Celebrate your special day' },
+                         { key: 'offers' as const, icon: Gift, label: 'Offers & Deals', desc: 'Exclusive discounts & drops' },
+                         { key: 'productSuggestions' as const, icon: Sparkles, label: 'Product Suggestions', desc: 'Curated picks just for you' },
+                       ].map(({ key, icon: Icon, label, desc }) => (
+                         <button
+                           key={key}
+                           type="button"
+                           onClick={() => toggleNotification(key)}
+                           className={`flex items-start gap-3 p-3 rounded-xl border text-left transition-all duration-300 cursor-pointer ${
+                             notifications[key]
+                               ? 'bg-nova-gold/8 border-nova-gold/30 shadow-sm shadow-nova-gold/5'
+                               : 'bg-[#121522]/40 border-white/5 hover:border-white/10'
+                           }`}
+                         >
+                           <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                             notifications[key] ? 'bg-nova-gold/15 text-nova-gold' : 'bg-white/5 text-white/25'
+                           }`}>
+                             <Icon className="w-4 h-4" />
+                           </div>
+                           <div className="flex-1 min-w-0">
+                             <span className={`text-xs font-semibold block ${notifications[key] ? 'text-white' : 'text-white/50'}`}>{label}</span>
+                             <span className="text-[10px] text-white/35 font-light block mt-0.5">{desc}</span>
+                           </div>
+                           <div className={`w-9 h-5 rounded-full flex items-center transition-all duration-300 flex-shrink-0 mt-1 ${
+                             notifications[key] ? 'bg-nova-gold justify-end' : 'bg-white/10 justify-start'
+                           }`}>
+                             <div className={`w-3.5 h-3.5 rounded-full mx-0.5 transition-all ${
+                               notifications[key] ? 'bg-nova-darker' : 'bg-white/30'
+                             }`} />
+                           </div>
+                         </button>
+                       ))}
+                     </div>
                    </div>
                      
                    <button 
                      type="submit"
-                     className="btn-premium bg-nova-gold text-nova-darker rounded-xl py-3.5 px-10 text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all shadow-lg mx-auto mt-4"
+                     className="btn-premium bg-nova-gold text-nova-darker rounded-xl py-3.5 px-10 text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all shadow-lg mx-auto mt-6"
                    >
                      Save Changes
                    </button>

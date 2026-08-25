@@ -7,12 +7,25 @@ import {
   signOut, 
   GoogleAuthProvider, 
   signInWithPopup,
-  signInWithRedirect,
   User as FirebaseUser,
   RecaptchaVerifier,
   signInWithPhoneNumber
 } from 'firebase/auth';
 import { auth } from '../lib/firebase';
+
+export type SpecialOccasion = {
+  id: string;
+  type: 'birthday_partner' | 'anniversary' | 'parents_anniversary' | 'custom';
+  label: string;
+  date: string;
+};
+
+export type NotificationPrefs = {
+  birthday: boolean;
+  anniversary: boolean;
+  offers: boolean;
+  productSuggestions: boolean;
+};
 
 export type UserProfile = {
   firstName: string;
@@ -21,6 +34,10 @@ export type UserProfile = {
   phoneNumber?: string;
   dob?: string;
   gender?: 'male' | 'female' | 'others' | null;
+  anniversary?: string;
+  zodiacSign?: string;
+  occasions?: SpecialOccasion[];
+  notifications?: NotificationPrefs;
   authMethod: 'gmail' | 'phone' | 'email';
   isAuthenticated: boolean;
 };
@@ -46,7 +63,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [localDetails, setLocalDetails] = useState<{
     dob?: string;
     gender?: 'male' | 'female' | 'others' | null;
+    anniversary?: string;
+    zodiacSign?: string;
+    occasions?: SpecialOccasion[];
+    notifications?: NotificationPrefs;
   }>({});
+
+  // Helper: derive a stable userId for API calls
+  const getProfileUserId = (firebaseUser: FirebaseUser): string => {
+    return firebaseUser.uid;
+  };
 
   // Listen to auth state changes
   useEffect(() => {
@@ -60,19 +86,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: FirebaseUser | null) => {
       setIsLoading(true);
       if (firebaseUser) {
-        // Load custom local details
-        const stored = localStorage.getItem(`nova_firebase_details_${firebaseUser.uid}`);
+        const userId = getProfileUserId(firebaseUser);
+
+        // 1. Try to load from MongoDB; fall back to localStorage
         let parsedDetails: any = {};
-        if (stored) {
-          try {
-            parsedDetails = JSON.parse(stored);
-            setLocalDetails(parsedDetails);
-          } catch (e) {
-            // ignore
+        try {
+          const res = await fetch(`/api/profile/${encodeURIComponent(userId)}`);
+          const data = await res.json();
+          if (data.success && data.profile) {
+            parsedDetails = data.profile;
+            // Keep localStorage in sync as offline fallback
+            localStorage.setItem(`nova_firebase_details_${userId}`, JSON.stringify(parsedDetails));
+          } else {
+            // API returned no profile – try localStorage
+            const stored = localStorage.getItem(`nova_firebase_details_${userId}`);
+            if (stored) parsedDetails = JSON.parse(stored);
           }
-        } else {
-          setLocalDetails({});
+        } catch {
+          // Network error – fall back to localStorage
+          const stored = localStorage.getItem(`nova_firebase_details_${userId}`);
+          if (stored) {
+            try { parsedDetails = JSON.parse(stored); } catch { /* ignore */ }
+          }
         }
+
+        setLocalDetails(parsedDetails);
 
         const nameParts = firebaseUser.displayName ? firebaseUser.displayName.split(' ') : [];
         const firstName = nameParts[0] || (firebaseUser.phoneNumber ? 'Guest' : 'Member');
@@ -82,12 +120,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const authMethod = providerId === 'google.com' ? 'gmail' : (providerId === 'phone' || firebaseUser.phoneNumber) ? 'phone' : 'email';
 
         setUser({
-          firstName,
-          lastName,
+          firstName: parsedDetails.firstName || firstName,
+          lastName: parsedDetails.lastName || lastName,
           email: firebaseUser.email || `${firebaseUser.phoneNumber?.replace(/\+/g, '') || firebaseUser.uid}@nova-phone.local`,
-          phoneNumber: firebaseUser.phoneNumber || parsedDetails.phoneNumber || '',
+          phoneNumber: parsedDetails.phoneNumber || firebaseUser.phoneNumber || '',
           dob: parsedDetails.dob,
           gender: parsedDetails.gender,
+          anniversary: parsedDetails.anniversary,
+          zodiacSign: parsedDetails.zodiacSign,
+          occasions: parsedDetails.occasions || [],
+          notifications: parsedDetails.notifications || { birthday: true, anniversary: true, offers: true, productSuggestions: true },
           authMethod,
           isAuthenticated: true
         });
@@ -107,7 +149,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider);
+    await signInWithPopup(auth, provider);
   };
 
   const loginWithEmail = async (email: string, password: string) => {
@@ -178,7 +220,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const firebaseUser = auth.currentUser;
     if (!firebaseUser) return;
 
-    // Update name in Firebase Auth
+    const userId = getProfileUserId(firebaseUser);
+
+    // Update display name in Firebase Auth if name changed
     if (details.firstName !== undefined || details.lastName !== undefined) {
       const newFirstName = details.firstName !== undefined ? details.firstName : (user?.firstName || '');
       const newLastName = details.lastName !== undefined ? details.lastName : (user?.lastName || '');
@@ -187,16 +231,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
     }
 
-    // Save DOB, Gender locally keyed by Firebase UID
+    // Merge new details with existing local details
     const newDetails = {
       ...localDetails,
+      ...(details.firstName !== undefined ? { firstName: details.firstName } : {}),
+      ...(details.lastName !== undefined ? { lastName: details.lastName } : {}),
       ...(details.dob !== undefined ? { dob: details.dob } : {}),
       ...(details.gender !== undefined ? { gender: details.gender } : {}),
+      ...(details.anniversary !== undefined ? { anniversary: details.anniversary } : {}),
+      ...(details.zodiacSign !== undefined ? { zodiacSign: details.zodiacSign } : {}),
+      ...(details.occasions !== undefined ? { occasions: details.occasions } : {}),
+      ...(details.phoneNumber !== undefined ? { phoneNumber: details.phoneNumber } : {}),
+      ...(details.notifications !== undefined ? { notifications: details.notifications } : {}),
     };
-    setLocalDetails(newDetails);
-    localStorage.setItem(`nova_firebase_details_${firebaseUser.uid}`, JSON.stringify(newDetails));
 
-    // Sync local React user state
+    // 1. Persist to localStorage (offline fallback)
+    setLocalDetails(newDetails);
+    localStorage.setItem(`nova_firebase_details_${userId}`, JSON.stringify(newDetails));
+
+    // 2. Sync to MongoDB via API
+    try {
+      await fetch(`/api/profile/${encodeURIComponent(userId)}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newDetails)
+      });
+    } catch (err) {
+      console.warn('Profile cloud sync failed (saved locally):', err);
+    }
+
+    // 3. Update local React state
     setUser(prev => {
       if (!prev) return null;
       return {
