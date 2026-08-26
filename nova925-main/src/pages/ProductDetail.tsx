@@ -113,7 +113,8 @@ export function ProductDetail() {
     .filter(p => p.category === product.category && p.id !== product.id)
     .slice(0, 4);
 
-  const handleIncrement = () => setQuantity(prev => prev + 1);
+  const stockLimit = product.stock;
+  const handleIncrement = () => setQuantity(prev => (stockLimit !== undefined ? Math.min(prev + 1, stockLimit) : prev + 1));
   const handleDecrement = () => quantity > 1 && setQuantity(prev => prev - 1);
 
   const toggleAccordion = (section: string) => {
@@ -195,7 +196,7 @@ export function ProductDetail() {
                     activeImageIndex === idx ? 'border-nova-gold shadow-md' : 'border-white/5 hover:border-white/20'
                   }`}
                 >
-                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                 </button>
               ))}
             </div>
@@ -216,6 +217,7 @@ export function ProductDetail() {
                   src={allImages[activeImageIndex]} 
                   alt={product.name}
                   className="w-full h-full object-cover rounded-2xl pointer-events-none transition-transform duration-500 ease-out"
+                  loading="eager"
                   style={{
                     transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
                     transform: isZoomed ? 'scale(1.2)' : 'scale(1)'
@@ -264,7 +266,7 @@ export function ProductDetail() {
                       activeImageIndex === idx ? 'border-nova-gold' : 'border-white/5'
                     }`}
                   >
-                    <img src={imgUrl} alt={`Thumbnail Mobile ${idx + 1}`} className="w-full h-full object-cover" />
+                    <img src={imgUrl} alt={`Thumbnail Mobile ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                   </button>
                 ))}
               </div>
@@ -331,14 +333,32 @@ export function ProductDetail() {
               <div className="flex bg-[#181c2b] border border-white/10 rounded-lg overflow-hidden items-center">
                 <button onClick={handleDecrement} className="px-3.5 py-2 hover:bg-white/5 text-white/75 transition-colors font-bold"><Minus className="w-3.5 h-3.5" /></button>
                 <span className="px-5 py-2 font-mono text-xs font-semibold text-nova-gold">{String(quantity).padStart(2, '0')}</span>
-                <button onClick={handleIncrement} className="px-3.5 py-2 hover:bg-white/5 text-white/75 transition-colors font-bold"><Plus className="w-3.5 h-3.5" /></button>
+                <button
+                  onClick={handleIncrement}
+                  disabled={stockLimit !== undefined && quantity >= stockLimit}
+                  className={`px-3.5 py-2 transition-colors font-bold ${
+                    stockLimit !== undefined && quantity >= stockLimit
+                      ? 'text-white/20 cursor-not-allowed'
+                      : 'hover:bg-white/5 text-white/75'
+                  }`}
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                </button>
               </div>
+              {/* Stock info badge */}
+              {stockLimit !== undefined && (
+                <span className={`text-[10px] font-medium ${
+                  quantity >= stockLimit ? 'text-amber-400' : stockLimit <= 3 ? 'text-rose-400' : 'text-white/40'
+                }`}>
+                  {quantity >= stockLimit ? `Max ${stockLimit} in stock` : `${stockLimit - quantity} more available`}
+                </span>
+              )}
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
               <button 
-                onClick={() => addToCart(product.id, quantity)}
+                onClick={() => addToCart(product.id, quantity, stockLimit)}
                 className="flex-1 bg-nova-gold hover:bg-nova-gold-light text-nova-darker py-4 rounded-xl font-sans font-bold tracking-[0.2em] text-xs uppercase transition-all duration-300 shadow-md shadow-nova-gold/15 flex items-center justify-center gap-2"
               >
 

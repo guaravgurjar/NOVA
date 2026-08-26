@@ -124,7 +124,7 @@ export function Cart() {
               {!showCheckoutForm ? (
                 <div className="space-y-4">
                   {resolvedItems.map((item) => (
-                    <div 
+                    <div
                       key={item.product.id} 
                       className="glass-dark border border-white/5 p-3 md:p-4 rounded-xl flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between"
                     >
@@ -139,21 +139,40 @@ export function Cart() {
                           <p className="text-xs text-nova-gold mt-1">
                             Rs. {item.product.price.toLocaleString('en-IN')}/-
                           </p>
+                          {/* Stock limit badge */}
+                          {item.product.stock !== undefined && (
+                            <p className={`text-[10px] mt-1 font-medium ${
+                              item.quantity >= item.product.stock
+                                ? 'text-amber-400'
+                                : item.product.stock <= 3
+                                ? 'text-rose-400'
+                                : 'text-white/30'
+                            }`}>
+                              {item.quantity >= item.product.stock
+                                ? '✓ Max stock reached'
+                                : `${item.product.stock - item.quantity} left in stock`}
+                            </p>
+                          )}
                         </div>
                       </div>
 
                       <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6">
                         <div className="flex items-center border border-white/10 rounded-lg">
                           <button 
-                            onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1))}
+                            onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1), item.product.stock)}
                             className="px-2.5 py-1 text-xs hover:bg-white/5 text-white/50 hover:text-white"
                           >
                             -
                           </button>
                           <span className="px-3 text-xs font-mono">{item.quantity}</span>
                           <button 
-                            onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                            className="px-2.5 py-1 text-xs hover:bg-white/5 text-white/50 hover:text-white"
+                            onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.product.stock)}
+                            disabled={item.product.stock !== undefined && item.quantity >= item.product.stock}
+                            className={`px-2.5 py-1 text-xs transition-colors ${
+                              item.product.stock !== undefined && item.quantity >= item.product.stock
+                                ? 'text-white/20 cursor-not-allowed'
+                                : 'hover:bg-white/5 text-white/50 hover:text-white'
+                            }`}
                           >
                             +
                           </button>

@@ -160,6 +160,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(auth, email, password);
   };
 
+  // Keep a reference to the RecaptchaVerifier so we can clear it before recreating
+  const recaptchaVerifierRef = { current: null as any };
+
   const loginWithPhone = async (phoneNumber: string, recaptchaContainerId: string): Promise<any> => {
     if (!auth || (auth as any).name === 'mockAuth') {
       // Mock mode for local dev / unconfigured Firebase
@@ -183,10 +186,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       };
     }
 
+    // Clear any existing verifier to prevent "already rendered" errors on resend
+    if (recaptchaVerifierRef.current) {
+      try { recaptchaVerifierRef.current.clear(); } catch { /* ignore */ }
+      recaptchaVerifierRef.current = null;
+    }
+
     const recaptchaVerifier = new RecaptchaVerifier(auth, recaptchaContainerId, {
       size: 'invisible',
       callback: () => {}
     });
+    recaptchaVerifierRef.current = recaptchaVerifier;
 
     const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
     return confirmationResult;

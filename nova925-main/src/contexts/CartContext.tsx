@@ -8,9 +8,9 @@ export interface CartItem {
 
 interface CartContextType {
   cartItems: CartItem[];
-  addToCart: (productId: string, quantity?: number) => void;
+  addToCart: (productId: string, quantity?: number, maxStock?: number) => void;
   removeFromCart: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  updateQuantity: (productId: string, quantity: number, maxStock?: number) => void;
   clearCart: () => void;
   cartCount: number;
 }
@@ -39,19 +39,32 @@ export function CartProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('nova_cart', JSON.stringify(newItems));
   };
 
-  const addToCart = (productId: string, quantity = 1) => {
+  const addToCart = (productId: string, quantity = 1, maxStock?: number) => {
     let updated: CartItem[];
     const existingIndex = cartItems.findIndex(item => item.id === productId);
+    const currentQty = existingIndex > -1 ? cartItems[existingIndex].quantity : 0;
+    const desiredQty = currentQty + quantity;
 
-    if (existingIndex > -1) {
-      updated = [...cartItems];
-      updated[existingIndex].quantity += quantity;
+    // Enforce stock limit if provided
+    if (maxStock !== undefined && desiredQty > maxStock) {
+      if (currentQty >= maxStock) {
+        addToast(`Only ${maxStock} unit${maxStock === 1 ? '' : 's'} available — you've reached the limit!`);
+        return;
+      }
+      // Partially fill up to the stock limit
+      const allowedQty = maxStock - currentQty;
+      addToast(`Only ${maxStock} unit${maxStock === 1 ? '' : 's'} in stock. Added ${allowedQty} to your bag.`);
+      updated = existingIndex > -1
+        ? cartItems.map((item, i) => i === existingIndex ? { ...item, quantity: maxStock } : item)
+        : [...cartItems, { id: productId, quantity: allowedQty }];
     } else {
-      updated = [...cartItems, { id: productId, quantity }];
+      updated = existingIndex > -1
+        ? cartItems.map((item, i) => i === existingIndex ? { ...item, quantity: desiredQty } : item)
+        : [...cartItems, { id: productId, quantity }];
+      addToast('Item added to Shopping Bag!');
     }
 
     saveCart(updated);
-    addToast('Item added to Shopping Bag!');
   };
 
   const removeFromCart = (productId: string) => {
@@ -60,14 +73,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     addToast('Item removed from Shopping Bag.');
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = (productId: string, quantity: number, maxStock?: number) => {
     if (quantity <= 0) {
       removeFromCart(productId);
       return;
     }
+    // Clamp to stock limit if provided
+    const clampedQty = maxStock !== undefined ? Math.min(quantity, maxStock) : quantity;
+    if (maxStock !== undefined && quantity > maxStock) {
+      addToast(`Only ${maxStock} unit${maxStock === 1 ? '' : 's'} available in stock.`);
+    }
     const updated = cartItems.map(item => {
       if (item.id === productId) {
-        return { ...item, quantity };
+        return { ...item, quantity: clampedQty };
       }
       return item;
     });

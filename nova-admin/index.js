@@ -9,6 +9,7 @@ import uploadFeature, { BaseProvider } from '@adminjs/upload';
 import { S3Client, PutObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3';
 import fs from 'fs';
 import bcrypt from 'bcrypt';
+import sharp from 'sharp';
 
 import dotenv from 'dotenv';
 import path from 'path';
@@ -45,18 +46,33 @@ class R2Provider extends BaseProvider {
     }
 
     // Handles uploading the temporary file to R2
+    // All images are converted to WebP (quality 85, max 1400px) before upload
     async upload(file, key) {
-        const fileContent = fs.readFileSync(file.path);
+        const rawBuffer = fs.readFileSync(file.path);
+
+        // Convert to WebP for ~10-20x smaller file sizes
+        const webpBuffer = await sharp(rawBuffer)
+            .resize({ width: 1400, withoutEnlargement: true })
+            .webp({ quality: 85 })
+            .toBuffer();
+
+        // Replace original extension with .webp in the stored key
+        const webpKey = key.replace(/\.[^.]+$/, '') + '.webp';
+
         await s3Client.send(new PutObjectCommand({
             Bucket: R2_BUCKET_NAME,
-            Key: key,
-            Body: fileContent,
-            ContentType: file.type,
+            Key: webpKey,
+            Body: webpBuffer,
+            ContentType: 'image/webp',
         }));
+
         // Securely erase the temporary file from the server instance to prevent clutter
         if (fs.existsSync(file.path)) {
             fs.unlinkSync(file.path);
         }
+
+        // Return the webp key so AdminJS stores the correct filename in MongoDB
+        return webpKey;
     }
 
     // Handles deleting the asset from R2 when a product is deleted
@@ -82,25 +98,79 @@ const DashboardComponent = componentLoader.add('Dashboard', path.join(__dirname,
 // Register the Mongoose Adapter so AdminJS can read your DB
 AdminJS.registerAdapter(AdminJSMongoose);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Category & Subcategory taxonomy
+// ─────────────────────────────────────────────────────────────────────────────
+//
+// Main Categories  →  Subcategories
+// ─────────────────────────────────
+// gifts-for-her    →  female-rings | female-earrings | female-bracelets |
+//                     female-chains | female-bangles | female-pendants
+//
+// gifts-for-him    →  male-rings | male-earrings | male-bracelets |
+//                     male-chains | male-ear-studs
+//
+// astro-collection →  astro-pendants | astro-rings | astro-bracelets
+//
+// These values are stored in the DB and mapped to storefront pages in the
+// frontend's ProductsContext CATEGORY_MAP.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MAIN_CATEGORIES = [
+    { value: 'gifts-for-her',    label: '🎀 Gifts For Her' },
+    { value: 'gifts-for-him',    label: '🎁 Gifts For Him' },
+    { value: 'astro-collection', label: '✨ Astro Collection' },
+];
+
+// Map main → subcategories
+const SUBCATEGORY_MAP = {
+    'gifts-for-her': [
+        { value: 'female-rings',     label: 'Female Rings' },
+        { value: 'female-earrings',  label: 'Female Earrings' },
+        { value: 'female-bracelets', label: 'Female Bracelets' },
+        { value: 'female-chains',    label: 'Female Chains' },
+        { value: 'female-bangles',   label: 'Female Bangles' },
+        { value: 'female-pendants',  label: 'Female Pendants' },
+    ],
+    'gifts-for-him': [
+        { value: 'male-rings',      label: 'Male Rings' },
+        { value: 'male-earrings',   label: 'Male Earrings' },
+        { value: 'male-bracelets',  label: 'Male Bracelets' },
+        { value: 'male-chains',     label: 'Male Chains' },
+        { value: 'male-ear-studs',  label: 'Male Ear Studs' },
+    ],
+    'astro-collection': [
+        { value: 'astro-pendants',   label: 'Astro Pendants (Zodiac)' },
+        { value: 'astro-rings',      label: 'Astro Rings' },
+        { value: 'astro-bracelets',  label: 'Astro Bracelets' },
+    ],
+};
+
+// Flat list of all valid subcategory values (used in the schema enum)
+const ALL_SUBCATEGORIES = Object.values(SUBCATEGORY_MAP).flat().map(s => s.value);
+
+// ─────────────────────────────────────────────────────────────────────────────
 // Define the Product Schema
+// ─────────────────────────────────────────────────────────────────────────────
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String },
     price: { type: Number },
     originalPrice: { type: Number },
     productcode: { type: String, required: true },
+
+    // Main storefront category (e.g. 'gifts-for-her')
     category: {
         type: String,
-        enum: [
-            'rings',
-            'earrings',
-            'bracelets',
-            'pendants',
-            'chains',
-            'bangles',
-            'sets',
-            'astro'
-        ],
+        enum: MAIN_CATEGORIES.map(c => c.value),
+        required: true
+    },
+
+    // Subcategory that determines which filter tab the product appears under
+    // (e.g. 'female-rings' → Rings tab on the Gifts For Her page)
+    subcategory: {
+        type: String,
+        enum: ALL_SUBCATEGORIES,
         required: true
     },
 
@@ -127,6 +197,14 @@ const productSchema = new mongoose.Schema({
 
 const Product = mongoose.model('Product', productSchema);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: build the allowed subcategory values for a given category value.
+// Used in the AdminJS before hook to validate subcategory belongs to category.
+// ─────────────────────────────────────────────────────────────────────────────
+function getSubcategoriesForCategory(categoryValue) {
+    return (SUBCATEGORY_MAP[categoryValue] || []).map(s => s.value);
+}
+
 // Setup AdminJS configuration
 const startAdmin = async () => {
     const app = express();
@@ -148,18 +226,86 @@ const startAdmin = async () => {
             {
                 resource: Product,
                 options: {
+                    navigation: { name: 'Products', icon: 'Diamond' },
                     properties: {
                         description: { type: 'richtext' },
+
                         productcode: {
                             isVisible: { list: true, filter: true, show: true, edit: true },
                             position: 2,
                         },
 
+                        // ── Category & Subcategory ─────────────────────────────
+                        category: {
+                            position: 3,
+                            isTitle: false,
+                            availableValues: MAIN_CATEGORIES.map(c => ({
+                                value: c.value,
+                                label: c.label,
+                            })),
+                        },
+                        subcategory: {
+                            position: 4,
+                            // Full list is shown; the before hook validates the pairing.
+                            // AdminJS doesn't natively do cascading dropdowns without a
+                            // custom component, so we list all subcategories grouped.
+                            availableValues: [
+                                // ── Gifts For Her ──
+                                ...SUBCATEGORY_MAP['gifts-for-her'].map(s => ({
+                                    value: s.value,
+                                    label: `🎀 ${s.label}`,
+                                })),
+                                // ── Gifts For Him ──
+                                ...SUBCATEGORY_MAP['gifts-for-him'].map(s => ({
+                                    value: s.value,
+                                    label: `🎁 ${s.label}`,
+                                })),
+                                // ── Astro Collection ──
+                                ...SUBCATEGORY_MAP['astro-collection'].map(s => ({
+                                    value: s.value,
+                                    label: `✨ ${s.label}`,
+                                })),
+                            ],
+                        },
+
                         // Keep database metadata fields hidden from standard entry form view
-                        imageKeys: { isVisible: { list: true, filter: false, show: true, edit: false } },
-                        imageBuckets: { isVisible: false },
+                        imageKeys:      { isVisible: { list: true,  filter: false, show: true,  edit: false } },
+                        imageBuckets:   { isVisible: false },
                         imageMimeTypes: { isVisible: false },
-                        imageSizes: { isVisible: false },
+                        imageSizes:     { isVisible: false },
+                    },
+                    // ── Validate subcategory belongs to selected category ──────
+                    actions: {
+                        new: {
+                            before: async (request) => {
+                                const { category, subcategory } = request.payload || {};
+                                if (category && subcategory) {
+                                    const allowed = getSubcategoriesForCategory(category);
+                                    if (!allowed.includes(subcategory)) {
+                                        throw new Error(
+                                            `Subcategory "${subcategory}" does not belong to category "${category}". ` +
+                                            `Allowed: ${allowed.join(', ')}`
+                                        );
+                                    }
+                                }
+                                return request;
+                            },
+                        },
+                        edit: {
+                            before: async (request) => {
+                                const { category, subcategory } = request.payload || {};
+                                if (category && subcategory) {
+                                    const allowed = getSubcategoriesForCategory(category);
+                                    if (!allowed.includes(subcategory)) {
+                                        throw new Error(
+                                            `Subcategory "${subcategory}" does not belong to category "${category}". ` +
+                                            `Allowed: ${allowed.join(', ')}`
+                                        );
+                                    }
+                                }
+                                return request;
+                            },
+                        },
                     },
                 },
                 features: [
@@ -242,17 +388,19 @@ const startAdmin = async () => {
             translations: {
                 en: {
                     properties: {
-                        offerDiscountPercentage: 'Offer Discount Percentage',
+                        offerDiscountPercentage: 'Offer Discount %',
                         hasActiveOffer: 'Has Active Offer',
                         couponCode: 'Coupon Code',
                         productcode: 'Product Code',
                         stockStatus: 'Stock Status',
-                        originalPrice: 'Original Price',
+                        originalPrice: 'Original Price (MRP)',
                         imageKeys: 'Image Keys',
                         imageBuckets: 'Image Buckets',
                         imageMimeTypes: 'Image Mime Types',
                         imageSizes: 'Image Sizes',
-                        uploadFile: 'Upload File',
+                        uploadFile: 'Upload Images',
+                        category: 'Main Category',
+                        subcategory: 'Subcategory',
                     },
                 },
             },
@@ -283,6 +431,12 @@ const startAdmin = async () => {
             const categoryBreakdown = {};
             categoryAgg.forEach(c => { categoryBreakdown[c._id] = c.count; });
 
+            // Subcategory breakdown
+            const subcategoryAgg = await Product.aggregate([
+                { $group: { _id: { category: '$category', subcategory: '$subcategory' }, count: { $sum: 1 } } },
+                { $sort: { count: -1 } }
+            ]);
+
             // Recent products (last 8)
             const recentProducts = await Product.find()
                 .sort({ createdAt: -1 })
@@ -301,6 +455,7 @@ const startAdmin = async () => {
                 outOfStock,
                 withOffers,
                 categoryBreakdown,
+                subcategoryAgg,
                 recentProducts,
                 totalOrders,
             });

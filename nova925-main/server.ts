@@ -6,6 +6,7 @@ import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 import { MongoClient, Db } from "mongodb";
+import sharp from "sharp";
 
 dotenv.config();
 
@@ -83,6 +84,46 @@ async function startServer() {
     res.json({ status: "ok", database: db ? "connected" : "disconnected" });
   });
 
+  // ─── Image Proxy: fetches R2 images and serves as compressed WebP ────────
+  // Usage: /api/image?url=<encoded-r2-url>&w=800
+  app.get("/api/image", async (req, res) => {
+    try {
+      const rawUrl = req.query.url as string;
+      const maxWidth = Math.min(parseInt(req.query.w as string) || 900, 1200);
+
+      if (!rawUrl) return res.status(400).json({ error: "Missing url param" });
+
+      // Only allow images from our own R2 bucket
+      const r2PublicUrl = process.env.R2_PUBLIC_URL || '';
+      if (!rawUrl.startsWith(r2PublicUrl)) {
+        return res.status(403).json({ error: "Forbidden origin" });
+      }
+
+      const upstream = await fetch(rawUrl);
+      if (!upstream.ok) {
+        return res.status(upstream.status).end();
+      }
+
+      const buffer = Buffer.from(await upstream.arrayBuffer());
+
+      const optimized = await sharp(buffer)
+        .resize({ width: maxWidth, withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toBuffer();
+
+      // Cache for 30 days in the browser, 1 day at CDN edge
+      res.set({
+        "Content-Type": "image/webp",
+        "Cache-Control": "public, max-age=2592000, s-maxage=86400",
+        "Vary": "Accept",
+      });
+      res.send(optimized);
+    } catch (err: any) {
+      console.error("Image proxy error:", err.message);
+      res.status(500).end();
+    }
+  });
+
   // Products endpoint (fetches from MongoDB products collection)
   app.get("/api/products", async (req, res) => {
     try {
@@ -91,13 +132,19 @@ async function startServer() {
       }
       const mongoProducts = await db.collection("products").find({}).sort({ createdAt: -1 }).toArray();
       const r2PublicUrl = process.env.R2_PUBLIC_URL || '';
-      
+
+      // Route all product images through the local image proxy for WebP compression & caching
+      const toProxy = (key: string) =>
+        `/api/image?url=${encodeURIComponent(`${r2PublicUrl}/${key}`)}&w=900`;
+
       const enhancedProducts = mongoProducts.map(p => ({
         ...p,
-        fullImageUrls: p.imageKeys && Array.isArray(p.imageKeys) ? p.imageKeys.map((k: string) => `${r2PublicUrl}/${k}`) : null,
-        fullImageUrl: p.imageKeys && Array.isArray(p.imageKeys) && p.imageKeys.length > 0 
-            ? `${r2PublicUrl}/${p.imageKeys[0]}` 
-            : (p.imageKey ? `${r2PublicUrl}/${p.imageKey}` : null)
+        fullImageUrls: p.imageKeys && Array.isArray(p.imageKeys)
+          ? p.imageKeys.map((k: string) => toProxy(k))
+          : null,
+        fullImageUrl: p.imageKeys && Array.isArray(p.imageKeys) && p.imageKeys.length > 0
+          ? toProxy(p.imageKeys[0])
+          : (p.imageKey ? toProxy(p.imageKey) : null),
       }));
 
       res.json({ success: true, products: enhancedProducts });

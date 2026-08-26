@@ -6,7 +6,7 @@ import { Sparkles, CircleDot, ShieldCheck, Tag, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'bracelets' | 'chains' | 'earrings';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains';
 
 interface CategoryPill {
   id: CategoryFilter;
@@ -24,28 +24,28 @@ const CATEGORIES: CategoryPill[] = [
   },
   {
     id: 'rings',
-    label: 'Rings',
+    label: 'Male Rings',
     subLabel: 'Signets & Band Rings',
     image: '/images/products/rings/peacock_ring.webp'
   },
   {
+    id: 'earrings',
+    label: 'Male Ear Studs',
+    subLabel: 'Single & Pair Studs',
+    image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
+  },
+  {
     id: 'bracelets',
-    label: 'Bracelets',
+    label: 'Male Bracelets',
     subLabel: 'Kadas & Cuffs',
     image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
   },
   {
     id: 'chains',
-    label: 'Chain',
+    label: 'Chains',
     subLabel: 'Link & Snake Chains',
     image: '/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'
   },
-  {
-    id: 'earrings',
-    label: 'Ear Studs',
-    subLabel: 'Single & Pair Studs',
-    image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
-  }
 ];
 
 export function GiftsForHim() {
@@ -53,29 +53,33 @@ export function GiftsForHim() {
   const { products, isLoading } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
 
-  // Filter products by selected category
+  // Filter products by selected category.
+  // Products added via admin have category='gifts-for-him' and a subcategory
+  // like 'male-rings', 'male-earrings', etc. which resolve to 'rings', 'earrings' etc.
   const filteredProducts = useMemo(() => {
     if (!products) return [];
 
-    return products.filter((product) => {
-      const category = (product.category || '').toLowerCase();
+    return products.filter((product: any) => {
+      const cat = (product.category || '').toLowerCase();
+      const sub = (product.subcategory || '').toLowerCase();
       const name = (product.name || '').toLowerCase();
 
-      if (selectedCategory === 'all') {
-        return true;
-      }
-      if (selectedCategory === 'rings') {
-        return category.includes('ring');
-      }
-      if (selectedCategory === 'bracelets') {
-        return category.includes('bracelet') || category.includes('bangle') || category.includes('kada');
-      }
-      if (selectedCategory === 'chains') {
-        return category.includes('chain') || category.includes('necklace');
-      }
-      if (selectedCategory === 'earrings') {
-        return category.includes('earring') || category.includes('stud');
-      }
+      // Only show products that belong to the Gifts For Him page
+      const isForHim = cat === 'gifts-for-him';
+
+      if (!isForHim) return false;
+
+      if (selectedCategory === 'all') return true;
+
+      if (selectedCategory === 'rings')
+        return sub === 'rings' || cat.includes('ring') || name.includes('ring');
+      if (selectedCategory === 'earrings')
+        return sub === 'earrings' || cat.includes('earring') || cat.includes('stud');
+      if (selectedCategory === 'bracelets')
+        return sub === 'bracelets' || cat.includes('bracelet');
+      if (selectedCategory === 'chains')
+        return sub === 'chains' || cat.includes('chain') || cat.includes('necklace');
+
       return true;
     });
   }, [products, selectedCategory]);

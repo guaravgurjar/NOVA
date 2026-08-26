@@ -6,7 +6,7 @@ import { Sparkles, CircleDot, ShieldCheck, Tag, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'bracelets' | 'chains' | 'earrings';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants';
 
 interface CategoryPill {
     id: CategoryFilter;
@@ -24,28 +24,40 @@ const CATEGORIES: CategoryPill[] = [
     },
     {
         id: 'rings',
-        label: 'Rings',
+        label: 'Female Rings',
         subLabel: 'Signets & Band Rings',
         image: '/images/products/rings/peacock_ring.webp'
     },
     {
+        id: 'earrings',
+        label: 'Female Earrings',
+        subLabel: 'Single & Pair Studs',
+        image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
+    },
+    {
         id: 'bracelets',
-        label: 'Bracelets',
+        label: 'Female Bracelets',
         subLabel: 'Kadas & Cuffs',
         image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
     },
     {
         id: 'chains',
-        label: 'Chain',
+        label: 'Chains',
         subLabel: 'Link & Snake Chains',
         image: '/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'
     },
     {
-        id: 'earrings',
-        label: 'Ear Studs',
-        subLabel: 'Single & Pair Studs',
-        image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
-    }
+        id: 'bangles',
+        label: 'Bangles',
+        subLabel: 'Kadas & Bangles',
+        image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
+    },
+    {
+        id: 'pendants',
+        label: 'Pendants',
+        subLabel: 'Necklace Pendants',
+        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400&h=300'
+    },
 ];
 
 export function GiftsForHer() {
@@ -53,29 +65,41 @@ export function GiftsForHer() {
     const { products, isLoading } = useProducts();
     const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
 
-    // Filter products by selected category
+    // Filter products by selected category.
+    // Products added via admin have category='gifts-for-her' and a subcategory
+    // like 'rings', 'earrings', 'bracelets', etc.
     const filteredProducts = useMemo(() => {
         if (!products) return [];
 
-        return products.filter((product) => {
-            const category = (product.category || '').toLowerCase();
+        return products.filter((product: any) => {
+            const cat = (product.category || '').toLowerCase();
+            const sub = (product.subcategory || '').toLowerCase();
             const name = (product.name || '').toLowerCase();
 
-            if (selectedCategory === 'all') {
-                return true;
-            }
-            if (selectedCategory === 'rings') {
-                return category.includes('ring');
-            }
-            if (selectedCategory === 'bracelets') {
-                return category.includes('bracelet') || category.includes('bangle') || category.includes('kada');
-            }
-            if (selectedCategory === 'chains') {
-                return category.includes('chain') || category.includes('necklace');
-            }
-            if (selectedCategory === 'earrings') {
-                return category.includes('earring') || category.includes('stud');
-            }
+            // Only show products that belong to the Gifts For Her page
+            const isForHer = cat === 'gifts-for-her' ||
+                cat === 'rings' || cat === 'earrings' || cat === 'bracelets' ||
+                cat === 'chains' || cat === 'bangles' || cat === 'pendants' ||
+                cat === 'sets';
+
+            if (!isForHer) return false;
+
+            if (selectedCategory === 'all') return true;
+
+            // Match by subcategory field (new system) or category keyword (legacy)
+            if (selectedCategory === 'rings')
+                return sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring');
+            if (selectedCategory === 'earrings')
+                return sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud');
+            if (selectedCategory === 'bracelets')
+                return sub === 'bracelets' || cat === 'bracelets' || cat.includes('bracelet');
+            if (selectedCategory === 'chains')
+                return sub === 'chains' || cat === 'chains' || cat.includes('chain') || cat.includes('necklace');
+            if (selectedCategory === 'bangles')
+                return sub === 'bangles' || cat === 'bangles' || cat.includes('bangle') || cat.includes('kada');
+            if (selectedCategory === 'pendants')
+                return sub === 'pendants' || cat === 'pendants' || cat.includes('pendant');
+
             return true;
         });
     }, [products, selectedCategory]);

@@ -81,7 +81,7 @@ export function ProductCard({ product }: { product: Product }) {
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            addToCart(product.id);
+            addToCart(product.id, 1, product.stock);
           }}
           className="w-full bg-linear-to-r from-blue-900 to-blue-300 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 md:py-3 rounded-xl shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-300 text-[11px] md:text-sm tracking-wide flex items-center justify-center gap-2 cursor-pointer"
         >

@@ -1,37 +1,78 @@
-import { useState, FormEvent } from 'react';
-import { Lock, Mail, User, Phone, ChevronRight } from 'lucide-react';
+import { useState, FormEvent, useRef, useEffect, useCallback } from 'react';
+import { Lock, Mail, User, Phone, ChevronRight, ArrowLeft, RefreshCw } from 'lucide-react';
 import { useToast } from '../contexts/ToastContext';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { usePageSEO } from '../lib/usePageSEO';
+
+// Common country codes
+const COUNTRY_CODES = [
+  { code: '+91', label: '🇮🇳 +91', name: 'India' },
+  { code: '+1',  label: '🇺🇸 +1',  name: 'USA/Canada' },
+  { code: '+44', label: '🇬🇧 +44', name: 'UK' },
+  { code: '+61', label: '🇦🇺 +61', name: 'Australia' },
+  { code: '+971', label: '🇦🇪 +971', name: 'UAE' },
+  { code: '+65', label: '🇸🇬 +65', name: 'Singapore' },
+  { code: '+60', label: '🇲🇾 +60', name: 'Malaysia' },
+  { code: '+27', label: '🇿🇦 +27', name: 'South Africa' },
+];
+
+const OTP_LENGTH = 6;
+const RESEND_COOLDOWN = 30; // seconds
 
 export function Login() {
   usePageSEO({ title: 'Login / Register', description: 'Sign in or create a NOVA Jewellery account. Access your wishlist, order history, and exclusive offers.', noIndex: true });
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
 
   // Email Login State
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   // Registration State
-  const [regFirstName, setRegFirstName] = useState("");
-  const [regLastName, setRegLastName] = useState("");
-  const [regEmail, setRegEmail] = useState("");
-  const [regPhone, setRegPhone] = useState("");
-  const [regPassword, setRegPassword] = useState("");
+  const [regFirstName, setRegFirstName] = useState('');
+  const [regLastName, setRegLastName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPhone, setRegPhone] = useState('');
+  const [regPassword, setRegPassword] = useState('');
 
   const [isLoading, setIsLoading] = useState(false);
 
   // Phone Login States
   const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otpCode, setOtpCode] = useState("");
+  const [countryCode, setCountryCode] = useState('+91');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [otpDigits, setOtpDigits] = useState<string[]>(Array(OTP_LENGTH).fill(''));
   const [otpSent, setOtpSent] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+  const cooldownTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const { addToast } = useToast();
   const navigate = useNavigate();
   const { loginWithGmail, loginWithEmail, loginWithPhone, signUpWithEmail } = useAuth();
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+    };
+  }, []);
+
+  const startResendCooldown = useCallback(() => {
+    setResendCooldown(RESEND_COOLDOWN);
+    if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+    cooldownTimerRef.current = setInterval(() => {
+      setResendCooldown(prev => {
+        if (prev <= 1) {
+          if (cooldownTimerRef.current) clearInterval(cooldownTimerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  }, []);
 
   const handleEmailLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,41 +93,83 @@ export function Login() {
     }
   };
 
-  const handleSendOtp = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!phoneNumber) {
+  const buildFullPhone = () => `${countryCode}${phoneNumber.trim()}`;
+
+  const handleSendOtp = async (e?: FormEvent<HTMLFormElement>) => {
+    if (e) e.preventDefault();
+    if (!phoneNumber.trim()) {
       addToast('Please enter a valid mobile number.');
       return;
     }
-
-    let formattedPhone = phoneNumber.trim();
-    if (!formattedPhone.startsWith('+')) {
-      if (formattedPhone.length === 10) {
-        formattedPhone = `+91${formattedPhone}`;
-      } else {
-        addToast('Please enter a valid country code prefix (e.g. +91 99999 99999).');
-        return;
-      }
-    }
+    const fullPhone = buildFullPhone();
 
     setIsLoading(true);
     try {
-      const confirmResult = await loginWithPhone(formattedPhone, 'recaptcha-container');
+      const confirmResult = await loginWithPhone(fullPhone, 'recaptcha-container');
       setConfirmationResult(confirmResult);
       setOtpSent(true);
-      addToast('Verification code (OTP) sent successfully!');
+      setOtpDigits(Array(OTP_LENGTH).fill(''));
+      startResendCooldown();
+      addToast('Verification code sent successfully!');
+      // Auto-focus first OTP box
+      setTimeout(() => otpInputRefs.current[0]?.focus(), 100);
     } catch (err: any) {
       console.error(err);
-      addToast(err.message || 'Failed to send OTP code. Please check your phone number.');
+      addToast(err.message || 'Failed to send OTP. Please check your phone number.');
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || isLoading) return;
+    await handleSendOtp();
+  };
+
+  const handleOtpDigitChange = (index: number, value: string) => {
+    // Handle paste of full OTP
+    if (value.length > 1) {
+      const digits = value.replace(/\D/g, '').slice(0, OTP_LENGTH).split('');
+      const next = [...Array(OTP_LENGTH).fill('')];
+      digits.forEach((d, i) => { next[i] = d; });
+      setOtpDigits(next);
+      const focusIndex = Math.min(digits.length, OTP_LENGTH - 1);
+      otpInputRefs.current[focusIndex]?.focus();
+      return;
+    }
+
+    const digit = value.replace(/\D/g, '');
+    const next = [...otpDigits];
+    next[index] = digit;
+    setOtpDigits(next);
+
+    // Move focus forward
+    if (digit && index < OTP_LENGTH - 1) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Backspace') {
+      if (otpDigits[index]) {
+        const next = [...otpDigits];
+        next[index] = '';
+        setOtpDigits(next);
+      } else if (index > 0) {
+        otpInputRefs.current[index - 1]?.focus();
+      }
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+      otpInputRefs.current[index - 1]?.focus();
+    } else if (e.key === 'ArrowRight' && index < OTP_LENGTH - 1) {
+      otpInputRefs.current[index + 1]?.focus();
+    }
+  };
+
   const handleVerifyOtp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!otpCode) {
-      addToast('Please enter the 6-digit verification code.');
+    const otpCode = otpDigits.join('');
+    if (otpCode.length !== OTP_LENGTH) {
+      addToast('Please enter the complete 6-digit code.');
       return;
     }
 
@@ -98,6 +181,9 @@ export function Login() {
     } catch (err: any) {
       console.error(err);
       addToast(err.message || 'Invalid verification code. Please try again.');
+      // Clear OTP fields on failure
+      setOtpDigits(Array(OTP_LENGTH).fill(''));
+      setTimeout(() => otpInputRefs.current[0]?.focus(), 100);
     } finally {
       setIsLoading(false);
     }
@@ -136,9 +222,13 @@ export function Login() {
     }
   };
 
+  const otpCode = otpDigits.join('');
+  const isOtpComplete = otpCode.length === OTP_LENGTH;
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center py-20 px-4 bg-sky-100 text-white min-h-[85vh] relative">
-
+      {/* Hidden reCAPTCHA anchor — must be in the DOM before OTP send */}
+      <div id="recaptcha-container" className="hidden"></div>
 
       <div className="w-full max-w-md glass-dark p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl relative z-10 animate-fade-in flex flex-col">
         {/* Brand Logo Header */}
@@ -204,10 +294,10 @@ export function Login() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setLoginMethod('phone'); }}
+                  onClick={() => { setLoginMethod('phone'); setOtpSent(false); }}
                   className={`pb-1 cursor-pointer transition-colors ${loginMethod === 'phone' ? 'text-nova-gold border-b-2 border-nova-gold font-bold' : 'text-white/40 hover:text-white/70'}`}
                 >
-                  Mobile Number
+                  Mobile OTP
                 </button>
               </div>
             </div>
@@ -257,75 +347,145 @@ export function Login() {
               </form>
             )}
 
-            {/* PHONE LOGIN FLOW */}
+            {/* PHONE / OTP LOGIN FLOW */}
             {loginMethod === 'phone' && (
               <div className="animate-fade-in">
                 {!otpSent ? (
-                  /* Form to enter mobile number and send OTP */
+                  /* ── Step 1: Enter phone number ── */
                   <form onSubmit={handleSendOtp} className="flex flex-col gap-4">
                     <div>
                       <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Mobile Number</label>
-                      <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
-                        <Phone className="w-4 h-4 text-white/30 mr-3" />
-                        <input
-                          type="tel"
-                          placeholder="e.g. 99999 99999 (or with +91)"
-                          value={phoneNumber}
-                          onChange={(e) => setPhoneNumber(e.target.value)}
-                          disabled={isLoading}
-                          required
-                          className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
-                        />
+                      <div className="flex gap-2">
+                        {/* Country Code Selector */}
+                        <div className="relative">
+                          <select
+                            value={countryCode}
+                            onChange={(e) => setCountryCode(e.target.value)}
+                            disabled={isLoading}
+                            className="appearance-none bg-[#121522] border border-white/10 rounded-xl focus:border-nova-gold/60 focus:outline-none text-xs text-white px-3 py-3 pr-7 h-full cursor-pointer transition-colors"
+                            style={{ minWidth: '90px' }}
+                          >
+                            {COUNTRY_CODES.map(c => (
+                              <option key={c.code} value={c.code} style={{ background: '#121522' }}>
+                                {c.label}
+                              </option>
+                            ))}
+                          </select>
+                          <ChevronRight className="absolute right-2 top-1/2 -translate-y-1/2 w-3 h-3 text-white/30 rotate-90 pointer-events-none" />
+                        </div>
+                        {/* Phone Input */}
+                        <div className="flex-1 flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
+                          <Phone className="w-4 h-4 text-white/30 mr-3 shrink-0" />
+                          <input
+                            type="tel"
+                            placeholder="Phone number"
+                            value={phoneNumber}
+                            onChange={(e) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
+                            disabled={isLoading}
+                            required
+                            maxLength={15}
+                            className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full"
+                          />
+                        </div>
                       </div>
-                      <p className="text-[9px] text-white/40 mt-1">For Indian numbers, you can omit the +91 prefix.</p>
+                      <p className="text-[9px] text-white/40 mt-1.5">
+                        Enter your number without the country code — we'll add it automatically.
+                      </p>
                     </div>
-
-                    <div id="recaptcha-container" className="my-2"></div>
 
                     <button
                       type="submit"
                       disabled={isLoading || !phoneNumber.trim()}
                       className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all mt-1 cursor-pointer disabled:opacity-55"
                     >
-                      {isLoading ? 'Sending OTP...' : 'Send Verification OTP'}
+                      {isLoading ? 'Sending OTP...' : 'Send Verification Code'}
                     </button>
                   </form>
                 ) : (
-                  /* Form to enter OTP and verify */
-                  <form onSubmit={handleVerifyOtp} className="flex flex-col gap-4">
+                  /* ── Step 2: Enter OTP ── */
+                  <form onSubmit={handleVerifyOtp} className="flex flex-col gap-5">
+
+                    {/* Back button */}
+                    <button
+                      type="button"
+                      onClick={() => { setOtpSent(false); setOtpDigits(Array(OTP_LENGTH).fill('')); }}
+                      className="flex items-center gap-1.5 text-[10px] text-white/40 hover:text-white/70 transition-colors w-fit cursor-pointer"
+                    >
+                      <ArrowLeft className="w-3 h-3" />
+                      Change number
+                    </button>
+
+                    {/* Sent-to indicator */}
+                    <div className="text-center">
+                      <p className="text-[11px] text-white/50">Code sent to</p>
+                      <p className="text-sm font-semibold text-white mt-0.5 tracking-wider">
+                        {countryCode} {phoneNumber}
+                      </p>
+                    </div>
+
+                    {/* 6-Box OTP Input */}
                     <div>
-                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-1.5 font-medium">Enter 6-Digit OTP *</label>
-                      <div className="flex items-center bg-[#121522] border border-white/10 rounded-xl focus-within:border-nova-gold/60 transition-colors px-4 py-3">
-                        <Lock className="w-4 h-4 text-white/30 mr-3" />
-                        <input
-                          type="text"
-                          maxLength={6}
-                          placeholder="Enter Code"
-                          value={otpCode}
-                          onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
-                          disabled={isLoading}
-                          required
-                          className="bg-transparent border-none focus:outline-none text-xs text-white placeholder-white/20 w-full tracking-[0.5em] text-center font-bold"
-                        />
+                      <label className="text-[10px] uppercase tracking-[0.2em] text-white/50 block mb-3 font-medium text-center">
+                        Enter Verification Code
+                      </label>
+                      <div className="flex justify-center gap-2.5">
+                        {Array.from({ length: OTP_LENGTH }).map((_, i) => (
+                          <input
+                            key={i}
+                            ref={(el) => { otpInputRefs.current[i] = el; }}
+                            type="text"
+                            inputMode="numeric"
+                            maxLength={6} /* allow paste */
+                            value={otpDigits[i]}
+                            onChange={(e) => handleOtpDigitChange(i, e.target.value)}
+                            onKeyDown={(e) => handleOtpKeyDown(i, e)}
+                            onFocus={(e) => e.target.select()}
+                            disabled={isLoading}
+                            className={`w-10 h-12 text-center text-lg font-bold rounded-xl border transition-all duration-200 bg-[#121522] text-white focus:outline-none
+                              ${otpDigits[i]
+                                ? 'border-nova-gold text-nova-gold shadow-[0_0_10px_rgba(212,175,55,0.25)]'
+                                : 'border-white/15 focus:border-nova-gold/60'
+                              }`}
+                          />
+                        ))}
                       </div>
-                      <div className="flex justify-between items-center mt-2">
-                        <span className="text-[10px] text-white/50 font-light">Sent to {phoneNumber}</span>
+
+                      {/* Progress dots */}
+                      <div className="flex justify-center gap-1.5 mt-3">
+                        {Array.from({ length: OTP_LENGTH }).map((_, i) => (
+                          <div
+                            key={i}
+                            className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${otpDigits[i] ? 'bg-nova-gold scale-110' : 'bg-white/15'}`}
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Resend OTP */}
+                    <div className="flex justify-center items-center gap-2">
+                      {resendCooldown > 0 ? (
+                        <span className="text-[11px] text-white/40">
+                          Resend in <span className="text-white/60 font-semibold tabular-nums">{resendCooldown}s</span>
+                        </span>
+                      ) : (
                         <button
                           type="button"
-                          onClick={() => { setOtpSent(false); setOtpCode(''); }}
-                          className="text-[10px] text-nova-gold hover:underline font-semibold cursor-pointer"
+                          onClick={handleResendOtp}
+                          disabled={isLoading}
+                          className="flex items-center gap-1.5 text-[11px] text-nova-gold hover:text-nova-gold-light font-semibold transition-colors cursor-pointer disabled:opacity-50"
                         >
-                          Change Number
+                          <RefreshCw className="w-3 h-3" />
+                          Resend Code
                         </button>
-                      </div>
+                      )}
                     </div>
 
                     <button
                       type="submit"
-                      disabled={isLoading || otpCode.length !== 6}
-                      className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all mt-2 cursor-pointer disabled:opacity-55"
+                      disabled={isLoading || !isOtpComplete}
+                      className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl text-xs font-semibold uppercase tracking-widest hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/20 transition-all cursor-pointer disabled:opacity-55"
                     >
-                      {isLoading ? 'Verifying OTP...' : 'Verify OTP & Log In'}
+                      {isLoading ? 'Verifying...' : 'Verify & Sign In'}
                     </button>
                   </form>
                 )}
@@ -387,7 +547,7 @@ export function Login() {
                 disabled={isLoading}
                 placeholder="10-digit Number"
                 value={regPhone}
-                onChange={(e) => setRegPhone(e.target.value.replace(/\D/g, ""))}
+                onChange={(e) => setRegPhone(e.target.value.replace(/\D/g, ''))}
                 className="w-full bg-[#121522] border border-white/10 focus:border-nova-gold rounded-xl py-3 px-4 text-xs text-white focus:outline-none transition-colors"
               />
             </div>

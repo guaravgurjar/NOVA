@@ -7,6 +7,7 @@ export interface Product {
   images: string[];
   isNew?: boolean;
   category?: string;
+  stock?: number; // Available stock quantity; undefined = unlimited
 }
 
 export interface Category {

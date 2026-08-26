@@ -11,26 +11,51 @@ interface ProductsContextType {
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
 
 // Maps any AdminJS/DB category value to the frontend's slug-based category id.
-// Handles both the new clean slugs and any legacy "Female Bangles"-style values.
+// Handles both the new structured slugs (gifts-for-her, etc.) and legacy values.
 const CATEGORY_MAP: Record<string, string> = {
-  'rings': 'rings',
-  'female rings': 'rings',
-  'male rings': 'rings',
-  'earrings': 'earrings',
-  'female earrings': 'earrings',
-  'male earrings': 'earrings',
-  'male ear-studs': 'earrings',
-  'bracelets': 'bracelets',
-  'female bracelet': 'bracelets',
-  'male bracelet': 'bracelets',
-  'pendants': 'pendants',
-  'chains': 'chains',
-  'female chain': 'chains',
-  'male chain': 'chains',
-  'bangles': 'bangles',
-  'female bangles': 'bangles',
-  'sets': 'sets',
-  'astro': 'astro',
+  // ── New main categories (map to storefront page key) ──────────────────
+  'gifts-for-her':    'gifts-for-her',
+  'gifts-for-him':    'gifts-for-him',
+  'astro-collection': 'astro-collection',
+
+  // ── New subcategories (also stored in `subcategory` field) ────────────
+  // Gifts For Her subcategories
+  'female-rings':     'rings',
+  'female-earrings':  'earrings',
+  'female-bracelets': 'bracelets',
+  'female-chains':    'chains',
+  'female-bangles':   'bangles',
+  'female-pendants':  'pendants',
+  // Gifts For Him subcategories
+  'male-rings':       'rings',
+  'male-earrings':    'earrings',
+  'male-bracelets':   'bracelets',
+  'male-chains':      'chains',
+  'male-ear-studs':   'earrings',
+  // Astro subcategories
+  'astro-pendants':   'pendants',
+  'astro-rings':      'rings',
+  'astro-bracelets':  'bracelets',
+
+  // ── Legacy / flat category values (kept for backwards compatibility) ──
+  'rings':            'rings',
+  'female rings':     'rings',
+  'male rings':       'rings',
+  'earrings':         'earrings',
+  'female earrings':  'earrings',
+  'male earrings':    'earrings',
+  'male ear-studs':   'earrings',
+  'bracelets':        'bracelets',
+  'female bracelet':  'bracelets',
+  'male bracelet':    'bracelets',
+  'pendants':         'pendants',
+  'chains':           'chains',
+  'female chain':     'chains',
+  'male chain':       'chains',
+  'bangles':          'bangles',
+  'female bangles':   'bangles',
+  'sets':             'sets',
+  'astro':            'astro-collection',
 };
 
 function normalizeCategory(raw: string | undefined | null): string {
@@ -82,12 +107,12 @@ export function mapDbProductsToStorefront(dbProducts: any[]): Product[] {
         images: prod.images && prod.images.length > 0 ? prod.images : (staticMatch ? staticMatch.images : [defaultImage]),
         category: prod.category,
         isNew: v.stock > 0 && v.stock < 5,
+        stock: typeof v.stock === 'number' ? v.stock : undefined,
         // Custom properties passed down
         ...({
           sku: v.sku,
           variantId: v.id,
           productId: prod.id,
-          stock: v.stock
         } as any)
       });
     });
@@ -117,8 +142,12 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
               originalPrice: p.originalPrice ? Number(p.originalPrice) : (p.hasActiveOffer && p.offerDiscountPercentage ? Math.round(Number(p.price) / (1 - Number(p.offerDiscountPercentage) / 100)) : undefined),
               image: defaultImg,
               images: imgList,
+              // category = main page key (e.g. 'gifts-for-her')
               category: normalizeCategory(p.category),
-              isNew: p.stockStatus === 'IN_STOCK'
+              // subcategory = product type slug (e.g. 'rings', 'earrings') derived from the DB subcategory field
+              subcategory: p.subcategory ? (CATEGORY_MAP[p.subcategory.toLowerCase()] || p.subcategory) : undefined,
+              isNew: p.stockStatus === 'IN_STOCK',
+              stock: typeof p.stock === 'number' ? p.stock : (typeof p.stockQuantity === 'number' ? p.stockQuantity : undefined),
             };
           });
           setProducts([...dbProds, ...staticProducts]);

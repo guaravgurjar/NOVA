@@ -52,18 +52,7 @@ export function About() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-bg-nova font-sans">
 
-      {/* Page Header Banner */}
-      <div className="relative w-full h-[220px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-nova-gold/5 blur-[80px] pointer-events-none"></div>
-        <div className="container mx-auto px-6 md:px-12 max-w-7xl relative z-10">
-          <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2 block">OUR STORY & CRAFTSMANSHIP</span>
-          <h1 className="text-3xl md:text-5xl font-serif tracking-wider mb-2 font-light">About NOVA</h1>
-          <p className="text-white/60 max-w-xl text-xs md:text-sm font-light">
-            Discover the cosmic inspiration, quality standards, and creative minds driving our silver revolution.
-          </p>
-        </div>
-      </div>
+
 
       {/* Brand & Meaning Sections */}
       <div className="py-20 relative overflow-hidden">
