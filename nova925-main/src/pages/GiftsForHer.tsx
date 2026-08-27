@@ -110,7 +110,7 @@ export function GiftsForHer() {
             {/* ─── Hero Banner ─────────────────────────────────────────────────── */}
             <div className="relative w-full h-[260px] md:h-[380px] overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
                 <img
-                    src="/images/banners/her.png"
+                    src="/images/banners/her.webp"
                     alt="Gifts for Her Banner"
                     className="absolute inset-0 w-full h-full object-cover"
                 />

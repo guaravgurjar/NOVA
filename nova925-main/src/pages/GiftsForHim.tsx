@@ -90,7 +90,7 @@ export function GiftsForHim() {
       {/* ─── Hero Banner ─────────────────────────────────────────────────── */}
       <div className="relative w-full h-[260px] md:h-[380px] overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
         <img
-          src="/images/banners/him.png"
+          src="/images/banners/him.webp"
           alt="Gifts for Him Banner"
           className="absolute inset-0 w-full h-full object-cover"
         />

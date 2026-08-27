@@ -64,7 +64,7 @@ export function AstroCollection() {
       {/* ─── Hero Banner ────────────────────────────────────────────── */}
       <div className="relative w-full h-[260px] md:h-[420px] overflow-hidden border-b border-nova-gold/20 shadow-2xl">
         <img
-          src="/images/banners/astro.jpg"
+          src="/images/banners/astro.webp"
           alt="Astro Collection — Zodiac Sterling Silver Pendants"
           className="absolute inset-0 w-full h-full object-cover"
         />

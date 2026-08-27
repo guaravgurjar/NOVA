@@ -35,11 +35,11 @@ export function Home() {
   const [activeSlide, setActiveSlide] = useState(0);
   const totalSlides = 5;
   const bannerImages = [
-    '/images/banners/hero1.png',
-    '/images/banners/hero2.png',
-    '/images/banners/hero3.png',
-    '/images/banners/astro.png',
-    '/images/banners/kids.png',
+    '/images/banners/hero1.webp',
+    '/images/banners/hero2.webp',
+    '/images/banners/hero3.webp',
+    '/images/banners/astro.webp',
+    '/images/banners/kids.webp',
 
 
   ];
@@ -145,7 +145,7 @@ export function Home() {
       <section aria-label="Sale campaign" className="relative w-full h-48 md:h-100 lg:h-120 flex items-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="/images/banners/5.png"
+            src="/images/banners/him.webp"
             alt="Sale Banner"
             className="w-full h-full object-cover"
             loading="lazy"

@@ -112,7 +112,7 @@ export function Header() {
         <div className="flex items-center gap-2 md:gap-4 pt-5">
           <Link to="/" className="flex items-center py-1 group">
             <img
-              src="/images/banners/logo_new.png"
+              src="/images/banners/logo_new.webp"
               alt="NOVA Jewellery — Home"
               width="180"
               height="48"
