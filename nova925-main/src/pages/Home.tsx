@@ -33,11 +33,15 @@ export function Home() {
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [activeStoryTab, setActiveStoryTab] = useState<'legacy' | 'purity' | 'meaning'>('legacy');
   const [activeSlide, setActiveSlide] = useState(0);
-  const totalSlides = 3;
+  const totalSlides = 5;
   const bannerImages = [
-    '/images/banners/10.png',
-    '/images/banners/2.png',
-    '/images/banners/3.png',
+    '/images/banners/hero1.png',
+    '/images/banners/hero2.png',
+    '/images/banners/hero3.png',
+    '/images/banners/astro.png',
+    '/images/banners/kids.png',
+
+
   ];
 
   useEffect(() => {
