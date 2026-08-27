@@ -29,21 +29,17 @@ if (!getApps().length) {
   }
 }
 
-// Fast-Fail Check: Confirm the environment variable exists before starting the AI client
-if (!process.env.GEMINI_API_KEY) {
-  console.error("❌ CRITICAL ERROR: GEMINI_API_KEY is missing from your .env file.");
-  console.error("Please ensure you have generated a key at aistudio.google.com and added it to your .env file.");
-  process.exit(1);
-}
+// Gemini AI client — optional, only initialized if API key is present
+const ai = process.env.GEMINI_API_KEY
+  ? new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+      httpOptions: { headers: { 'User-Agent': 'aistudio-build' } },
+    })
+  : null;
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY,
-  httpOptions: {
-    headers: {
-      'User-Agent': 'aistudio-build',
-    }
-  }
-});
+if (!ai) {
+  console.warn("⚠️ GEMINI_API_KEY not set — AI chatbot features will be disabled.");
+}
 
 // ─── MongoDB Connection ─────────────────────────────────────────────────────
 let db: Db | null = null;
