@@ -121,12 +121,22 @@ export function mapDbProductsToStorefront(dbProducts: any[]): Product[] {
   return mapped;
 }
 
+const PRODUCTS_SESSION_KEY = 'nova_products_cache';
+
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(staticProducts);
+  // Seed state from sessionStorage so products appear instantly on revisit
+  const [products, setProducts] = useState<Product[]>(() => {
+    try {
+      const cached = sessionStorage.getItem(PRODUCTS_SESSION_KEY);
+      if (cached) return JSON.parse(cached) as Product[];
+    } catch { /* ignore */ }
+    return staticProducts;
+  });
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchProducts = async () => {
-    setIsLoading(true);
+    // Only show loading spinner if we have no products yet
+    setIsLoading(products.length === 0 || products === staticProducts);
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
@@ -150,7 +160,10 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
               stock: typeof p.stock === 'number' ? p.stock : (typeof p.stockQuantity === 'number' ? p.stockQuantity : undefined),
             };
           });
-          setProducts([...dbProds, ...staticProducts]);
+          const merged = [...dbProds, ...staticProducts];
+          setProducts(merged);
+          // Persist to sessionStorage for instant loads on next navigation
+          try { sessionStorage.setItem(PRODUCTS_SESSION_KEY, JSON.stringify(merged)); } catch { /* quota exceeded */ }
           return;
         }
       }

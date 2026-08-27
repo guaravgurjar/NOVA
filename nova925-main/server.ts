@@ -7,8 +7,27 @@ import dotenv from "dotenv";
 import rateLimit from "express-rate-limit";
 import { MongoClient, Db } from "mongodb";
 import sharp from "sharp";
+import helmet from "helmet";
+import cors from "cors";
+import { z } from "zod";
+import { initializeApp, cert, getApps } from "firebase-admin/app";
+import { getAuth } from "firebase-admin/auth";
 
 dotenv.config();
+
+// ─── Firebase Admin Initialization ──────────────────────────────────────────
+if (!getApps().length) {
+  // Use a service account JSON if provided, otherwise use Application Default Credentials.
+  // In production set GOOGLE_APPLICATION_CREDENTIALS or FIREBASE_SERVICE_ACCOUNT env var.
+  const serviceAccountEnv = process.env.FIREBASE_SERVICE_ACCOUNT;
+  if (serviceAccountEnv) {
+    initializeApp({ credential: cert(JSON.parse(serviceAccountEnv)) });
+  } else {
+    // Falls back to Application Default Credentials (works on Cloud Run / GCP)
+    // For local dev the requireAuth middleware allows unauthenticated access.
+    initializeApp({ projectId: process.env.FIREBASE_PROJECT_ID });
+  }
+}
 
 // Fast-Fail Check: Confirm the environment variable exists before starting the AI client
 if (!process.env.GEMINI_API_KEY) {
@@ -36,8 +55,8 @@ async function connectMongo(): Promise<Db | null> {
     return null;
   }
 
+  const client = new MongoClient(MONGODB_URI);
   try {
-    const client = new MongoClient(MONGODB_URI);
     await client.connect();
     const dbName = new URL(MONGODB_URI.replace("mongodb+srv://", "https://")).pathname.replace("/", "") || "nova";
     db = client.db(dbName);
@@ -45,15 +64,73 @@ async function connectMongo(): Promise<Db | null> {
     return db;
   } catch (err: any) {
     console.error("❌ MongoDB connection failed:", err.message || err);
+    await client.close(); // prevent connection leak
     return null;
   }
 }
+
+// ─── Zod Schema: Order Validation ───────────────────────────────────────────
+const OrderItemSchema = z.object({
+  variantId: z.string().min(1),
+  quantity: z.number().int().positive().max(100),
+  pricePaid: z.number().positive(),
+});
+
+const OrderSchema = z.object({
+  buyerName: z.string().min(2).max(120).trim(),
+  buyerEmail: z.string().email(),
+  shippingAddress: z.string().min(10).max(500).trim(),
+  engravingText: z.string().max(100).nullable().optional(),
+  totalPrice: z.number().positive(),
+  items: z.array(OrderItemSchema).min(1).max(50),
+});
+// ─── In-memory image cache (avoids re-fetching + re-encoding R2 images) ────
+// Keyed by "<url>|<width>". Capped at 200 entries to bound memory usage.
+const IMAGE_CACHE = new Map<string, Buffer>();
+const IMAGE_CACHE_MAX = 200;
+
+function imageCacheSet(key: string, buf: Buffer) {
+  if (IMAGE_CACHE.size >= IMAGE_CACHE_MAX) {
+    // Evict the oldest entry
+    IMAGE_CACHE.delete(IMAGE_CACHE.keys().next().value!);
+  }
+  IMAGE_CACHE.set(key, buf);
+}
+
+// ─── In-memory products cache (60 second TTL) ────────────────────────────────
+let productsCache: { data: any; ts: number } | null = null;
+const PRODUCTS_CACHE_TTL_MS = 60_000; // 60 seconds
+
 
 async function startServer() {
   const app = express();
   const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001;
 
-  app.use(express.json());
+  // ── Security Headers (helmet) ────────────────────────────────────────────
+  app.use(helmet({
+    contentSecurityPolicy: false, // Managed separately via Vite/frontend meta tags
+  }));
+
+  // ── CORS ────────────────────────────────────────────────────────────────
+  const allowedOrigins = [
+    process.env.APP_URL ? `https://${process.env.APP_URL}` : null,
+    `http://localhost:${PORT}`,   // server's own origin (SSR self-requests)
+    'http://localhost:3001',
+    'http://localhost:5173',
+  ].filter(Boolean) as string[];
+
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (mobile apps, curl, same-origin SSR)
+      if (!origin || allowedOrigins.some(o => origin.startsWith(o))) {
+        return callback(null, true);
+      }
+      callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
+  }));
+
+  app.use(express.json({ limit: '1mb' }));
 
   // Trust proxy for correct client IP detection behind reverse proxies (like Cloudflare, Vercel, Nginx)
   app.set("trust proxy", 1);
@@ -79,10 +156,44 @@ async function startServer() {
   // Apply general API rate limiter to all /api/ routes
   app.use("/api/", apiLimiter);
 
-  // API routes FIRST
+  // ─── Auth Middleware ─────────────────────────────────────────────────────
+  // IMPORTANT: defined here so all routes below can reference it.
+  // Verifies Firebase ID tokens using firebase-admin SDK.
+  // In development (NODE_ENV !== 'production') falls back to a mock user if
+  // no token or verification fails, so the dev server works without credentials.
+  const requireAuth = async (req: any, res: any, next: any) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      if (process.env.NODE_ENV !== 'production') {
+        req.user = { uid: 'dev-user', email: 'guest@nova-phone.local' };
+        return next();
+      }
+      return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+      // ✅ Real Firebase ID token verification via firebase-admin
+      const decoded = await getAuth().verifyIdToken(token);
+      req.user = { uid: decoded.uid, email: decoded.email || '' };
+      next();
+    } catch (err: any) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn("⚠️ Token verification failed in dev mode, using mock user:", err.message || err);
+        req.user = { uid: 'dev-user', email: 'guest@nova-phone.local' };
+        return next();
+      }
+      console.error("Token Verification Failed:", err.message || err);
+      return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
+  };
+
+  // API routes
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok", database: db ? "connected" : "disconnected" });
   });
+
 
   // ─── Image Proxy: fetches R2 images and serves as compressed WebP ────────
   // Usage: /api/image?url=<encoded-r2-url>&w=800
@@ -93,10 +204,23 @@ async function startServer() {
 
       if (!rawUrl) return res.status(400).json({ error: "Missing url param" });
 
-      // Only allow images from our own R2 bucket
-      const r2PublicUrl = process.env.R2_PUBLIC_URL || '';
+      // ✅ Fail hard if R2_PUBLIC_URL is unset — empty string would allow ALL URLs (SSRF)
+      const r2PublicUrl = process.env.R2_PUBLIC_URL;
+      if (!r2PublicUrl) return res.status(500).json({ error: "Image proxy not configured" });
       if (!rawUrl.startsWith(r2PublicUrl)) {
         return res.status(403).json({ error: "Forbidden origin" });
+      }
+
+      // ✅ Serve from in-memory cache if available (avoids R2 round-trip + sharp re-encode)
+      const cacheKey = `${rawUrl}|${maxWidth}`;
+      const cached = IMAGE_CACHE.get(cacheKey);
+      if (cached) {
+        res.set({
+          "Content-Type": "image/webp",
+          "Cache-Control": "public, max-age=2592000, s-maxage=86400",
+          "X-Cache": "HIT",
+        });
+        return res.send(cached);
       }
 
       const upstream = await fetch(rawUrl);
@@ -111,11 +235,14 @@ async function startServer() {
         .webp({ quality: 82 })
         .toBuffer();
 
+      // Store in cache for subsequent requests
+      imageCacheSet(cacheKey, optimized);
+
       // Cache for 30 days in the browser, 1 day at CDN edge
       res.set({
         "Content-Type": "image/webp",
         "Cache-Control": "public, max-age=2592000, s-maxage=86400",
-        "Vary": "Accept",
+        "X-Cache": "MISS",
       });
       res.send(optimized);
     } catch (err: any) {
@@ -124,8 +251,16 @@ async function startServer() {
     }
   });
 
-  // Products endpoint (fetches from MongoDB products collection)
+  // Products endpoint — 60s server-side cache to avoid hitting MongoDB on every page load
   app.get("/api/products", async (req, res) => {
+    // Set aggressive browser cache headers
+    res.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
+
+    // Serve from memory cache if fresh
+    if (productsCache && Date.now() - productsCache.ts < PRODUCTS_CACHE_TTL_MS) {
+      return res.json(productsCache.data);
+    }
+
     try {
       if (!db) {
         return res.json({ success: true, products: [] });
@@ -147,7 +282,10 @@ async function startServer() {
           : (p.imageKey ? toProxy(p.imageKey) : null),
       }));
 
-      res.json({ success: true, products: enhancedProducts });
+      const payload = { success: true, products: enhancedProducts };
+      // Store in memory cache
+      productsCache = { data: payload, ts: Date.now() };
+      res.json(payload);
     } catch (err: any) {
       console.error("Failed to fetch products from MongoDB:", err);
       res.status(500).json({ error: "Failed to fetch products" });
@@ -155,15 +293,25 @@ async function startServer() {
   });
 
   // ─── Orders Endpoint (MongoDB) ──────────────────────────────────────────
-  app.post("/api/orders", async (req, res) => {
+  app.post("/api/orders", requireAuth, async (req, res) => {
+    // ✅ Validate request body against strict Zod schema
+    const parsed = OrderSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: "Invalid order payload",
+        details: parsed.error.flatten().fieldErrors,
+      });
+    }
+
     try {
-      const orderPayload = req.body;
+      const orderPayload = parsed.data;
       const orderNumber = `NOVA-${Math.floor(100000 + Math.random() * 900000)}`;
       const orderWithId = {
         ...orderPayload,
+        userId: (req as any).user?.uid || null,
         orderNumber,
         createdAt: new Date().toISOString(),
-        status: "pending"
+        status: "pending",
       };
 
       if (db) {
@@ -180,9 +328,14 @@ async function startServer() {
   // ─── Address CRUD Endpoints (MongoDB) ───────────────────────────────────
 
   // GET /api/addresses/:userId — Fetch all addresses for a user
-  app.get("/api/addresses/:userId", async (req, res) => {
+  app.get("/api/addresses/:userId", requireAuth, async (req, res) => {
     try {
       const { userId } = req.params;
+
+      // ✅ Ownership check: users can only access their own addresses
+      if ((req as any).user?.uid !== userId) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
 
       if (!db) {
         return res.json({ success: true, addresses: [] });
@@ -201,9 +354,15 @@ async function startServer() {
   });
 
   // POST /api/addresses/:userId — Create or update an address
-  app.post("/api/addresses/:userId", async (req, res) => {
+  app.post("/api/addresses/:userId", requireAuth, async (req, res) => {
     try {
       const { userId } = req.params;
+
+      // ✅ Ownership check
+      if ((req as any).user?.uid !== userId) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       const address = req.body;
 
       if (!db) {
@@ -232,9 +391,14 @@ async function startServer() {
   });
 
   // DELETE /api/addresses/:userId/:addressId — Delete an address
-  app.delete("/api/addresses/:userId/:addressId", async (req, res) => {
+  app.delete("/api/addresses/:userId/:addressId", requireAuth, async (req, res) => {
     try {
       const { userId, addressId } = req.params;
+
+      // ✅ Ownership check
+      if ((req as any).user?.uid !== userId) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
 
       if (!db) {
         return res.json({ success: true });
@@ -252,9 +416,14 @@ async function startServer() {
   // ─── User Profile Endpoints (MongoDB) ─────────────────────────────────────
 
   // GET /api/profile/:userId — Fetch stored personal info for a user
-  app.get("/api/profile/:userId", async (req, res) => {
+  app.get("/api/profile/:userId", requireAuth, async (req, res) => {
     try {
       const { userId } = req.params;
+
+      // ✅ Ownership check
+      if ((req as any).user?.uid !== userId) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
 
       if (!db) {
         return res.json({ success: true, profile: null });
@@ -269,9 +438,15 @@ async function startServer() {
   });
 
   // POST /api/profile/:userId — Create or update personal info for a user
-  app.post("/api/profile/:userId", async (req, res) => {
+  app.post("/api/profile/:userId", requireAuth, async (req, res) => {
     try {
       const { userId } = req.params;
+
+      // ✅ Ownership check
+      if ((req as any).user?.uid !== userId) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+
       const profileData = req.body;
 
       if (!db) {
@@ -290,46 +465,6 @@ async function startServer() {
       res.status(500).json({ error: "Failed to save profile" });
     }
   });
-
-  // ─── Auth Middleware (kept for chat endpoint) ───────────────────────────
-
-  // Express middleware to verify auth tokens (simplified without firebase-admin)
-  const requireAuth = async (req: any, res: any, next: any) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      // Allow through in dev mode
-      if (process.env.NODE_ENV !== 'production') {
-        req.user = { uid: 'dev-user', email: 'guest@nova-phone.local' };
-        return next();
-      }
-      return res.status(401).json({ error: 'Unauthorized: No token provided' });
-    }
-
-    const token = authHeader.split(' ')[1];
-
-    // Accept mock-token for local/demo configurations
-    if (token === 'mock-token' || token === '') {
-      req.user = { uid: 'mock-user', email: 'guest@nova-phone.local' };
-      return next();
-    }
-
-    // In production, you'd verify the Firebase ID token here.
-    // For now, accept any bearer token and extract UID from it.
-    try {
-      // Basic JWT decode (without verification for dev simplicity)
-      const payload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-      req.user = { uid: payload.sub || payload.user_id || 'unknown', email: payload.email || '' };
-      next();
-    } catch (err: any) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn("⚠️ Token decode failed. Falling back to mock session in development:", err.message || err);
-        req.user = { uid: 'mock-user', email: 'guest@nova-phone.local' };
-        return next();
-      }
-      console.error("Token Verification Failed:", err.message || err);
-      return res.status(401).json({ error: 'Unauthorized: Invalid token' });
-    }
-  };
 
   // Luxury Concierge System Instruction Definition
   const LUXURY_CONCIERGE_PROMPT =
@@ -353,7 +488,7 @@ async function startServer() {
 
       // Streaming setup with the luxury persona configuration
       const response = await ai.models.generateContentStream({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.0-flash",
         contents: formattedContents,
         config: {
           systemInstruction: LUXURY_CONCIERGE_PROMPT,
@@ -423,7 +558,7 @@ async function startServer() {
     });
   }
 
-  // Connect to MongoDB, then start listening
+  // ✅ Connect to MongoDB BEFORE listening — first request is never cold
   await connectMongo();
 
   app.listen(PORT, "0.0.0.0", () => {

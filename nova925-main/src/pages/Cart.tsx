@@ -79,10 +79,14 @@ export function Cart() {
         }))
       };
 
+      const { auth } = await import('../lib/firebase');
+      const token = auth.currentUser ? await auth.currentUser.getIdToken() : null;
+
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
         },
         body: JSON.stringify(orderPayload)
       });

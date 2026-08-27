@@ -22,6 +22,9 @@ export function ProductCard({ product }: { product: Product }) {
             alt={product.name}
             className="w-full h-full object-contain pointer-events-none"
             loading="lazy"
+            decoding="async"
+            width={400}
+            height={400}
           />
 
           {/* Wishlist Button */}

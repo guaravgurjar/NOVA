@@ -27,7 +27,12 @@ const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
 const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL;
 
-const COOKIE_SECRET = process.env.COOKIE_SECRET || 'nova-jewellery-super-secret-cookie-key';
+// ✅ Crash immediately if COOKIE_SECRET is not set — no insecure fallback
+if (!process.env.COOKIE_SECRET) {
+    console.error('❌ CRITICAL: COOKIE_SECRET is not set in environment variables. Set it in nova-admin/.env and restart.');
+    process.exit(1);
+}
+const COOKIE_SECRET = process.env.COOKIE_SECRET;
 
 const s3Client = new S3Client({
     region: 'auto',
@@ -416,7 +421,14 @@ const startAdmin = async () => {
 
     // Build the Express Router
     // ─── Dashboard Stats API ──────────────────────────────────────────────
-    app.get('/admin/api/dashboard-stats', async (req, res) => {
+    // ✅ Protect dashboard stats — only authenticated admin sessions can access
+    app.get('/admin/api/dashboard-stats', (req, res, next) => {
+        // AdminJS stores the session under 'currentAdmin' (not 'adminUser')
+        if (!req.session || !req.session.currentAdmin) {
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+        next();
+    }, async (req, res) => {
         try {
             const totalProducts = await Product.countDocuments();
             const inStock = await Product.countDocuments({ stockStatus: 'IN_STOCK' });
@@ -498,7 +510,8 @@ const startAdmin = async () => {
         secret: COOKIE_SECRET,
         cookie: {
           httpOnly: true,
-          secure: false, // set to true in production with HTTPS
+          secure: process.env.NODE_ENV === 'production', // ✅ HTTPS-only in production
+          sameSite: 'strict',                            // ✅ CSRF protection
         },
       }
     );

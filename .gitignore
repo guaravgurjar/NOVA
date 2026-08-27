@@ -5,6 +5,7 @@ dist/
 .env
 .env.local
 .env.*.local
+nova-admin/.env
 
 # Logs
 npm-debug.log*

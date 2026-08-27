@@ -1,11 +1,11 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { 
-  onAuthStateChanged, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
-  updateProfile as updateFirebaseProfile, 
-  signOut, 
-  GoogleAuthProvider, 
+import { createContext, useContext, useState, useEffect, useRef, ReactNode } from 'react';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile as updateFirebaseProfile,
+  signOut,
+  GoogleAuthProvider,
   signInWithPopup,
   User as FirebaseUser,
   RecaptchaVerifier,
@@ -58,7 +58,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   // Local profile details that Firebase doesn't store directly
   const [localDetails, setLocalDetails] = useState<{
     dob?: string;
@@ -88,10 +88,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (firebaseUser) {
         const userId = getProfileUserId(firebaseUser);
 
+        // Helper: get a fresh Firebase ID token for authenticated API calls
+        const getIdToken = async (): Promise<string | null> => {
+          try { return await firebaseUser.getIdToken(); } catch { return null; }
+        };
+
         // 1. Try to load from MongoDB; fall back to localStorage
         let parsedDetails: any = {};
         try {
-          const res = await fetch(`/api/profile/${encodeURIComponent(userId)}`);
+          const token = await getIdToken();
+          const res = await fetch(`/api/profile/${encodeURIComponent(userId)}`, {
+            headers: token ? { 'Authorization': `Bearer ${token}` } : {},
+          });
           const data = await res.json();
           if (data.success && data.profile) {
             parsedDetails = data.profile;
@@ -160,8 +168,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await signInWithEmailAndPassword(auth, email, password);
   };
 
-  // Keep a reference to the RecaptchaVerifier so we can clear it before recreating
-  const recaptchaVerifierRef = { current: null as any };
+  // Keep a reference to the RecaptchaVerifier across renders
+  const recaptchaVerifierRef = useRef<any>(null);
 
   const loginWithPhone = async (phoneNumber: string, recaptchaContainerId: string): Promise<any> => {
     if (!auth || (auth as any).name === 'mockAuth') {
@@ -194,7 +202,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const recaptchaVerifier = new RecaptchaVerifier(auth, recaptchaContainerId, {
       size: 'invisible',
-      callback: () => {}
+      callback: () => { }
     });
     recaptchaVerifierRef.current = recaptchaVerifier;
 
@@ -218,7 +226,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const currentStored = localStorage.getItem(`nova_firebase_details_${credential.user.uid}`);
         const current = currentStored ? JSON.parse(currentStored) : {};
         localStorage.setItem(
-          `nova_firebase_details_${credential.user.uid}`, 
+          `nova_firebase_details_${credential.user.uid}`,
           JSON.stringify({ ...current, phoneNumber })
         );
       }
@@ -261,9 +269,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // 2. Sync to MongoDB via API
     try {
+      const token = await firebaseUser.getIdToken();
       await fetch(`/api/profile/${encodeURIComponent(userId)}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify(newDetails)
       });
     } catch (err) {

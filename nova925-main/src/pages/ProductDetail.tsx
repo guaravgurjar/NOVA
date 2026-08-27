@@ -7,19 +7,19 @@ import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
 import { usePageSEO } from '../lib/usePageSEO';
-import { 
-  Heart, 
-  ShoppingBag, 
-  ChevronLeft, 
-  ChevronRight, 
-  Star, 
-  Truck, 
-  ShieldCheck, 
-  ArrowLeftRight, 
-  ChevronDown, 
-  ChevronUp, 
-  Minus, 
-  Plus 
+import {
+  Heart,
+  ShoppingBag,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  Truck,
+  ShieldCheck,
+  ArrowLeftRight,
+  ChevronDown,
+  ChevronUp,
+  Minus,
+  Plus
 } from 'lucide-react';
 
 export function ProductDetail() {
@@ -28,7 +28,7 @@ export function ProductDetail() {
   const navigate = useNavigate();
   const { addToast } = useToast();
   const { addToCart } = useCart();
-  
+
   // Find the product
   const product = products.find(p => p.id === id);
 
@@ -45,28 +45,28 @@ export function ProductDetail() {
     noIndex: !product,
     jsonLd: product
       ? {
-          '@context': 'https://schema.org/',
-          '@type': 'Product',
-          name: product.name,
-          image: product.images || [product.image],
-          description: `Buy ${product.name} — certified 925 sterling silver ${product.category || 'jewellery'}.`,
-          sku: product.id,
-          brand: {
-            '@type': 'Brand',
-            name: 'NOVA Jewellery',
-          },
-          offers: {
-            '@type': 'Offer',
-            url: `https://novajewellery.in/product/${product.id}`,
-            priceCurrency: 'INR',
-            price: product.price,
-            availability: 'https://schema.org/InStock',
-            itemCondition: 'https://schema.org/NewCondition',
-          },
-        }
+        '@context': 'https://schema.org/',
+        '@type': 'Product',
+        name: product.name,
+        image: product.images || [product.image],
+        description: `Buy ${product.name} — certified 925 sterling silver ${product.category || 'jewellery'}.`,
+        sku: product.id,
+        brand: {
+          '@type': 'Brand',
+          name: 'NOVA Jewellery',
+        },
+        offers: {
+          '@type': 'Offer',
+          url: `https://novajewellery.in/product/${product.id}`,
+          priceCurrency: 'INR',
+          price: product.price,
+          availability: 'https://schema.org/InStock',
+          itemCondition: 'https://schema.org/NewCondition',
+        },
+      }
       : undefined,
   });
-  
+
   // State variables
   const { toggleWishlist, isInWishlist } = useWishlist();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -76,10 +76,10 @@ export function ProductDetail() {
   const [deliveryStatus, setDeliveryStatus] = useState<string | null>(null);
   const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [isZoomed, setIsZoomed] = useState(false);
-  
+
   // Accordion states
   const [openAccordion, setOpenAccordion] = useState<string | null>('desc');
-  
+
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Reset states on product change
@@ -135,18 +135,18 @@ export function ProductDetail() {
       addToast('Please enter a valid 6-digit pincode');
       return;
     }
-    
+
     // Simulate lookup response
     const days = 2 + (Number(pincode) % 4);
     const date = new Date();
     date.setDate(date.getDate() + days);
-    
+
     const formattedDate = date.toLocaleDateString('en-IN', {
       weekday: 'long',
       day: 'numeric',
       month: 'short'
     });
-    
+
     setDeliveryStatus(`Estimated delivery by ${formattedDate}. Cash on delivery is available.`);
     addToast('Pincode verified');
   };
@@ -164,7 +164,7 @@ export function ProductDetail() {
   return (
     <div className="flex flex-col min-h-screen bg-nova-darker text-white font-sans">
       <div className="container mx-auto px-6 md:px-12 py-8 max-w-7xl flex-1">
-        
+
         {/* Breadcrumbs */}
         <div className="text-[10px] md:text-xs text-white/40 tracking-wider uppercase mb-6 md:mb-8 flex items-center gap-1.5 md:gap-2 overflow-hidden">
           <Link to="/" className="hover:text-nova-gold transition-colors">Home</Link>
@@ -177,24 +177,23 @@ export function ProductDetail() {
               <span>/</span>
             </>
           )}
-          <span className="text-white/80 font-normal truncate max-w-[150px] md:max-w-none">{product.name}</span>
+          <span className="text-white/80 font-normal truncate max-w-37.5 md:max-w-none">{product.name}</span>
         </div>
 
         {/* Product Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-10 lg:gap-16 items-start mb-12 md:mb-20">
-          
+
           {/* LEFT: Image Section (7 columns) */}
           <div className="lg:col-span-7 flex flex-col md:flex-row gap-4 self-stretch">
-            
+
             {/* Thumbnail vertical list (Desktop left) */}
-            <div className="hidden md:flex flex-col gap-3 w-20 overflow-y-auto max-h-[500px] pr-1 scrollbar-thin">
+            <div className="hidden md:flex flex-col gap-3 w-20 overflow-y-auto max-h-125 pr-1 scrollbar-thin">
               {allImages.map((imgUrl, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`aspect-square w-full rounded-lg overflow-hidden bg-[#07090f] border-2 transition-all duration-300 ${
-                    activeImageIndex === idx ? 'border-nova-gold shadow-md' : 'border-white/5 hover:border-white/20'
-                  }`}
+                  className={`aspect-square w-full rounded-lg overflow-hidden bg-[#07090f] border-2 transition-all duration-300 ${activeImageIndex === idx ? 'border-nova-gold shadow-md' : 'border-white/5 hover:border-white/20'
+                    }`}
                 >
                   <img src={imgUrl} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                 </button>
@@ -203,7 +202,7 @@ export function ProductDetail() {
 
             {/* Main Image View */}
             <div className="flex-1 flex flex-col gap-4">
-              <div 
+              <div
                 ref={containerRef}
                 className="relative aspect-square overflow-hidden bg-[#07090f] border border-white/5 rounded-2xl flex items-center justify-center cursor-zoom-in"
                 onMouseMove={handleMouseMove}
@@ -213,8 +212,8 @@ export function ProductDetail() {
                   setMousePos({ x: 50, y: 50 });
                 }}
               >
-                <img 
-                  src={allImages[activeImageIndex]} 
+                <img
+                  src={allImages[activeImageIndex]}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-2xl pointer-events-none transition-transform duration-500 ease-out"
                   loading="eager"
@@ -223,11 +222,11 @@ export function ProductDetail() {
                     transform: isZoomed ? 'scale(1.2)' : 'scale(1)'
                   }}
                 />
-                
+
                 {/* Navigation arrows inside main image */}
                 {allImages.length > 1 && (
                   <>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handlePrevImage();
@@ -237,7 +236,7 @@ export function ProductDetail() {
                     >
                       <ChevronLeft className="w-5 h-5 text-white group-hover:text-nova-darker" />
                     </button>
-                    <button 
+                    <button
                       onClick={(e) => {
                         e.stopPropagation();
                         handleNextImage();
@@ -262,9 +261,8 @@ export function ProductDetail() {
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`aspect-square w-16 shrink-0 rounded-lg overflow-hidden bg-[#07090f] border-2 transition-all ${
-                      activeImageIndex === idx ? 'border-nova-gold' : 'border-white/5'
-                    }`}
+                    className={`aspect-square w-16 shrink-0 rounded-lg overflow-hidden bg-[#07090f] border-2 transition-all ${activeImageIndex === idx ? 'border-nova-gold' : 'border-white/5'
+                      }`}
                   >
                     <img src={imgUrl} alt={`Thumbnail Mobile ${idx + 1}`} className="w-full h-full object-cover" loading="lazy" />
                   </button>
@@ -276,7 +274,7 @@ export function ProductDetail() {
 
           {/* RIGHT: Detail Information (5 columns) */}
           <div className="lg:col-span-5 flex flex-col">
-            
+
             {/* Title & Brand */}
             <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-bold mb-2">NOVA JEWELLERY</span>
             <h1 className="text-2xl md:text-4xl font-serif tracking-wide mb-3 font-medium leading-tight">
@@ -336,20 +334,18 @@ export function ProductDetail() {
                 <button
                   onClick={handleIncrement}
                   disabled={stockLimit !== undefined && quantity >= stockLimit}
-                  className={`px-3.5 py-2 transition-colors font-bold ${
-                    stockLimit !== undefined && quantity >= stockLimit
+                  className={`px-3.5 py-2 transition-colors font-bold ${stockLimit !== undefined && quantity >= stockLimit
                       ? 'text-white/20 cursor-not-allowed'
                       : 'hover:bg-white/5 text-white/75'
-                  }`}
+                    }`}
                 >
                   <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
               {/* Stock info badge */}
               {stockLimit !== undefined && (
-                <span className={`text-[10px] font-medium ${
-                  quantity >= stockLimit ? 'text-amber-400' : stockLimit <= 3 ? 'text-rose-400' : 'text-white/40'
-                }`}>
+                <span className={`text-[10px] font-medium ${quantity >= stockLimit ? 'text-amber-400' : stockLimit <= 3 ? 'text-rose-400' : 'text-white/40'
+                  }`}>
                   {quantity >= stockLimit ? `Max ${stockLimit} in stock` : `${stockLimit - quantity} more available`}
                 </span>
               )}
@@ -357,7 +353,7 @@ export function ProductDetail() {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <button 
+              <button
                 onClick={() => addToCart(product.id, quantity, stockLimit)}
                 className="flex-1 bg-nova-gold hover:bg-nova-gold-light text-nova-darker py-4 rounded-xl font-sans font-bold tracking-[0.2em] text-xs uppercase transition-all duration-300 shadow-md shadow-nova-gold/15 flex items-center justify-center gap-2"
               >
@@ -365,15 +361,14 @@ export function ProductDetail() {
                 <ShoppingBag className="w-4.5 h-4.5" />
                 <span>Add to Cart</span>
               </button>
-              <button 
+              <button
                 onClick={() => {
                   if (product) toggleWishlist(product.id);
                 }}
-                className={`px-6 py-4 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2 ${
-                  isWishlisted 
-                    ? 'bg-red-500/20 border-red-500/30 text-red-500 hover:bg-red-500/30' 
+                className={`px-6 py-4 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2 ${isWishlisted
+                    ? 'bg-red-500/20 border-red-500/30 text-red-500 hover:bg-red-500/30'
                     : 'bg-[#181c2b] hover:bg-white/5 border-white/10 text-white/80 hover:text-white'
-                }`}
+                  }`}
                 aria-label="Wishlist"
               >
                 <Heart className={`w-4.5 h-4.5 ${isWishlisted ? 'fill-current' : ''}`} />
@@ -385,15 +380,15 @@ export function ProductDetail() {
             <div className="glass-dark border border-white/5 rounded-xl p-5 mb-8 text-sm">
               <span className="font-serif text-nova-gold text-xs tracking-wider uppercase block mb-3 font-medium">Check Delivery Options</span>
               <form onSubmit={checkDelivery} className="flex gap-2 mb-3">
-                <input 
-                  type="text" 
+                <input
+                  type="text"
                   maxLength={6}
-                  placeholder="Enter 6-digit Pincode" 
+                  placeholder="Enter 6-digit Pincode"
                   value={pincode}
                   onChange={(e) => setPincode(e.target.value)}
                   className="flex-1 bg-[#181c2b] border border-white/10 focus:border-nova-gold rounded-lg py-2 px-3.5 text-xs text-white focus:outline-none tracking-widest placeholder-white/20"
                 />
-                <button 
+                <button
                   type="submit"
                   className="px-5 bg-white/5 hover:bg-nova-gold border border-white/10 hover:border-nova-gold text-white hover:text-nova-darker text-xs font-semibold tracking-wider rounded-lg transition-all"
                 >
@@ -412,10 +407,10 @@ export function ProductDetail() {
 
             {/* Accordions */}
             <div className="border border-white/5 rounded-xl overflow-hidden glass-dark text-xs font-light">
-              
+
               {/* Description Accordion */}
               <div className="border-b border-white/5">
-                <button 
+                <button
                   onClick={() => toggleAccordion('desc')}
                   className="w-full flex items-center justify-between p-4 font-serif text-nova-gold font-medium tracking-wide"
                 >
@@ -436,7 +431,7 @@ export function ProductDetail() {
 
               {/* Specifications Accordion */}
               <div className="border-b border-white/5">
-                <button 
+                <button
                   onClick={() => toggleAccordion('specs')}
                   className="w-full flex items-center justify-between p-4 font-serif text-nova-gold font-medium tracking-wide"
                 >
@@ -457,7 +452,7 @@ export function ProductDetail() {
 
               {/* Shipping & Returns Accordion */}
               <div>
-                <button 
+                <button
                   onClick={() => toggleAccordion('shipping')}
                   className="w-full flex items-center justify-between p-4 font-serif text-nova-gold font-medium tracking-wide"
                 >
