@@ -8,6 +8,7 @@
     "sync-drive": "tsx sync-drive.ts",
     "build": "vite build --outDir dist/client && vite build --ssr src/entry-server.tsx --outDir dist/server && node -e \"require('fs').copyFileSync('dist/client/index.html', 'dist/client/200.html')\" && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=dist/server.cjs",
     "build:cf": "vite build --outDir dist",
+    "deploy:cf": "npm run build:cf && wrangler deploy",
     "start": "node dist/server.cjs",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit"
@@ -47,6 +48,7 @@
     "tailwindcss": "^4.3.2",
     "tsx": "^4.23.0",
     "typescript": "~5.8.2",
-    "vite": "^6.2.3"
+    "vite": "^6.2.3",
+    "wrangler": "^3.114.17"
   }
 }
