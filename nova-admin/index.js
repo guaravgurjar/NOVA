@@ -416,8 +416,12 @@ const startAdmin = async () => {
         },
     });
 
-    // Watch and bundle custom feature components in development
-    admin.watch();
+    // Build bundle for production, watch for changes in development
+    if (process.env.NODE_ENV === 'production') {
+        await admin.build();
+    } else {
+        admin.watch();
+    }
 
     // Build the Express Router
     // ─── Dashboard Stats API ──────────────────────────────────────────────
