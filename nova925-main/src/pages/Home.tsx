@@ -70,7 +70,7 @@ export function Home() {
       <h1 className="sr-only">NOVA Jewellery — Buy 925 Sterling Silver Jewellery Online</h1>
 
       {/* Hero Banner Slider */}
-      <section aria-label="Featured promotions" className="relative w-full overflow-hidden bg-white  aspect-[16/9] md:aspect-[6250/1953]">
+      <section aria-label="Featured promotions" className="relative w-full overflow-hidden bg-white  aspect-video md:aspect-6250/1953">
         <div
           className="flex h-full transition-transform duration-700 ease-in-out"
           style={{ width: `${totalSlides * 100}%`, transform: `translateX(-${activeSlide * (100 / totalSlides)}%)` }}

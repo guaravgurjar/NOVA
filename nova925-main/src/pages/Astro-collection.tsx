@@ -22,10 +22,10 @@ const ZODIAC_DATES: Record<string, string> = {
 type AstroFilter = 'all' | 'pendants' | 'rings' | 'bracelets';
 
 const ASTRO_TABS: { id: AstroFilter; label: string }[] = [
-  { id: 'all',      label: '✦ All Zodiac' },
-  { id: 'pendants', label: '🔮 Pendants'   },
-  { id: 'rings',    label: '💍 Rings'      },
-  { id: 'bracelets',label: '📿 Bracelets'  },
+  { id: 'all', label: '✦ All Zodiac' },
+  { id: 'pendants', label: '🔮 Pendants' },
+  { id: 'rings', label: '💍 Rings' },
+  { id: 'bracelets', label: '📿 Bracelets' },
 ];
 
 export function AstroCollection() {
@@ -62,45 +62,33 @@ export function AstroCollection() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
       {/* ─── Hero Banner ────────────────────────────────────────────── */}
-      <div className="relative w-full h-[260px] md:h-[420px] overflow-hidden border-b border-nova-gold/20 shadow-2xl">
+      <div className="relative w-full h-65 md:h-95 overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
         <img
           src="/images/banners/astro.webp"
           alt="Astro Collection — Zodiac Sterling Silver Pendants"
           className="absolute inset-0 w-full h-full object-cover"
         />
         {/* Gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
 
-        {/* Overlay Text */}
-        <div className="absolute inset-0 flex flex-col items-center justify-end pb-8 md:pb-12 text-center px-4">
-          <span className="text-[10px] md:text-xs font-semibold uppercase tracking-[0.3em] text-amber-300/80 mb-2">
-            ✦ Written in the Stars ✦
-          </span>
-          <h1 className="text-3xl md:text-5xl font-serif tracking-wide text-white drop-shadow-lg">
-            Astro Collection
-          </h1>
-          <p className="mt-2 text-sm md:text-base text-white/70 max-w-lg font-light">
-            925 Sterling Silver zodiac pendants — wear the symbol that defines you.
-          </p>
-        </div>
+
       </div>
 
       {/* ─── Product Grid Section ───────────────────────────────────── */}
       <section className="container mx-auto px-4 md:px-12 py-14 md:py-20 max-w-7xl flex-1">
         {/* Section Heading */}
-      {/* ─── Subcategory Filter Tabs ─────────────────────────────────── */}
-      <div className="flex items-center justify-between pb-6 mb-10 border-b border-neutral-200">
+        {/* ─── Subcategory Filter Tabs ─────────────────────────────────── */}
+        <div className="flex items-center justify-between pb-6 mb-10 border-b border-neutral-200">
           <div className="flex items-center gap-3 flex-wrap">
             <Stars className="w-5 h-5 text-amber-500 animate-pulse shrink-0" />
             {ASTRO_TABS.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setAstroFilter(tab.id)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all cursor-pointer ${
-                  astroFilter === tab.id
-                    ? 'bg-amber-500 text-white border-amber-500 shadow-md'
-                    : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:border-amber-300'
-                }`}
+                className={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-all cursor-pointer ${astroFilter === tab.id
+                  ? 'bg-amber-500 text-white border-amber-500 shadow-md'
+                  : 'bg-neutral-50 text-neutral-600 border-neutral-200 hover:border-amber-300'
+                  }`}
               >
                 {tab.label}
               </button>

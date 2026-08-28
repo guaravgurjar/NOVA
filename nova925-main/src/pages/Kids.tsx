@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import { shopCategories, reviews } from '../data';
+import { shopCategories } from '../data';
 import { useProducts } from '../contexts/ProductsContext';
 import { ProductCard } from '../components/ProductCard';
-import { Sparkles, CircleDot, ShieldCheck, Tag, ArrowRight } from 'lucide-react';
+import { Sparkles, CircleDot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { usePageSEO } from '../lib/usePageSEO';
 
@@ -19,54 +19,53 @@ const CATEGORIES: CategoryPill[] = [
     {
         id: 'all',
         label: 'All Collection',
-        subLabel: 'Explore All Gifts',
+        subLabel: 'Explore All Kids Gifts',
         image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=400&h=300'
     },
-    {
-        id: 'rings',
-        label: 'Female Rings',
-        subLabel: 'Signets & Band Rings',
-        image: '/images/products/rings/peacock_ring.webp'
-    },
+
     {
         id: 'earrings',
-        label: 'Female Earrings',
-        subLabel: 'Single & Pair Studs',
+        label: 'Kids Earrings',
+        subLabel: 'Fun Ear Studs',
         image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
     },
     {
         id: 'bracelets',
-        label: 'Female Bracelets',
-        subLabel: 'Kadas & Cuffs',
+        label: 'Kids Bracelets',
+        subLabel: 'Playful Cuffs',
         image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
     },
     {
         id: 'chains',
-        label: 'Chains',
-        subLabel: 'Link & Snake Chains',
+        label: 'Kids Chains',
+        subLabel: 'Dainty Necklaces',
         image: '/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'
     },
     {
         id: 'bangles',
-        label: 'Bangles',
-        subLabel: 'Kadas & Bangles',
+        label: 'Kids Bangles',
+        subLabel: 'Charm Bangles',
         image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
     },
     {
         id: 'pendants',
-        label: 'Pendants',
-        subLabel: 'Necklace Pendants',
+        label: 'Kids Pendants',
+        subLabel: 'Cute Pendants',
         image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400&h=300'
     },
 ];
 
-export function GiftsForHer() {
-    usePageSEO({ title: 'Gifts For Her', description: 'Discover the perfect gift for her — 925 sterling silver rings, bracelets, chains & ear studs from NOVA.', canonicalPath: '/gifts-for-her' });
+export function Kids() {
+    usePageSEO({
+        title: 'Kids',
+        description: 'Discover delightful 925 sterling silver jewellery for kids — rings, bracelets, chains & ear studs from NOVA.',
+        canonicalPath: '/kids'
+    });
     const { products, isLoading } = useProducts();
     const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
 
-    // Filter products by selected category.
-    // Products added via admin have category='gifts-for-her' and a subcategory
+    // Filter products belonging to the Kids page.
+    // Products added via admin should have category='kids' and a subcategory
     // like 'rings', 'earrings', 'bracelets', etc.
     const filteredProducts = useMemo(() => {
         if (!products) return [];
@@ -76,51 +75,50 @@ export function GiftsForHer() {
             const sub = (product.subcategory || '').toLowerCase();
             const name = (product.name || '').toLowerCase();
 
-            // Only show products that belong to the Gifts For Her page
-            const isForHer = cat === 'gifts-for-her' ||
-                cat === 'rings' || cat === 'earrings' || cat === 'bracelets' ||
-                cat === 'chains' || cat === 'bangles' || cat === 'pendants' ||
-                cat === 'sets';
+            // Only show products that belong to the Kids page
+            const isForKids = cat === 'kids' ||
+                cat === 'kids-rings' || cat === 'kids-earrings' ||
+                cat === 'kids-bracelets' || cat === 'kids-chains' ||
+                cat === 'kids-bangles' || cat === 'kids-pendants';
 
-            if (!isForHer) return false;
+            if (!isForKids) return false;
 
             if (selectedCategory === 'all') return true;
 
             // Match by subcategory field (new system) or category keyword (legacy)
             if (selectedCategory === 'rings')
-                return sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring');
+                return sub === 'rings' || cat.includes('ring') || name.includes('ring');
             if (selectedCategory === 'earrings')
-                return sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud');
+                return sub === 'earrings' || cat.includes('earring') || cat.includes('stud');
             if (selectedCategory === 'bracelets')
-                return sub === 'bracelets' || cat === 'bracelets' || cat.includes('bracelet');
+                return sub === 'bracelets' || cat.includes('bracelet');
             if (selectedCategory === 'chains')
-                return sub === 'chains' || cat === 'chains' || cat.includes('chain') || cat.includes('necklace');
+                return sub === 'chains' || cat.includes('chain') || cat.includes('necklace');
             if (selectedCategory === 'bangles')
-                return sub === 'bangles' || cat === 'bangles' || cat.includes('bangle') || cat.includes('kada');
+                return sub === 'bangles' || cat.includes('bangle') || cat.includes('kada');
             if (selectedCategory === 'pendants')
-                return sub === 'pendants' || cat === 'pendants' || cat.includes('pendant');
+                return sub === 'pendants' || cat.includes('pendant');
 
             return true;
         });
     }, [products, selectedCategory]);
 
     return (
-        <div className="flex flex-col min-h-screen bg-white text-nova-darkfont-sans">
+        <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
 
             {/* ─── Hero Banner ─────────────────────────────────────────────────── */}
-            <div className="relative w-full h-65 md:h-95 overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
+            <div className="relative w-full h-[260px] md:h-[380px] overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
                 <img
-                    src="/images/banners/her.webp"
-                    alt="Gifts for Her Banner"
+                    src="/images/banners/kids.webp"
+                    alt="Kids Collection Banner"
                     className="absolute inset-0 w-full h-full object-cover"
                 />
-
             </div>
 
             {/* Grid Categories Section */}
             <div className="container mx-auto px-6 md:px-12 py-20 max-w-7xl">
                 <div className="text-center mb-12">
-                    <span className="text-nova-darker text-xs font-semibold uppercase tracking-[0.25em] block mb-2">CURATED FOR YOU</span>
+                    <span className="text-nova-darker text-xs font-semibold uppercase tracking-[0.25em] block mb-2">CURATED FOR LITTLE ONES</span>
                     <h2 className="text-3xl md:text-4xl font-serif tracking-wide font-light text-nova-darker">Shop By Category</h2>
                     <div className="w-30 h-px bg-nova-darker mx-auto mt-4"></div>
                 </div>
@@ -155,7 +153,7 @@ export function GiftsForHer() {
                         <CircleDot className="w-4 h-4 text-nova-dark animate-pulse" />
                         <h3 className="text-lg font-serif text-nova-dark tracking-wide">
                             {selectedCategory === 'all'
-                                ? 'All Gifts For Her'
+                                ? 'All Kids Collection'
                                 : CATEGORIES.find((c) => c.id === selectedCategory)?.label || 'Collection'}
                         </h3>
                         <span className="text-xs text-nova-dark bg-nova-gold/10 px-2.5 py-0.5 rounded-full border border-nova-gold/20 font-semibold">
@@ -184,7 +182,7 @@ export function GiftsForHer() {
                         <Sparkles className="w-12 h-12 text-nova-gold/40 mx-auto mb-4" />
                         <h4 className="text-lg font-serif text-white mb-2">No products found in this category</h4>
                         <p className="text-xs text-white/50 font-light mb-6">
-                            Try selecting another category or check out our entire luxury catalog.
+                            Try selecting another category or check out our entire kids catalog.
                         </p>
                         <button
                             onClick={() => setSelectedCategory('all')}
