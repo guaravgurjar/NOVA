@@ -60,7 +60,7 @@ export function AstroCollection() {
   }, [products, astroFilter]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
+    <div className="flex flex-col min-h-screen  text-nova-dark font-sans">
       {/* ─── Hero Banner ────────────────────────────────────────────── */}
       <div className="relative w-full h-65 md:h-95 overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
         <img
@@ -68,10 +68,6 @@ export function AstroCollection() {
           alt="Astro Collection — Zodiac Sterling Silver Pendants"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Gradient overlay for text legibility */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent" />
-
-
       </div>
 
       {/* ─── Product Grid Section ───────────────────────────────────── */}
