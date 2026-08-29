@@ -43,6 +43,31 @@ const s3Client = new S3Client({
     },
 });
 
+// ─── Storefront cache invalidation ───────────────────────────────────────────
+// Called after every product create / edit / delete so the storefront's
+// server-side products cache is cleared immediately instead of waiting for TTL.
+async function invalidateStorefrontCache() {
+    const url = process.env.STOREFRONT_URL;
+    const secret = process.env.CACHE_INVALIDATE_SECRET;
+    if (!url || !secret) {
+        console.warn('⚠️  STOREFRONT_URL or CACHE_INVALIDATE_SECRET not set — skipping cache invalidation');
+        return;
+    }
+    try {
+        const res = await fetch(`${url}/api/products/invalidate-cache`, {
+            method: 'POST',
+            headers: { 'x-invalidate-secret': secret },
+        });
+        if (res.ok) {
+            console.log('✅ Storefront products cache invalidated');
+        } else {
+            console.warn(`⚠️  Cache invalidation returned ${res.status}`);
+        }
+    } catch (err) {
+        console.error('❌ Failed to invalidate storefront cache:', err.message || err);
+    }
+}
+
 // 2. Create the Custom R2 Provider for AdminJS
 class R2Provider extends BaseProvider {
     constructor() {
@@ -295,6 +320,11 @@ const startAdmin = async () => {
                                 }
                                 return request;
                             },
+                            // Bust the storefront cache so the new product is visible immediately
+                            after: async (response) => {
+                                await invalidateStorefrontCache();
+                                return response;
+                            },
                         },
                         edit: {
                             before: async (request) => {
@@ -309,6 +339,18 @@ const startAdmin = async () => {
                                     }
                                 }
                                 return request;
+                            },
+                            // Bust the storefront cache so edits are visible immediately
+                            after: async (response) => {
+                                await invalidateStorefrontCache();
+                                return response;
+                            },
+                        },
+                        delete: {
+                            // Bust the storefront cache so deleted products disappear immediately
+                            after: async (response) => {
+                                await invalidateStorefrontCache();
+                                return response;
                             },
                         },
                     },

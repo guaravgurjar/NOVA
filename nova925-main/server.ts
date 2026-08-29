@@ -93,9 +93,9 @@ function imageCacheSet(key: string, buf: Buffer) {
   IMAGE_CACHE.set(key, buf);
 }
 
-// ─── In-memory products cache (60 second TTL) ────────────────────────────────
+// ─── In-memory products cache (30 second TTL) ────────────────────────────────
 let productsCache: { data: any; ts: number } | null = null;
-const PRODUCTS_CACHE_TTL_MS = 60_000; // 60 seconds
+const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds — reduced so new AdminJS products surface quickly
 
 
 async function startServer() {
@@ -247,10 +247,28 @@ async function startServer() {
     }
   });
 
-  // Products endpoint — 60s server-side cache to avoid hitting MongoDB on every page load
+  // ─── Cache Invalidation Endpoint ─────────────────────────────────────────
+  // Called by AdminJS after-hooks on product create / edit / delete.
+  // Requires X-Invalidate-Secret header matching CACHE_INVALIDATE_SECRET env var.
+  app.post("/api/products/invalidate-cache", (req, res) => {
+    const secret = req.headers["x-invalidate-secret"] as string | undefined;
+    const expected = process.env.CACHE_INVALIDATE_SECRET;
+    if (!expected) {
+      // Secret not configured — reject to avoid open endpoint
+      return res.status(500).json({ error: "Cache invalidation not configured on server" });
+    }
+    if (secret !== expected) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    productsCache = null;
+    console.log("✅ Products cache invalidated by AdminJS hook");
+    res.json({ success: true, message: "Products cache cleared" });
+  });
+
+  // Products endpoint — 30s server-side cache to avoid hitting MongoDB on every page load
   app.get("/api/products", async (req, res) => {
-    // Set aggressive browser cache headers
-    res.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
+    // Set browser cache headers aligned with server-side TTL
+    res.set("Cache-Control", "public, max-age=30, stale-while-revalidate=60");
 
     // Serve from memory cache if fresh
     if (productsCache && Date.now() - productsCache.ts < PRODUCTS_CACHE_TTL_MS) {

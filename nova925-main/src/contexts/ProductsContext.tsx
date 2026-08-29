@@ -121,22 +121,51 @@ export function mapDbProductsToStorefront(dbProducts: any[]): Product[] {
   return mapped;
 }
 
-const PRODUCTS_SESSION_KEY = 'nova_products_cache';
+const PRODUCTS_CACHE_KEY = 'nova_products_cache_v2'; // v2 — bump to bust old sessionStorage entries
+const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds — matches server-side TTL
+
+function readLocalCache(): Product[] | null {
+  try {
+    const raw = localStorage.getItem(PRODUCTS_CACHE_KEY);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts > PRODUCTS_CACHE_TTL_MS) {
+      localStorage.removeItem(PRODUCTS_CACHE_KEY); // expired
+      return null;
+    }
+    return data as Product[];
+  } catch {
+    return null;
+  }
+}
+
+function writeLocalCache(data: Product[]) {
+  try {
+    localStorage.setItem(PRODUCTS_CACHE_KEY, JSON.stringify({ data, ts: Date.now() }));
+  } catch { /* quota exceeded */ }
+}
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  // Seed state from sessionStorage so products appear instantly on revisit
+  // Seed state from TTL-aware localStorage so products appear instantly on revisit
   const [products, setProducts] = useState<Product[]>(() => {
-    try {
-      const cached = sessionStorage.getItem(PRODUCTS_SESSION_KEY);
-      if (cached) return JSON.parse(cached) as Product[];
-    } catch { /* ignore */ }
-    return staticProducts;
+    const cached = readLocalCache();
+    return cached ?? staticProducts;
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchProducts = async () => {
-    // Only show loading spinner if we have no products yet
-    setIsLoading(products.length === 0 || products === staticProducts);
+  const fetchProducts = async (forceFresh = false) => {
+    // Show loading only when we currently have no real DB products
+    setIsLoading(products === staticProducts || products.length === 0);
+
+    // If we have a fresh local cache and this isn’t a forced refresh, skip the network call
+    if (!forceFresh) {
+      const cached = readLocalCache();
+      if (cached) {
+        setProducts(cached);
+        setIsLoading(false);
+        return;
+      }
+    }
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
@@ -160,13 +189,15 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
               stock: typeof p.stock === 'number' ? p.stock : (typeof p.stockQuantity === 'number' ? p.stockQuantity : undefined),
             };
           });
-          const merged = [...dbProds, ...staticProducts];
-          setProducts(merged);
-          // Persist to sessionStorage for instant loads on next navigation
-          try { sessionStorage.setItem(PRODUCTS_SESSION_KEY, JSON.stringify(merged)); } catch { /* quota exceeded */ }
+
+          // ✅ Issue 4 fix: DB products REPLACE static products — static data is only a fallback
+          // We do NOT merge them to avoid duplicates and stale hardcoded data appearing.
+          setProducts(dbProds);
+          writeLocalCache(dbProds);
           return;
         }
       }
+      // DB returned nothing — fall back to static catalogue
       setProducts(staticProducts);
     } catch (error) {
       console.error("Failed to load products from API:", error);
@@ -181,7 +212,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ProductsContext.Provider value={{ products, isLoading, refreshProducts: fetchProducts }}>
+    <ProductsContext.Provider value={{ products, isLoading, refreshProducts: () => fetchProducts(true) }}>
       {children}
     </ProductsContext.Provider>
   );
