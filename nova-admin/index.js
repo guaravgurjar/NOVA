@@ -46,26 +46,37 @@ const s3Client = new S3Client({
 // ─── Storefront cache invalidation ───────────────────────────────────────────
 // Called after every product create / edit / delete so the storefront's
 // server-side products cache is cleared immediately instead of waiting for TTL.
+// Supports multiple storefronts via comma-separated STOREFRONT_URLS env var
+// e.g. STOREFRONT_URLS=https://novajewel.in,https://novajewels.in
 async function invalidateStorefrontCache() {
-    const url = process.env.STOREFRONT_URL;
+    const urlsRaw = process.env.STOREFRONT_URLS || process.env.STOREFRONT_URL;
     const secret = process.env.CACHE_INVALIDATE_SECRET;
-    if (!url || !secret) {
-        console.warn('⚠️  STOREFRONT_URL or CACHE_INVALIDATE_SECRET not set — skipping cache invalidation');
+    if (!urlsRaw || !secret) {
+        console.warn('⚠️  STOREFRONT_URLS or CACHE_INVALIDATE_SECRET not set — skipping cache invalidation');
         return;
     }
-    try {
-        const res = await fetch(`${url}/api/products/invalidate-cache`, {
-            method: 'POST',
-            headers: { 'x-invalidate-secret': secret },
-        });
-        if (res.ok) {
-            console.log('✅ Storefront products cache invalidated');
-        } else {
-            console.warn(`⚠️  Cache invalidation returned ${res.status}`);
-        }
-    } catch (err) {
-        console.error('❌ Failed to invalidate storefront cache:', err.message || err);
-    }
+
+    // Support both a single URL (legacy) and comma-separated list
+    const urls = urlsRaw.split(',').map(u => u.trim()).filter(Boolean);
+
+    // Fire all invalidation requests in parallel
+    await Promise.allSettled(
+        urls.map(async (url) => {
+            try {
+                const res = await fetch(`${url}/api/products/invalidate-cache`, {
+                    method: 'POST',
+                    headers: { 'x-invalidate-secret': secret },
+                });
+                if (res.ok) {
+                    console.log(`✅ Storefront cache invalidated: ${url}`);
+                } else {
+                    console.warn(`⚠️  Cache invalidation returned ${res.status} for ${url}`);
+                }
+            } catch (err) {
+                console.error(`❌ Failed to invalidate cache for ${url}:`, err.message || err);
+            }
+        })
+    );
 }
 
 // 2. Create the Custom R2 Provider for AdminJS

@@ -110,6 +110,10 @@ async function startServer() {
   // ── CORS ────────────────────────────────────────────────────────────────
   const allowedOrigins = [
     process.env.APP_URL ? `https://${process.env.APP_URL}` : null,
+    // Also accept the 's' variant — both novajewel.in and novajewels.in are live
+    process.env.APP_URL_ALT ? `https://${process.env.APP_URL_ALT}` : null,
+    `https://www.novajewel.in`,
+    `https://www.novajewels.in`,
     `http://localhost:${PORT}`,   // server's own origin (SSR self-requests)
     'http://localhost:3001',
     'http://localhost:5173',
