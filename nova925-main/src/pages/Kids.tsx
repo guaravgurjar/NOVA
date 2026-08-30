@@ -107,7 +107,7 @@ export function Kids() {
         <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
 
             {/* ─── Hero Banner ─────────────────────────────────────────────────── */}
-            <div className="relative w-full h-[260px] md:h-[380px] overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
+            <div className="relative w-full h-65 md:h-95 overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
                 <img
                     src="/images/banners/kids.webp"
                     alt="Kids Collection Banner"

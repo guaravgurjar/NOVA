@@ -16,7 +16,8 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "types": [
-      "vite/client"
+      "vite/client",
+      "@cloudflare/workers-types"
     ],
     "paths": {
       "@/*": [

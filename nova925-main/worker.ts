@@ -1,13 +1,18 @@
-﻿import { onRequestPost as chatHandler } from "./functions/api/chat";
+import { onRequestPost as chatHandler } from "./functions/api/chat";
 import { onRequestGet as healthHandler } from "./functions/api/health";
 import { onRequestPost as ordersHandler } from "./functions/api/orders";
-import { onRequestGet as productsHandler } from "./functions/api/products";
+import {
+  onRequestGet as productsGetHandler,
+  onRequestPost as productsCacheInvalidateHandler,
+} from "./functions/api/products";
 
 export interface Env {
   ASSETS: Fetcher;
   GEMINI_API_KEY?: string;
   FIREBASE_PROJECT_ID?: string;
   MONGODB_URI?: string;
+  R2_PUBLIC_URL?: string;
+  CACHE_INVALIDATE_SECRET?: string;
 }
 
 export default {
@@ -28,8 +33,13 @@ export default {
       if (pathname === "/api/orders" && request.method === "POST") {
         return ordersHandler(context as any);
       }
+
+      // Products — GET fetches from MongoDB, POST invalidates edge cache
       if (pathname === "/api/products" && request.method === "GET") {
-        return productsHandler(context as any);
+        return productsGetHandler(context as any);
+      }
+      if (pathname === "/api/products/invalidate-cache" && request.method === "POST") {
+        return productsCacheInvalidateHandler(context as any);
       }
 
       return new Response(JSON.stringify({ error: "Not found" }), {
@@ -39,6 +49,6 @@ export default {
     }
 
     // --- Static assets (SPA) ---
-    return env.ASSETS.fetch(request);
+    return (env.ASSETS.fetch as (req: Request) => Promise<Response>)(request);
   },
 };
