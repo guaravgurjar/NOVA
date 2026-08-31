@@ -1,4 +1,4 @@
-import { MongoClient } from "mongodb";
+import type { MongoClient as MongoClientType } from "mongodb";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 interface Env {
@@ -17,8 +17,8 @@ export const onRequestGet = async (context: { env: Env; request: Request }) => {
   const { env } = context;
 
   // 1. Try Cloudflare edge cache first (30s TTL)
-  const cache = caches.default;
-  const cached = await cache.match(CACHE_KEY);
+  const cache = typeof caches !== "undefined" ? (caches as any).default : null;
+  const cached = cache ? await cache.match(CACHE_KEY) : null;
   if (cached) {
     // Clone and add a cache-hit header for visibility
     const hit = new Response(cached.body, cached);
@@ -32,7 +32,8 @@ export const onRequestGet = async (context: { env: Env; request: Request }) => {
     return json({ success: true, products: [], error: "MONGODB_URI not configured" }, 500);
   }
 
-  let client: MongoClient | null = null;
+  const { MongoClient } = await import("mongodb");
+  let client: MongoClientType | null = null;
   try {
     client = new MongoClient(mongoUri, {
       serverSelectionTimeoutMS: 5000,
@@ -113,8 +114,8 @@ export const onRequestPost = async (context: { env: Env; request: Request }) => 
   }
 
   try {
-    const cache = caches.default;
-    const deleted = await cache.delete(CACHE_KEY);
+    const cache = typeof caches !== "undefined" ? (caches as any).default : null;
+    const deleted = cache ? await cache.delete(CACHE_KEY) : false;
     console.log(`✅ Products edge cache invalidated (deleted=${deleted})`);
     return json({ success: true, deleted });
   } catch (err: any) {
