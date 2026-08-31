@@ -5,6 +5,7 @@ import {
   onRequestGet as productsGetHandler,
   onRequestPost as productsCacheInvalidateHandler,
 } from "./functions/api/products";
+import { onRequestGet as imageHandler } from "./functions/api/image";
 
 export interface Env {
   ASSETS: Fetcher;
@@ -40,6 +41,11 @@ export default {
       }
       if (pathname === "/api/products/invalidate-cache" && request.method === "POST") {
         return productsCacheInvalidateHandler(context as any);
+      }
+
+      // Image Proxy — GET fetches from R2 and caches
+      if (pathname === "/api/image" && request.method === "GET") {
+        return imageHandler(context as any);
       }
 
       return new Response(JSON.stringify({ error: "Not found" }), {
