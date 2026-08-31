@@ -23,25 +23,15 @@ const GRADIENT_GOLD = 'linear-gradient(135deg, #c5a880 0%, #e8d5b7 50%, #c5a880 
 const GRADIENT_DARK = 'linear-gradient(135deg, #0b0e17 0%, #181c2b 100%)';
 
 const CATEGORY_ICONS = {
-  rings: '💍',
-  earrings: '✨',
-  bracelets: '📿',
-  pendants: '🔱',
-  chains: '🔗',
-  bangles: '⭕',
-  sets: '🎁',
-  astro: '♈',
+  'gifts-for-her': '🎀',
+  'gifts-for-him': '🎁',
+  'astro-collection': '✨',
 };
 
 const CATEGORY_LABELS = {
-  rings: 'Rings',
-  earrings: 'Earrings',
-  bracelets: 'Bracelets',
-  pendants: 'Pendants',
-  chains: 'Chains',
-  bangles: 'Bangles',
-  sets: 'Sets',
-  astro: 'Personalised',
+  'gifts-for-her': 'Gifts For Her',
+  'gifts-for-him': 'Gifts For Him',
+  'astro-collection': 'Astro Collection',
 };
 
 // ─── Main Dashboard Component ───────────────────────────────────────────────

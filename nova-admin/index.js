@@ -476,16 +476,49 @@ const startAdmin = async () => {
         admin.watch();
     }
 
-    // Build the Express Router
+    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+      admin,
+      {
+        authenticate: async (email, password) => {
+          // Look up the admin by email in MongoDB
+          const user = await AdminUser.findOne({ email: email.toLowerCase().trim() });
+          if (!user) return null;
+
+          // Reject immediately if the account has been deactivated
+          if (!user.isActive) return null;
+
+          // Verify the supplied plaintext password against the bcrypt hash
+          const valid = await bcrypt.compare(password, user.password);
+          if (!valid) return null;
+
+          // Return the session payload — role is used for RBAC throughout AdminJS
+          return { email: user.email, role: user.role };
+        },
+        cookieName: 'nova-admin-session',
+        cookiePassword: COOKIE_SECRET,
+      },
+      null,
+      {
+        store: ConnectMongo.create({
+          mongoUrl: process.env.MONGODB_URI,
+          collectionName: 'admin_sessions',
+          ttl: 24 * 60 * 60, // 1 day
+        }),
+        resave: false,
+        saveUninitialized: false,
+        secret: COOKIE_SECRET,
+        cookie: {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production', // ✅ HTTPS-only in production
+          sameSite: 'strict',                            // ✅ CSRF protection
+        },
+      }
+    );
+
     // ─── Dashboard Stats API ──────────────────────────────────────────────
     // ✅ Protect dashboard stats — only authenticated admin sessions can access
-    app.get('/admin/api/dashboard-stats', (req, res, next) => {
-        // AdminJS stores the session under 'currentAdmin' (not 'adminUser')
-        if (!req.session || !req.session.currentAdmin) {
-            return res.status(401).json({ error: 'Unauthorized' });
-        }
-        next();
-    }, async (req, res) => {
+    // Registered on the adminRouter to ensure session and auth are available.
+    adminRouter.get('/api/dashboard-stats', async (req, res) => {
         try {
             const totalProducts = await Product.countDocuments();
             const inStock = await Product.countDocuments({ stockStatus: 'IN_STOCK' });
@@ -534,44 +567,6 @@ const startAdmin = async () => {
         }
     });
 
-    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-      admin,
-      {
-        authenticate: async (email, password) => {
-          // Look up the admin by email in MongoDB
-          const user = await AdminUser.findOne({ email: email.toLowerCase().trim() });
-          if (!user) return null;
-
-          // Reject immediately if the account has been deactivated
-          if (!user.isActive) return null;
-
-          // Verify the supplied plaintext password against the bcrypt hash
-          const valid = await bcrypt.compare(password, user.password);
-          if (!valid) return null;
-
-          // Return the session payload — role is used for RBAC throughout AdminJS
-          return { email: user.email, role: user.role };
-        },
-        cookieName: 'nova-admin-session',
-        cookiePassword: COOKIE_SECRET,
-      },
-      null,
-      {
-        store: ConnectMongo.create({
-          mongoUrl: process.env.MONGODB_URI,
-          collectionName: 'admin_sessions',
-          ttl: 24 * 60 * 60, // 1 day
-        }),
-        resave: false,
-        saveUninitialized: false,
-        secret: COOKIE_SECRET,
-        cookie: {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production', // ✅ HTTPS-only in production
-          sameSite: 'strict',                            // ✅ CSRF protection
-        },
-      }
-    );
     app.use(admin.options.rootPath, adminRouter);
 
 
