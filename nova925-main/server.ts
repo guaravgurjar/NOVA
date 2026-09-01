@@ -12,6 +12,8 @@ import cors from "cors";
 import { z } from "zod";
 import { initializeApp, cert, getApps } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
+import { ROUTE_SEO_CONFIGS, RouteSEOOptions, DEFAULT_ORIGIN, DEFAULT_OG_IMAGE, SITE_NAME } from "./src/lib/seoConfig";
+import { products as localProducts } from "./src/data";
 
 dotenv.config();
 
@@ -97,6 +99,175 @@ function imageCacheSet(key: string, buf: Buffer) {
 let productsCache: { data: any; ts: number } | null = null;
 const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds — reduced so new AdminJS products surface quickly
 
+// ─── Server-Side SEO Meta Injection Helpers ─────────────────────────────────
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+async function getSeoMetadata(pathname: string): Promise<RouteSEOOptions> {
+  // 1. Dynamic Product Pages
+  if (pathname.startsWith('/product/')) {
+    const productId = pathname.split('/')[2];
+    let product: any = null;
+    try {
+      if (db) {
+        product = await db.collection("products").findOne({ id: productId });
+      }
+    } catch (err) {
+      console.error("SEO database product fetch failed:", err);
+    }
+    
+    if (!product) {
+      product = localProducts.find(p => p.id === productId);
+    }
+
+    if (product) {
+      const defaultImg = product.fullImageUrl || (product.images && product.images[0]) || product.image || DEFAULT_OG_IMAGE;
+      return {
+        title: `${product.name} — 925 Sterling Silver`,
+        description: `Buy ${product.name} online at NOVA Jewellery. Premium 925 hallmarked sterling silver. Price: ₹${product.price.toLocaleString('en-IN')}. Free delivery & cash on delivery available.`,
+        keywords: `buy ${product.name.toLowerCase()}, 925 sterling silver ${product.name.toLowerCase()}, hallmarked silver ${product.category}`,
+        canonicalPath: `/product/${product.id}`,
+        ogImage: defaultImg,
+        ogType: 'product',
+        jsonLd: {
+          '@context': 'https://schema.org/',
+          '@type': 'Product',
+          name: product.name,
+          image: product.images || [product.image],
+          description: `Buy ${product.name} — certified 925 sterling silver ${product.category || 'jewellery'}.`,
+          sku: product.id,
+          brand: {
+            '@type': 'Brand',
+            name: 'NOVA Jewellery',
+          },
+          offers: {
+            '@type': 'Offer',
+            url: `${DEFAULT_ORIGIN}/product/${product.id}`,
+            priceCurrency: 'INR',
+            price: product.price,
+            availability: 'https://schema.org/InStock',
+            itemCondition: 'https://schema.org/NewCondition',
+          },
+        }
+      };
+    }
+  }
+
+  // 2. Dynamic Category Pages
+  if (pathname.startsWith('/category/')) {
+    const categoryKey = pathname.split('/')[2];
+    const catName = categoryKey.charAt(0).toUpperCase() + categoryKey.slice(1);
+    return {
+      title: `Buy 925 Sterling Silver ${catName} Online India`,
+      description: `Shop certified 925 sterling silver ${categoryKey} at NOVA. Elegant designs, hallmarked purity, free shipping, and cash on delivery.`,
+      keywords: `silver ${categoryKey}, 925 sterling silver ${categoryKey}, buy silver ${categoryKey} online, luxury silver ${categoryKey}`,
+      canonicalPath: `/category/${categoryKey}`,
+      ogType: 'website',
+    };
+  }
+
+  // 3. Static Pages
+  const staticConfig = ROUTE_SEO_CONFIGS[pathname];
+  if (staticConfig) return staticConfig;
+
+  // Fallback: Default Homepage SEO
+  return {
+    title: 'Buy 925 Sterling Silver Jewellery Online India',
+    description: 'Explore NOVA Jewellery for certified 925 sterling silver rings, earrings, necklaces, bracelets & accessories. Hallmarked purity, free shipping, cash on delivery.',
+    keywords: 'silver jewellery, 925 sterling silver, online jewellery store India, silver rings, silver necklaces, hallmarked silver',
+    canonicalPath: '/',
+    ogType: 'website',
+  };
+}
+
+function injectSeo(template: string, seo: RouteSEOOptions, pathname: string): string {
+  const titleVal = escapeHtml(seo.title ? `${seo.title} | ${SITE_NAME}` : SITE_NAME);
+  const descVal = escapeHtml(seo.description || '');
+  const keywordsVal = escapeHtml(seo.keywords || '');
+  const robotsVal = escapeHtml(seo.noIndex ? 'noindex, nofollow' : 'index, follow');
+  
+  let canonicalVal = '';
+  if (seo.canonicalPath) {
+    canonicalVal = escapeHtml(seo.canonicalPath.startsWith('http') 
+      ? seo.canonicalPath 
+      : `${DEFAULT_ORIGIN}${seo.canonicalPath}`);
+  } else {
+    canonicalVal = escapeHtml(`${DEFAULT_ORIGIN}${pathname}`);
+  }
+
+  const ogTitleVal = escapeHtml(seo.ogTitle || seo.title || SITE_NAME);
+  const ogDescVal = escapeHtml(seo.ogDescription || seo.description || '');
+  const ogImageVal = escapeHtml(seo.ogImage || DEFAULT_OG_IMAGE);
+  const ogTypeVal = escapeHtml(seo.ogType || 'website');
+  
+  const twitterTitleVal = escapeHtml(seo.twitterTitle || ogTitleVal);
+  const twitterDescVal = escapeHtml(seo.twitterDescription || ogDescVal);
+  const twitterImageVal = escapeHtml(seo.twitterImage || ogImageVal);
+  const twitterCardVal = escapeHtml(seo.twitterCard || 'summary_large_image');
+
+  let html = template;
+
+  // Replace Title
+  html = html.replace(/<title>.*?<\/title>/i, `<title>${titleVal}</title>`);
+
+  // Replace Description
+  if (html.includes('name="description"')) {
+    html = html.replace(/<meta name="description" content=".*?"\s*\/?>/i, `<meta name="description" content="${descVal}" />`);
+  } else {
+    html = html.replace('</head>', `    <meta name="description" content="${descVal}" />\n  </head>`);
+  }
+
+  // Replace Keywords (add if not present)
+  if (keywordsVal) {
+    if (html.includes('name="keywords"')) {
+      html = html.replace(/<meta name="keywords" content=".*?"\s*\/?>/i, `<meta name="keywords" content="${keywordsVal}" />`);
+    } else {
+      html = html.replace('</head>', `    <meta name="keywords" content="${keywordsVal}" />\n  </head>`);
+    }
+  }
+
+  // Replace Robots
+  if (html.includes('name="robots"')) {
+    html = html.replace(/<meta name="robots" content=".*?"\s*\/?>/i, `<meta name="robots" content="${robotsVal}" />`);
+  } else {
+    html = html.replace('</head>', `    <meta name="robots" content="${robotsVal}" />\n  </head>`);
+  }
+
+  // Replace Canonical
+  if (html.includes('rel="canonical"')) {
+    html = html.replace(/<link rel="canonical" href=".*?"\s*\/?>/i, `<link rel="canonical" href="${canonicalVal}" />`);
+  } else {
+    html = html.replace('</head>', `    <link rel="canonical" href="${canonicalVal}" />\n  </head>`);
+  }
+
+  // Open Graph
+  html = html.replace(/<meta property="og:title" content=".*?"\s*\/?>/i, `<meta property="og:title" content="${ogTitleVal}" />`);
+  html = html.replace(/<meta property="og:description" content=".*?"\s*\/?>/i, `<meta property="og:description" content="${ogDescVal}" />`);
+  html = html.replace(/<meta property="og:image" content=".*?"\s*\/?>/i, `<meta property="og:image" content="${ogImageVal}" />`);
+  html = html.replace(/<meta property="og:url" content=".*?"\s*\/?>/i, `<meta property="og:url" content="${canonicalVal}" />`);
+  html = html.replace(/<meta property="og:type" content=".*?"\s*\/?>/i, `<meta property="og:type" content="${ogTypeVal}" />`);
+
+  // Twitter
+  html = html.replace(/<meta name="twitter:title" content=".*?"\s*\/?>/i, `<meta name="twitter:title" content="${twitterTitleVal}" />`);
+  html = html.replace(/<meta name="twitter:description" content=".*?"\s*\/?>/i, `<meta name="twitter:description" content="${twitterDescVal}" />`);
+  html = html.replace(/<meta name="twitter:image" content=".*?"\s*\/?>/i, `<meta name="twitter:image" content="${twitterImageVal}" />`);
+  html = html.replace(/<meta name="twitter:card" content=".*?"\s*\/?>/i, `<meta name="twitter:card" content="${twitterCardVal}" />`);
+
+  // Inject Page-Specific JSON-LD if present
+  if (seo.jsonLd) {
+    const jsonLdScript = `\n    <script type="application/ld+json" id="route-json-ld">${JSON.stringify(seo.jsonLd)}</script>\n  </head>`;
+    html = html.replace('</head>', jsonLdScript);
+  }
+
+  return html;
+}
 
 async function startServer() {
   const app = express();
@@ -545,6 +716,11 @@ async function startServer() {
         template = await vite.transformIndexHtml(url, template);
         const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
         const appHtml = render(url).html;
+        
+        // Inject SEO tags on the server
+        const seo = await getSeoMetadata(new URL(url, 'http://localhost').pathname);
+        template = injectSeo(template, seo, new URL(url, 'http://localhost').pathname);
+        
         const html = template.replace(`<div id="root"></div>`, `<div id="root">${appHtml}</div>`);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e: any) {
@@ -567,6 +743,11 @@ async function startServer() {
           const { render } = await import(distServer);
           appHtml = render(url).html;
         }
+        
+        // Inject SEO tags on the server
+        const seo = await getSeoMetadata(new URL(url, 'http://localhost').pathname);
+        template = injectSeo(template, seo, new URL(url, 'http://localhost').pathname);
+        
         const html = template.replace(`<div id="root"></div>`, `<div id="root">${appHtml}</div>`);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
       } catch (e: any) {

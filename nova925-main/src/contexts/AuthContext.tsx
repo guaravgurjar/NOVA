@@ -100,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const res = await fetch(`/api/profile/${encodeURIComponent(userId)}`, {
             headers: token ? { 'Authorization': `Bearer ${token}` } : {},
           });
-          const data = await res.json();
+          const data = (await res.json()) as any;
           if (data.success && data.profile) {
             parsedDetails = data.profile;
             // Keep localStorage in sync as offline fallback

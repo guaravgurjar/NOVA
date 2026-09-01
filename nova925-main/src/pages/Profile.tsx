@@ -84,7 +84,7 @@ export function Profile() {
             }
           );
           if (!response.ok) throw new Error('Geocoding service error');
-          const data = await response.json();
+          const data = (await response.json()) as any;
           
           if (data && data.address) {
             const addr = data.address;
@@ -180,7 +180,7 @@ export function Profile() {
       
       try {
         const res = await fetch(`/api/addresses/${encodeURIComponent(userId)}`);
-        const data = await res.json();
+        const data = (await res.json()) as any;
         
         if (data.success && data.addresses && data.addresses.length > 0) {
           // Map MongoDB documents to DeliveryAddress (strip MongoDB _id)

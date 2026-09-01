@@ -92,7 +92,7 @@ export function Cart() {
       });
 
       if (res.ok) {
-        const resData = await res.json();
+        const resData = (await res.json()) as any;
         if (resData.success) {
           addToast(`Success! Order Number ${resData.order.orderNumber} placed.`);
           clearCart();

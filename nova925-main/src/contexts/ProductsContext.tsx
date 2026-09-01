@@ -169,7 +169,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
-        const data = await response.json();
+        const data = (await response.json()) as any;
         if (data.products && data.products.length > 0) {
           const dbProds: Product[] = data.products.map((p: any) => {
             const defaultImg = p.fullImageUrl ? p.fullImageUrl : (p.imageKey ? `/uploads/${p.imageKey}` : (p.image || (p.images && p.images[0]) || "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp"));

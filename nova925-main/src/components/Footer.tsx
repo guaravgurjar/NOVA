@@ -62,19 +62,19 @@ export function Footer() {
 
               <div className="flex items-center space-x-3 pt-4">
                 <a href="tel:+919027368625" aria-label="Phone" className="hover:opacity-80 transition-all duration-300">
-                  <img src="/images/icons/phone-green.png" alt="Phone" className="w-8 h-8 object-contain" />
+                  <img src="/images/icons/phone.png" alt="Phone" className="w-8 h-8 object-contain" />
                 </a>
                 <a href="mailto:contact@novajewels.info" aria-label="Mail" className="hover:opacity-80 transition-all duration-300">
-                  <img src="/images/icons/mail-blue.png" alt="Email" className="w-8 h-8 object-contain" />
+                  <img src="/images/icons/mail.png" alt="Email" className="w-8 h-8 object-contain" />
                 </a>
                 <a href="https://www.facebook.com/share/1EiDdUeFD4/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:opacity-80 transition-all duration-300">
                   <img src="/images/icons/facebook.png" alt="Facebook" className="w-8 h-8 object-contain" />
                 </a>
                 <a href="https://www.instagram.com/novasterlingsilver?igsh=MXNuZDZiNmU0azFzMw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:opacity-80 transition-all duration-300">
-                  <img src="/images/icons/instagram.png" alt="Instagram" className="w-8 h-8 object-contain" />
+                  <img src="/images/icons/insta.png" alt="Instagram" className="w-8 h-8 object-contain" />
                 </a>
                 <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" aria-label="Pinterest" className="hover:opacity-80 transition-all duration-300">
-                  <img src="/images/icons/pinterest.png" alt="Pinterest" className="w-8 h-8 object-contain" />
+                  <img src="/images/icons/pintrest.png" alt="Pinterest" className="w-8 h-8 object-contain" />
                 </a>
               </div>
             </div>
