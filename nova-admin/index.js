@@ -196,7 +196,7 @@ const ALL_SUBCATEGORIES = Object.values(SUBCATEGORY_MAP).flat().map(s => s.value
 const productSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String },
-    price: { type: Number },
+    price: { type: Number, required: true },
     originalPrice: { type: Number },
     productcode: { type: String, required: true },
 

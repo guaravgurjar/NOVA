@@ -9,7 +9,8 @@ export function ProductCard({ product }: { product: Product }) {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const isWishlisted = isInWishlist(product.id);
 
-  const originalPrice = product.originalPrice || Math.round(product.price * 1.83);
+  const safePrice = product.price || 0;
+  const originalPrice = product.originalPrice || Math.round(safePrice * 1.83);
   const reviewCount = (product.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 350) + 250;
 
   return (
@@ -58,7 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
             {/* Pricing */}
             <div className="flex items-baseline gap-1.5 md:gap-2 mb-0.5 md:mb-1 flex-wrap">
               <span className="text-base md:text-xl font-bold text-neutral-900 tracking-tight">
-                ₹{product.price.toLocaleString('en-IN')}
+                ₹{safePrice.toLocaleString('en-IN')}
               </span>
               <span className="text-[10px] md:text-sm text-neutral-400 line-through font-normal">
                 ₹{originalPrice.toLocaleString('en-IN')}
