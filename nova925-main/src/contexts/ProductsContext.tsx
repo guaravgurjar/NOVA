@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product } from '../types';
-import { products as staticProducts } from '../data';
 
 interface ProductsContextType {
   products: Product[];
@@ -11,33 +10,33 @@ interface ProductsContextType {
 const ProductsContext = createContext<ProductsContextType | undefined>(undefined);
 
 // Maps any AdminJS/DB category value to the frontend's slug-based category id.
-// Handles both the new structured slugs (gifts-for-her, etc.) and legacy values.
 const CATEGORY_MAP: Record<string, string> = {
-  // ── New main categories (map to storefront page key) ──────────────────
+  // ── New main categories ────────────────────────────────────────────────
   'gifts-for-her':    'gifts-for-her',
   'gifts-for-him':    'gifts-for-him',
   'astro-collection': 'astro-collection',
 
-  // ── New subcategories (also stored in `subcategory` field) ────────────
-  // Gifts For Her subcategories
+  // ── Gifts For Her subcategories ───────────────────────────────────────
   'female-rings':     'rings',
   'female-earrings':  'earrings',
   'female-bracelets': 'bracelets',
   'female-chains':    'chains',
   'female-bangles':   'bangles',
   'female-pendants':  'pendants',
-  // Gifts For Him subcategories
+
+  // ── Gifts For Him subcategories ───────────────────────────────────────
   'male-rings':       'rings',
   'male-earrings':    'earrings',
   'male-bracelets':   'bracelets',
   'male-chains':      'chains',
   'male-ear-studs':   'earrings',
-  // Astro subcategories
+
+  // ── Astro subcategories ───────────────────────────────────────────────
   'astro-pendants':   'pendants',
   'astro-rings':      'rings',
   'astro-bracelets':  'bracelets',
 
-  // ── Legacy / flat category values (kept for backwards compatibility) ──
+  // ── Legacy / flat category values ─────────────────────────────────────
   'rings':            'rings',
   'female rings':     'rings',
   'male rings':       'rings',
@@ -59,70 +58,13 @@ const CATEGORY_MAP: Record<string, string> = {
 };
 
 function normalizeCategory(raw: string | undefined | null): string {
-  if (!raw) return 'rings';
+  if (!raw) return '';
   const key = raw.trim().toLowerCase();
   return CATEGORY_MAP[key] || key;
 }
 
-export function mapDbProductsToStorefront(dbProducts: any[]): Product[] {
-  if (!dbProducts || dbProducts.length === 0) {
-    return staticProducts;
-  }
-
-  const mapped: Product[] = [];
-
-  dbProducts.forEach((prod: any) => {
-    // If the base product has no variants, create a mock variant
-    const variants = prod.variants && prod.variants.length > 0
-      ? prod.variants
-      : [{ id: `mock-${prod.id}`, sku: prod.baseSKU, finalPrice: 2000, metalType: 'SILVER', size: 'OS', stock: 10 }];
-
-    variants.forEach((v: any) => {
-      // Find if we have a static product in data.ts that matches by baseSKU or name
-      const staticMatch = staticProducts.find((sp: any) =>
-        sp.id.toLowerCase() === prod.id.toLowerCase() ||
-        sp.name.toLowerCase() === prod.name.toLowerCase() ||
-        prod.baseSKU.toLowerCase().startsWith(sp.id.toLowerCase()) ||
-        sp.id.toLowerCase().startsWith(prod.baseSKU.toLowerCase())
-      );
-
-      // Default category specific images
-      let defaultImage = "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp";
-      if (prod.category === "earrings") {
-        defaultImage = "/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp";
-      } else if (prod.category === "rings") {
-        const ringMatch = staticProducts.find(sp => sp.category === 'rings') || staticProducts.find(sp => sp.id.includes('ring'));
-        defaultImage = ringMatch ? ringMatch.image : "/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp";
-      } else if (prod.category === "bracelets" || prod.category === "bangles") {
-        const braceMatch = staticProducts.find(sp => sp.category === 'bracelets' || sp.category === 'bangles');
-        defaultImage = braceMatch ? braceMatch.image : defaultImage;
-      }
-
-      mapped.push({
-        id: v.id, // Variant ID is used as the storefront product ID
-        name: `${prod.name} (${v.metalType.replace("GOLD_", "").replace("SILVER", "Silver")}${v.size && v.size !== "OS" ? ` - Sz ${v.size}` : ""})`,
-        price: v.finalPrice,
-        originalPrice: v.finalPrice + Math.round(v.finalPrice * 0.15),
-        image: prod.images && prod.images.length > 0 ? prod.images[0] : (staticMatch ? staticMatch.image : defaultImage),
-        images: prod.images && prod.images.length > 0 ? prod.images : (staticMatch ? staticMatch.images : [defaultImage]),
-        category: prod.category,
-        isNew: v.stock > 0 && v.stock < 5,
-        stock: typeof v.stock === 'number' ? v.stock : undefined,
-        // Custom properties passed down
-        ...({
-          sku: v.sku,
-          variantId: v.id,
-          productId: prod.id,
-        } as any)
-      });
-    });
-  });
-
-  return mapped;
-}
-
-const PRODUCTS_CACHE_KEY = 'nova_products_cache_v2'; // v2 — bump to bust old sessionStorage entries
-const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds — matches server-side TTL
+const PRODUCTS_CACHE_KEY = 'nova_products_cache_v3'; // bumped — clears old static-seeded cache
+const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds
 
 function readLocalCache(): Product[] | null {
   try {
@@ -130,7 +72,7 @@ function readLocalCache(): Product[] | null {
     if (!raw) return null;
     const { data, ts } = JSON.parse(raw);
     if (Date.now() - ts > PRODUCTS_CACHE_TTL_MS) {
-      localStorage.removeItem(PRODUCTS_CACHE_KEY); // expired
+      localStorage.removeItem(PRODUCTS_CACHE_KEY);
       return null;
     }
     return data as Product[];
@@ -146,18 +88,13 @@ function writeLocalCache(data: Product[]) {
 }
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  // Seed state from TTL-aware localStorage so products appear instantly on revisit
-  const [products, setProducts] = useState<Product[]>(() => {
-    const cached = readLocalCache();
-    return cached ?? staticProducts;
-  });
+  const [products, setProducts] = useState<Product[]>(() => readLocalCache() ?? []);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchProducts = async (forceFresh = false) => {
-    // Show loading only when we currently have no real DB products
-    setIsLoading(products === staticProducts || products.length === 0);
+    setIsLoading(true);
 
-    // If we have a fresh local cache and this isn’t a forced refresh, skip the network call
+    // Serve from fresh cache unless forced
     if (!forceFresh) {
       const cached = readLocalCache();
       if (cached) {
@@ -166,42 +103,61 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
         return;
       }
     }
+
     try {
       const response = await fetch('/api/products');
       if (response.ok) {
         const data = (await response.json()) as any;
         if (data.products && data.products.length > 0) {
           const dbProds: Product[] = data.products.map((p: any) => {
-            const defaultImg = p.fullImageUrl ? p.fullImageUrl : (p.imageKey ? `/uploads/${p.imageKey}` : (p.image || (p.images && p.images[0]) || "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp"));
-            const imgList = p.fullImageUrls && p.fullImageUrls.length > 0 ? p.fullImageUrls : (p.images && p.images.length > 0 ? p.images : [defaultImg]);
+            const defaultImg = p.fullImageUrl
+              ? p.fullImageUrl
+              : p.imageKey
+                ? `/uploads/${p.imageKey}`
+                : (p.image || (p.images && p.images[0]) || '');
+            const imgList =
+              p.fullImageUrls && p.fullImageUrls.length > 0
+                ? p.fullImageUrls
+                : p.images && p.images.length > 0
+                  ? p.images
+                  : [defaultImg];
+
             return {
               id: p._id || p.id || `db-${Date.now()}`,
               name: p.name,
               price: Number(p.price) || 0,
-              originalPrice: p.originalPrice ? Number(p.originalPrice) : (p.hasActiveOffer && p.offerDiscountPercentage ? Math.round(Number(p.price) / (1 - Number(p.offerDiscountPercentage) / 100)) : undefined),
+              originalPrice: p.originalPrice
+                ? Number(p.originalPrice)
+                : p.hasActiveOffer && p.offerDiscountPercentage
+                  ? Math.round(Number(p.price) / (1 - Number(p.offerDiscountPercentage) / 100))
+                  : undefined,
               image: defaultImg,
               images: imgList,
-              // category = main page key (e.g. 'gifts-for-her')
               category: normalizeCategory(p.category),
-              // subcategory = product type slug (e.g. 'rings', 'earrings') derived from the DB subcategory field
-              subcategory: p.subcategory ? (CATEGORY_MAP[p.subcategory.toLowerCase()] || p.subcategory) : undefined,
+              subcategory: p.subcategory
+                ? (CATEGORY_MAP[p.subcategory.toLowerCase()] || p.subcategory)
+                : undefined,
               isNew: p.stockStatus === 'IN_STOCK',
-              stock: typeof p.stock === 'number' ? p.stock : (typeof p.stockQuantity === 'number' ? p.stockQuantity : undefined),
+              stock:
+                typeof p.stock === 'number'
+                  ? p.stock
+                  : typeof p.stockQuantity === 'number'
+                    ? p.stockQuantity
+                    : undefined,
             };
           });
 
-          // ✅ Issue 4 fix: DB products REPLACE static products — static data is only a fallback
-          // We do NOT merge them to avoid duplicates and stale hardcoded data appearing.
           setProducts(dbProds);
           writeLocalCache(dbProds);
           return;
         }
       }
-      // DB returned nothing — fall back to static catalogue
-      setProducts(staticProducts);
+      // API returned nothing — show empty list, do NOT fall back to static data
+      setProducts([]);
     } catch (error) {
-      console.error("Failed to load products from API:", error);
-      setProducts(staticProducts);
+      console.error('Failed to load products from API:', error);
+      // Network failure — keep existing cached state if available, else empty
+      setProducts((prev) => (prev.length > 0 ? prev : []));
     } finally {
       setIsLoading(false);
     }
