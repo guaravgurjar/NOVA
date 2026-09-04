@@ -10,7 +10,7 @@ export function ShippingPolicy() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-nova-darker text-white font-sans">
+    <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
       {/* Page Header Banner */}
       <div className="relative w-full h-[200px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -32,11 +32,11 @@ export function ShippingPolicy() {
               <Truck className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-serif tracking-wide text-white mb-3">Delivery Timeline & Shipping Rates</h2>
-              <p className="text-white/70 text-sm font-light leading-relaxed mb-3">
+              <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">Delivery Timeline & Shipping Rates</h2>
+              <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
                 We provide <strong>free standard shipping</strong> across India on all orders. Once you place an order, it is processed within 24 to 48 hours. The package is typically delivered within 4 to 7 business days depending on your location.
               </p>
-              <p className="text-white/70 text-sm font-light leading-relaxed">
+              <p className="text-nova-dark/70 text-sm font-light leading-relaxed">
                 All packages are dispatched in highly secure, premium tamper-evident packaging to ensure your jewelry arrives in perfect condition.
               </p>
             </div>
@@ -48,11 +48,11 @@ export function ShippingPolicy() {
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-serif tracking-wide text-white mb-3">Serviceable Pin Codes & Delivery Reverse Pickups</h2>
-              <p className="text-white/70 text-sm font-light leading-relaxed mb-3">
+              <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">Serviceable Pin Codes & Delivery Reverse Pickups</h2>
+              <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
                 While most pin codes in India support both delivery and return pickups, some remote areas may only be eligible for delivery.
               </p>
-              <p className="text-white/70 text-sm font-light leading-relaxed">
+              <p className="text-nova-dark/70 text-sm font-light leading-relaxed">
                 In cases where reverse pickup is unavailable, you may be requested to return the product via an alternate courier service (e.g., India Post), and we will reimburse shipping costs up to ₹70. For detailed return shipping terms, please refer to our <Link to="/return" className="text-nova-gold hover:underline">Return Policy</Link>.
               </p>
             </div>
@@ -64,30 +64,30 @@ export function ShippingPolicy() {
               <Video className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-serif tracking-wide text-white mb-3">Empty Parcel & Missing Items Policy (Important)</h2>
-              <div className="bg-red-950/20 border border-red-900/30 p-5 rounded-2xl mb-4 text-white/90">
+              <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">Empty Parcel & Missing Items Policy (Important)</h2>
+              <div className="bg-red-50 border border-red-200 p-5 rounded-2xl mb-4 text-nova-dark/90">
                 <h3 className="font-semibold text-nova-gold text-xs uppercase tracking-widest mb-2">48-Hour Claim Window</h3>
-                <p className="text-white/70 text-xs font-light leading-relaxed">
+                <p className="text-nova-dark/70 text-xs font-light leading-relaxed">
                   If you receive an empty parcel or find any product is missing, please contact our Customer Support team within <strong>48 hours of delivery</strong>.
                 </p>
               </div>
-              <p className="text-white/70 text-sm font-light leading-relaxed mb-3">
+              <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
                 To process such claims, you will need to share a <strong>clear 360° unboxing video</strong> showing the unopened package from all angles, followed by the unboxing process. 
               </p>
-              <p className="text-white/70 text-xs font-light leading-relaxed italic text-white/50">
+              <p className="text-nova-dark/50 text-xs font-light leading-relaxed italic">
                 Please note that claims without sufficient unboxing video proof or showing signs of tampering cannot be accepted. The final decision in such cases rests with the brand.
               </p>
             </div>
           </div>
 
           {/* Section 4: Support */}
-          <div className="flex gap-6 items-start border-t border-white/5 pt-10">
+          <div className="flex gap-6 items-start border-t border-nova-dark/10 pt-10">
             <div className="w-12 h-12 rounded-2xl bg-nova-gold/5 border border-nova-gold/20 flex items-center justify-center shrink-0 text-nova-gold">
               <HelpCircle className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-lg font-serif tracking-wide text-white mb-3">Need Assistance?</h2>
-              <p className="text-white/70 text-sm font-light leading-relaxed">
+              <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">Need Assistance?</h2>
+              <p className="text-nova-dark/70 text-sm font-light leading-relaxed">
                 If you have any questions regarding your shipment status or if delivery is delayed, feel free to submit an inquiry or email us at <a href="mailto:contact@novajewels.info" className="text-nova-gold hover:underline">contact@novajewels.info</a>.
               </p>
             </div>

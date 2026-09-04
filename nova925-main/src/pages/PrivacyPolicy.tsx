@@ -8,7 +8,7 @@ export function PrivacyPolicy() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-nova-darker text-white font-sans">
+    <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
       {/* Page Header Banner */}
       <div className="relative w-full h-[200px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -21,7 +21,7 @@ export function PrivacyPolicy() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 py-16 max-w-4xl flex-1 text-white/70 text-sm font-light leading-relaxed">
+      <div className="container mx-auto px-6 md:px-12 py-16 max-w-4xl flex-1 text-nova-dark/70 text-sm font-light leading-relaxed">
         <div className="space-y-8">
           
           <p>
@@ -29,8 +29,8 @@ export function PrivacyPolicy() {
           </p>
 
           {/* PERSONAL INFORMATION WE COLLECT */}
-          <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">Personal Information We Collect</h2>
+          <div className="border-t border-nova-dark/10 pt-8">
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">Personal Information We Collect</h2>
             <p className="mb-4">
               When you visit our website, we automatically collect certain information about your device, such as your web browser, IP address, time zone, and cookies. We also gather details about the pages and products you view, how you found our site, and how you interact with it. This information is referred to as <strong>“Device Information.”</strong>
             </p>
@@ -58,7 +58,7 @@ export function PrivacyPolicy() {
 
           {/* HOW DO WE USE YOUR PERSONAL INFORMATION */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">How Do We Use Your Personal Information?</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">How Do We Use Your Personal Information?</h2>
             <p className="mb-4">
               By using our website or making a purchase, you agree to the use of your personal information as outlined in this policy.
             </p>
@@ -77,7 +77,7 @@ export function PrivacyPolicy() {
 
           {/* HOW WE SHARE YOUR PERSONAL INFORMATION */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">How We Share Your Personal Information</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">How We Share Your Personal Information</h2>
             <p>
               We may share your personal information only when it is necessary to comply with applicable laws and regulations, respond to valid legal requests such as a subpoena or search warrant, or protect our legal rights and services. Please be assured that your privacy and trust remain very important to us, and any such sharing is done responsibly and with care.
             </p>
@@ -85,7 +85,7 @@ export function PrivacyPolicy() {
 
           {/* BEHAVIOURAL ADVERTISING */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">Behavioural Advertising</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">Behavioural Advertising</h2>
             <p className="mb-4">
               We use your personal information to show you relevant advertisements and marketing communications that may match your interests. For more information on how targeted advertising works, you can visit the Network Advertising Initiative’s educational page.
             </p>
@@ -110,7 +110,7 @@ export function PrivacyPolicy() {
 
           {/* DO NOT TRACK */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">Do Not Track</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">Do Not Track</h2>
             <p>
               Please note that we do not change our website’s data collection or usage practices when your browser sends a Do Not Track signal.
             </p>
@@ -118,7 +118,7 @@ export function PrivacyPolicy() {
 
           {/* DATA RETENTION */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">Data Retention</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">Data Retention</h2>
             <p>
               When you place an order through our website, we retain your Order Information for our records unless you request us to delete it.
             </p>
@@ -126,7 +126,7 @@ export function PrivacyPolicy() {
 
           {/* CHANGES TO THIS POLICY */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">Changes to This Policy</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">Changes to This Policy</h2>
             <p>
               We may update this Privacy Policy from time to time to reflect changes in our practices or for operational, legal, or regulatory reasons.
             </p>
@@ -134,7 +134,7 @@ export function PrivacyPolicy() {
 
           {/* CONTACT INFORMATION */}
           <div className="border-t border-white/5 pt-8">
-            <h2 className="text-lg font-serif tracking-wide text-white mb-4 uppercase text-nova-gold">Contact Us</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-4 uppercase text-nova-gold">Contact Us</h2>
             <p>
               For more information about our privacy practices, or if you have any questions or concerns, please feel free to contact us at <a href="mailto:contact@novajewels.info" className="text-nova-gold hover:underline">contact@novajewels.info</a>.
             </p>
