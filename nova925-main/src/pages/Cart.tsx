@@ -8,6 +8,7 @@ import { Trash2, Tag, Gift, Lock, Truck, ClipboardSignature, Landmark } from 'lu
 import { Link } from 'react-router-dom';
 import { Product } from '../types';
 import { usePageSEO } from '../lib/usePageSEO';
+import { useLoginModal } from '../contexts/LoginModalContext';
 
 export function Cart() {
   usePageSEO({ title: 'Shopping Bag', description: 'Review your NOVA Jewellery shopping bag. Secure checkout with free shipping and cash on delivery.', noIndex: true });
@@ -15,6 +16,7 @@ export function Cart() {
   const { cartItems, removeFromCart, updateQuantity, clearCart } = useCart();
   const { products } = useProducts();
   const { user } = useAuth();
+  const { openLoginModal } = useLoginModal();
 
   // Checkout form states
   const [showCheckoutForm, setShowCheckoutForm] = useState(false);
@@ -53,6 +55,10 @@ export function Cart() {
   const finalAmount = totalMrp - discount;
 
   const handleCheckoutToggle = () => {
+    if (!user) {
+      openLoginModal('Please sign in to place your order.');
+      return;
+    }
     setShowCheckoutForm(true);
     window.scrollTo({ top: 300, behavior: 'smooth' });
   };

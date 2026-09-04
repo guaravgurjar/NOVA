@@ -12,8 +12,8 @@ export function ReturnPolicy() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
       {/* Page Header Banner */}
-      <div className="relative w-full h-[200px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="relative w-full h-50 bg-linear-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] bg-size-[16px_16px]"></div>
         <div className="container mx-auto px-6 md:px-12 max-w-5xl relative z-10">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2">CUSTOMER CARE</span>
           <h1 className="text-3xl md:text-4xl font-serif tracking-wider mb-2">Return & Refund Policy</h1>
@@ -25,7 +25,7 @@ export function ReturnPolicy() {
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-4xl flex-1">
         <div className="space-y-12">
-          
+
           {/* Section 1: Return Policy */}
           <div className="flex gap-6 items-start">
             <div className="w-12 h-12 rounded-2xl bg-nova-gold/5 border border-nova-gold/20 flex items-center justify-center shrink-0 text-nova-gold">
@@ -34,7 +34,7 @@ export function ReturnPolicy() {
             <div>
               <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">1. Return Policy</h2>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
-                We offer a <strong>15-day return policy</strong> on all unused and unworn items—no questions asked. 
+                We offer a <strong>15-day return policy</strong> on all unused and unworn items—no questions asked.
               </p>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
                 Please note that refunds are processed after a quality check of the returned product at our warehouse. If you purchased your NOVA product from any platform other than our website or other e-commerce website/apps, the return policy of that platform will apply. Shipping charges, if any, are non-refundable.
@@ -42,7 +42,7 @@ export function ReturnPolicy() {
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-4">
                 In case of missing items in a return order—where multiple products were claimed but not all are received—we reserve the right to deduct up to the full MRP of the missing item from the refund. This also applies to promotional items, including free gifts and silver coins.
               </p>
-              
+
               <div className="bg-nova-dark/5 border border-nova-dark/10 p-5 rounded-2xl">
                 <h3 className="text-xs uppercase tracking-widest text-nova-gold font-semibold mb-2">Return & Exchange Exclusions</h3>
                 <p className="text-nova-dark/70 text-xs font-light leading-relaxed">
@@ -60,7 +60,7 @@ export function ReturnPolicy() {
             <div>
               <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">2. Refund Policy</h2>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
-                If you request a return, your refund will be initiated once the product is received at our warehouse. 
+                If you request a return, your refund will be initiated once the product is received at our warehouse.
               </p>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed">
                 All refunds are processed based on the original purchase price mentioned on your invoice. Please note that current prices or any fluctuations will not affect the refund amount.
@@ -89,7 +89,7 @@ export function ReturnPolicy() {
             <div>
               <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3">4. Return Process</h2>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
-                You can easily initiate a return through our website, or reach out to our Customer Support team for assistance. 
+                You can easily initiate a return through our website, or reach out to our Customer Support team for assistance.
               </p>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
                 Once your return is scheduled, we kindly request you to be available for the reverse pick-up and answer calls from the delivery partner. If you’re unavailable or unable to respond, the pick-up may be canceled, and the process will need to be re-initiated, which may increase the overall timeline.

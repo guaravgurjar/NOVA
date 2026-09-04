@@ -12,8 +12,8 @@ export function ShippingPolicy() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
       {/* Page Header Banner */}
-      <div className="relative w-full h-[200px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="relative w-full h-50 bg-linear-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] bg-size-[16px_16px]"></div>
         <div className="container mx-auto px-6 md:px-12 max-w-5xl relative z-10">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2">CUSTOMER CARE</span>
           <h1 className="text-3xl md:text-4xl font-serif tracking-wider mb-2">Shipping & Handling</h1>
@@ -25,7 +25,7 @@ export function ShippingPolicy() {
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-4xl flex-1">
         <div className="space-y-12">
-          
+
           {/* Section 1: Standard Delivery */}
           <div className="flex gap-6 items-start">
             <div className="w-12 h-12 rounded-2xl bg-nova-gold/5 border border-nova-gold/20 flex items-center justify-center shrink-0 text-nova-gold">
@@ -72,7 +72,7 @@ export function ShippingPolicy() {
                 </p>
               </div>
               <p className="text-nova-dark/70 text-sm font-light leading-relaxed mb-3">
-                To process such claims, you will need to share a <strong>clear 360° unboxing video</strong> showing the unopened package from all angles, followed by the unboxing process. 
+                To process such claims, you will need to share a <strong>clear 360° unboxing video</strong> showing the unopened package from all angles, followed by the unboxing process.
               </p>
               <p className="text-nova-dark/50 text-xs font-light leading-relaxed italic">
                 Please note that claims without sufficient unboxing video proof or showing signs of tampering cannot be accepted. The final decision in such cases rests with the brand.

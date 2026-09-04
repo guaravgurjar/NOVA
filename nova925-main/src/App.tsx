@@ -10,6 +10,7 @@ import { WishlistProvider } from './contexts/WishlistContext';
 import { CartProvider } from './contexts/CartContext';
 import { ProductsProvider } from './contexts/ProductsContext';
 import { RouteSEOObserver } from './components/RouteSEOObserver';
+import { LoginModalProvider } from './contexts/LoginModalContext';
 
 // Route Code-Splitting with React.lazy
 const Wishlist = lazy(() => import('./pages/Wishlist').then(m => ({ default: m.Wishlist })));
@@ -94,15 +95,17 @@ export function AppServer({ url }: { url: string }) {
   return (
     <ToastProvider>
       <AuthProvider>
-        <ProductsProvider>
-          <WishlistProvider>
-            <CartProvider>
-              <MemoryRouter initialEntries={[url]}>
-                <AppContent />
-              </MemoryRouter>
-            </CartProvider>
-          </WishlistProvider>
-        </ProductsProvider>
+        <LoginModalProvider>
+          <ProductsProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <MemoryRouter initialEntries={[url]}>
+                  <AppContent />
+                </MemoryRouter>
+              </CartProvider>
+            </WishlistProvider>
+          </ProductsProvider>
+        </LoginModalProvider>
       </AuthProvider>
     </ToastProvider>
   );
@@ -112,15 +115,17 @@ export default function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <ProductsProvider>
-          <WishlistProvider>
-            <CartProvider>
-              <Router>
-                <AppContent />
-              </Router>
-            </CartProvider>
-          </WishlistProvider>
-        </ProductsProvider>
+        <LoginModalProvider>
+          <ProductsProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <Router>
+                  <AppContent />
+                </Router>
+              </CartProvider>
+            </WishlistProvider>
+          </ProductsProvider>
+        </LoginModalProvider>
       </AuthProvider>
     </ToastProvider>
   );

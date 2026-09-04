@@ -11,8 +11,8 @@ export function TermsOfService() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-nova-dark font-sans">
       {/* Page Header Banner */}
-      <div className="relative w-full h-[200px] bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
+      <div className="relative w-full h-50 bg-linear-to-r from-nova-darker via-nova-dark to-nova-darker flex items-center overflow-hidden border-b border-nova-gold/10">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] bg-size-[16px_16px]"></div>
         <div className="container mx-auto px-6 md:px-12 max-w-5xl relative z-10">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2">LEGAL</span>
           <h1 className="text-3xl md:text-4xl font-serif tracking-wider mb-2">Terms of Service</h1>
@@ -24,10 +24,10 @@ export function TermsOfService() {
 
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-4xl flex-1 text-nova-dark/70 text-sm font-light leading-relaxed">
         <div className="space-y-8">
-          
+
           {/* Overview */}
           <div>
-            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3 uppercase text-nova-gold">Overview</h2>
+            <h2 className="text-lg font-serif tracking-wide text-nova-dark mb-3 uppercase">Overview</h2>
             <p className="mb-4">
               This website is operated by “NOVA”, offering premium silver jewellery by NOVA.
             </p>
@@ -268,7 +268,7 @@ export function TermsOfService() {
           {/* Section 21 */}
           <div className="border-t border-nova-dark/10 pt-8 space-y-4">
             <h3 className="text-base font-serif font-medium text-nova-dark mb-3">Section 21 – Shipping, Returns & Refund Policy</h3>
-            
+
             <div>
               <h4 className="text-xs uppercase tracking-widest text-nova-gold font-semibold mb-1">Shipping & Handling</h4>
               <ul className="list-disc list-inside text-xs font-light pl-2 space-y-1">
