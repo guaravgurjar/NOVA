@@ -567,6 +567,12 @@ const startAdmin = async () => {
         }
     });
 
+    // ─── Increase body-parser limits to handle large image uploads ────────────
+    // Express defaults to 100 KB — bump to 50 MB so multipart product images
+    // don't trigger a 413 Request Entity Too Large from the AdminJS frontend.
+    app.use(express.json({ limit: '50mb' }));
+    app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
     app.use(admin.options.rootPath, adminRouter);
 
 
