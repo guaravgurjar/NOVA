@@ -246,6 +246,25 @@ function getSubcategoriesForCategory(categoryValue) {
     return (SUBCATEGORY_MAP[categoryValue] || []).map(s => s.value);
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Helper: coerce numeric payload fields from strings → numbers.
+// AdminJS uploads via multipart/form-data, so ALL values arrive as strings.
+// Mongoose Number fields reject empty strings, causing false "required" errors.
+// ─────────────────────────────────────────────────────────────────────────────
+function coerceNumericFields(payload) {
+    const numericFields = ['price', 'originalPrice', 'offerDiscountPercentage'];
+    for (const field of numericFields) {
+        if (payload[field] !== undefined && payload[field] !== '') {
+            const parsed = Number(payload[field]);
+            if (!isNaN(parsed)) payload[field] = parsed;
+        } else if (payload[field] === '') {
+            // Empty string → remove the key so Mongoose uses the schema default
+            delete payload[field];
+        }
+    }
+    return payload;
+}
+
 // Setup AdminJS configuration
 const startAdmin = async () => {
     const app = express();
@@ -319,6 +338,10 @@ const startAdmin = async () => {
                     actions: {
                         new: {
                             before: async (request) => {
+                                if (request.payload) {
+                                    // Cast numeric fields from multipart string values → numbers
+                                    request.payload = coerceNumericFields(request.payload);
+                                }
                                 const { category, subcategory } = request.payload || {};
                                 if (category && subcategory) {
                                     const allowed = getSubcategoriesForCategory(category);
@@ -339,6 +362,10 @@ const startAdmin = async () => {
                         },
                         edit: {
                             before: async (request) => {
+                                if (request.payload) {
+                                    // Cast numeric fields from multipart string values → numbers
+                                    request.payload = coerceNumericFields(request.payload);
+                                }
                                 const { category, subcategory } = request.payload || {};
                                 if (category && subcategory) {
                                     const allowed = getSubcategoriesForCategory(category);
