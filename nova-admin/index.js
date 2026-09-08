@@ -460,6 +460,15 @@ const startAdmin = async () => {
                         category: 'Main Category',
                         subcategory: 'Subcategory',
                     },
+                    // Map raw Mongoose validation error strings to friendly messages.
+                    // This silences i18next "missingKey … messages.*" console warnings.
+                    messages: {
+                        'Path `productcode` is required.': 'Product Code is required.',
+                        'Path `price` is required.':       'Price is required.',
+                        'Path `name` is required.':        'Name is required.',
+                        'Path `category` is required.':    'Main Category is required.',
+                        'Path `subcategory` is required.': 'Subcategory is required.',
+                    },
                 },
             },
         },
