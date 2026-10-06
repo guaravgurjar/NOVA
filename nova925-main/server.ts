@@ -67,6 +67,36 @@ async function connectMongo(): Promise<Db | null> {
   }
 }
 
+// ─── TypeScript: MongoDB Product Document Shape ─────────────────────────────
+// imageKeys holds R2-relative paths, e.g. ["SKU123-Ring/1.jpg", "SKU123-Ring/2.jpg"]
+interface ProductDoc {
+  _id?: any;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  category: string;
+  subcategory?: string;
+  imageKeys: string[];   // Cloudflare R2 relative paths
+  description?: string;
+  stock?: number;
+  isActive?: boolean;    // soft visibility toggle (default true)
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ─── Zod Schema: Product Validation ─────────────────────────────────────────
+const ProductWriteSchema = z.object({
+  name: z.string().min(2).max(200).trim(),
+  price: z.number().positive(),
+  originalPrice: z.number().positive().optional(),
+  category: z.string().min(1).max(100).trim(),
+  subcategory: z.string().max(100).trim().optional(),
+  imageKeys: z.array(z.string().min(1)).min(1).max(20),
+  description: z.string().max(2000).trim().optional(),
+  stock: z.number().int().min(0).optional(),
+  isActive: z.boolean().optional().default(true),
+});
+
 // ─── Zod Schema: Order Validation ───────────────────────────────────────────
 const OrderItemSchema = z.object({
   variantId: z.string().min(1),
@@ -97,7 +127,7 @@ function imageCacheSet(key: string, buf: Buffer) {
 
 // ─── In-memory products cache (30 second TTL) ────────────────────────────────
 let productsCache: { data: any; ts: number } | null = null;
-const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds — reduced so new AdminJS products surface quickly
+const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds TTL
 
 // ─── Server-Side SEO Meta Injection Helpers ─────────────────────────────────
 
@@ -301,7 +331,8 @@ async function startServer() {
     credentials: true,
   }));
 
-  app.use(express.json({ limit: '1mb' }));
+  app.use(express.json({ limit: '50mb' }));
+  app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
   // Trust proxy for correct client IP detection behind reverse proxies (like Cloudflare, Vercel, Nginx)
   app.set("trust proxy", 1);
@@ -356,6 +387,52 @@ async function startServer() {
         return next();
       }
       console.error("Token Verification Failed:", err.message || err);
+      return res.status(401).json({ error: 'Unauthorized: Invalid token' });
+    }
+  };
+
+  // ─── Admin Auth Middleware ────────────────────────────────────────────────
+  // Extends requireAuth: additionally checks that the Firebase token carries
+  // an `admin: true` custom claim OR that the UID is in ADMIN_UIDS env var
+  // (fallback for environments where custom claims aren't set yet).
+  const requireAdmin = async (req: any, res: any, next: any) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      if (process.env.NODE_ENV !== 'production') {
+        req.user = { uid: 'dev-admin', email: 'admin@nova-local.dev', isAdmin: true };
+        return next();
+      }
+      return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+      const decoded = await getAuth().verifyIdToken(token);
+
+      // ✅ Check Firebase custom claim
+      const hasCustomClaim = (decoded as any).admin === true;
+
+      // ✅ Fallback: check UID allow-list in env (comma-separated)
+      const adminUids = (process.env.ADMIN_UIDS || '')
+        .split(',')
+        .map(u => u.trim())
+        .filter(Boolean);
+      const inUidList = adminUids.includes(decoded.uid);
+
+      if (!hasCustomClaim && !inUidList) {
+        return res.status(403).json({ error: 'Forbidden: Admin access required' });
+      }
+
+      req.user = { uid: decoded.uid, email: decoded.email || '', isAdmin: true };
+      next();
+    } catch (err: any) {
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn("⚠️ Admin token verification failed in dev mode, allowing through:", err.message || err);
+        req.user = { uid: 'dev-admin', email: 'admin@nova-local.dev', isAdmin: true };
+        return next();
+      }
+      console.error("Admin token verification failed:", err.message || err);
       return res.status(401).json({ error: 'Unauthorized: Invalid token' });
     }
   };
@@ -451,25 +528,47 @@ async function startServer() {
     }
 
     try {
+      const validLocalProducts = localProducts.filter(
+        (p: any) => p && p.name && typeof p.name === 'string' && p.name.trim() && p.image && typeof p.image === 'string' && p.image.trim() && !p.image.startsWith('/images/products/')
+      );
+
       if (!db) {
-        return res.json({ success: true, products: [] });
+        return res.json({ success: true, products: validLocalProducts });
       }
-      const mongoProducts = await db.collection("products").find({}).sort({ createdAt: -1 }).toArray();
-      const r2PublicUrl = process.env.R2_PUBLIC_URL || '';
 
-      // Route all product images through the local image proxy for WebP compression & caching
+      // Only return active products on the public storefront
+      const mongoProducts = await db
+        .collection<ProductDoc>("products")
+        .find({ isActive: { $ne: false } })
+        .sort({ createdAt: -1 })
+        .toArray();
+
+      if (!mongoProducts || mongoProducts.length === 0) {
+        return res.json({ success: true, products: validLocalProducts });
+      }
+
+      const r2PublicUrl = (process.env.R2_PUBLIC_URL || '').replace(/\/$/, '');
+
+      // Build full R2 URLs by prepending the public domain to each stored relative key.
+      // Also keep the WebP image proxy URLs for optimized delivery.
+      const toR2Url = (key: string) => `${r2PublicUrl}/${key}`;
       const toProxy = (key: string) =>
-        `/api/image?url=${encodeURIComponent(`${r2PublicUrl}/${key}`)}&w=900`;
+        `/api/image?url=${encodeURIComponent(toR2Url(key))}&w=900`;
 
-      const enhancedProducts = mongoProducts.map(p => ({
-        ...p,
-        fullImageUrls: p.imageKeys && Array.isArray(p.imageKeys)
-          ? p.imageKeys.map((k: string) => toProxy(k))
-          : null,
-        fullImageUrl: p.imageKeys && Array.isArray(p.imageKeys) && p.imageKeys.length > 0
-          ? toProxy(p.imageKeys[0])
-          : (p.imageKey ? toProxy(p.imageKey) : null),
-      }));
+      const enhancedProducts = mongoProducts.map((p: any) => {
+        const keys: string[] = Array.isArray(p.imageKeys) ? p.imageKeys : [];
+        // Legacy single-key fallback
+        if (keys.length === 0 && p.imageKey) keys.push(p.imageKey);
+
+        return {
+          ...p,
+          // Raw R2 full URLs (direct CDN access, no server round-trip)
+          imageUrls: keys.map(toR2Url),
+          // Proxy-optimised WebP URLs (served via /api/image with sharp compression)
+          fullImageUrls: keys.map(toProxy),
+          fullImageUrl: keys.length > 0 ? toProxy(keys[0]) : null,
+        };
+      });
 
       const payload = { success: true, products: enhancedProducts };
       // Store in memory cache
@@ -478,6 +577,164 @@ async function startServer() {
     } catch (err: any) {
       console.error("Failed to fetch products from MongoDB:", err);
       res.status(500).json({ error: "Failed to fetch products" });
+    }
+  });
+
+  // ─── Admin: Product CRUD Routes ──────────────────────────────────────────
+  // All routes require a valid Firebase ID token with admin: true custom claim
+  // (or UID present in ADMIN_UIDS env var). In dev mode the guard is bypassed.
+
+  // GET /api/admin/products — full product list (including inactive) for the dashboard
+  app.get("/api/admin/products", requireAdmin, async (req, res) => {
+    try {
+      if (!db) return res.json({ success: true, products: [] });
+
+      const products = await db
+        .collection<ProductDoc>("products")
+        .find({})
+        .sort({ createdAt: -1 })
+        .toArray();
+
+      res.json({ success: true, products });
+    } catch (err: any) {
+      console.error("Admin: Failed to list products:", err);
+      res.status(500).json({ error: "Failed to fetch products" });
+    }
+  });
+
+  // POST /api/admin/products — create a new product
+  app.post("/api/admin/products", requireAdmin, async (req, res) => {
+    const parsed = ProductWriteSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: "Invalid product payload",
+        details: parsed.error.flatten().fieldErrors,
+      });
+    }
+
+    try {
+      if (!db) return res.status(503).json({ error: "Database not connected" });
+
+      const now = new Date().toISOString();
+      const doc: ProductDoc = {
+        ...parsed.data,
+        isActive: parsed.data.isActive ?? true,
+        createdAt: now,
+        updatedAt: now,
+      };
+
+      const result = await db.collection<ProductDoc>("products").insertOne(doc as any);
+      productsCache = null; // invalidate storefront cache
+
+      console.log(`✅ Admin: Created product "${doc.name}" (${result.insertedId})`);
+      res.status(201).json({ success: true, insertedId: result.insertedId, product: doc });
+    } catch (err: any) {
+      console.error("Admin: Failed to create product:", err);
+      res.status(500).json({ error: "Failed to create product" });
+    }
+  });
+
+  // PUT /api/admin/products/:id — update an existing product by _id
+  app.put("/api/admin/products/:id", requireAdmin, async (req, res) => {
+    const parsed = ProductWriteSchema.partial().safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({
+        error: "Invalid product payload",
+        details: parsed.error.flatten().fieldErrors,
+      });
+    }
+
+    try {
+      if (!db) return res.status(503).json({ error: "Database not connected" });
+
+      const { ObjectId } = await import("mongodb");
+      let objectId: any;
+      try {
+        objectId = new ObjectId(req.params.id);
+      } catch {
+        return res.status(400).json({ error: "Invalid product ID" });
+      }
+
+      const updateFields = { ...parsed.data, updatedAt: new Date().toISOString() };
+      const result = await db
+        .collection<ProductDoc>("products")
+        .findOneAndUpdate(
+          { _id: objectId },
+          { $set: updateFields },
+          { returnDocument: "after" }
+        );
+
+      if (!result) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      productsCache = null; // invalidate storefront cache
+      console.log(`✅ Admin: Updated product ${req.params.id}`);
+      res.json({ success: true, product: result });
+    } catch (err: any) {
+      console.error("Admin: Failed to update product:", err);
+      res.status(500).json({ error: "Failed to update product" });
+    }
+  });
+
+  // DELETE /api/admin/products/:id — permanently delete a product by _id
+  // Tip: prefer PATCH isActive=false for a soft-delete instead.
+  app.delete("/api/admin/products/:id", requireAdmin, async (req, res) => {
+    try {
+      if (!db) return res.status(503).json({ error: "Database not connected" });
+
+      const { ObjectId } = await import("mongodb");
+      let objectId: any;
+      try {
+        objectId = new ObjectId(req.params.id);
+      } catch {
+        return res.status(400).json({ error: "Invalid product ID" });
+      }
+
+      const result = await db
+        .collection<ProductDoc>("products")
+        .deleteOne({ _id: objectId });
+
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ error: "Product not found" });
+      }
+
+      productsCache = null; // invalidate storefront cache
+      console.log(`✅ Admin: Deleted product ${req.params.id}`);
+      res.json({ success: true, message: "Product deleted" });
+    } catch (err: any) {
+      console.error("Admin: Failed to delete product:", err);
+      res.status(500).json({ error: "Failed to delete product" });
+    }
+  });
+
+  // PATCH /api/admin/products/:id/toggle — soft-delete: flip isActive boolean
+  app.patch("/api/admin/products/:id/toggle", requireAdmin, async (req, res) => {
+    try {
+      if (!db) return res.status(503).json({ error: "Database not connected" });
+
+      const { ObjectId } = await import("mongodb");
+      let objectId: any;
+      try {
+        objectId = new ObjectId(req.params.id);
+      } catch {
+        return res.status(400).json({ error: "Invalid product ID" });
+      }
+
+      const current = await db.collection<ProductDoc>("products").findOne({ _id: objectId });
+      if (!current) return res.status(404).json({ error: "Product not found" });
+
+      const newActive = !(current.isActive ?? true);
+      await db
+        .collection<ProductDoc>("products")
+        .updateOne({ _id: objectId }, { $set: { isActive: newActive, updatedAt: new Date().toISOString() } });
+
+      productsCache = null;
+      console.log(`✅ Admin: Toggled product ${req.params.id} isActive → ${newActive}`);
+      res.json({ success: true, isActive: newActive });
+    } catch (err: any) {
+      console.error("Admin: Failed to toggle product:", err);
+      res.status(500).json({ error: "Failed to toggle product" });
     }
   });
 

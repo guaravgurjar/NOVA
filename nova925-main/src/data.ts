@@ -1,1131 +1,450 @@
 import { Product, Category, Review } from './types';
 
 export const products: Product[] = [
-  {
-    "id": "rings_01",
-    "name": "",
-    "price": 28000,
-    "image": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600&h=400",
-    "images": [
-      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=600&h=400"
-    ],
-    "category": "rings"
-  },
-  {
-    "id": "rings_02",
-    "name": "Dainty Rose Gold Eternity Ring",
-    "price": 18500,
-    "image": "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&q=80&w=600&h=400",
-    "images": [
-      "https://images.unsplash.com/photo-1603561591411-07134e71a2a9?auto=format&fit=crop&q=80&w=600&h=400"
-    ],
-    "category": "rings"
-  },
-  {
-    "id": "rings_03",
-    "name": "Elegant Peacock Silver Ring",
-    "price": 3200,
-    "image": "/images/products/rings/peacock_ring.webp",
-    "images": [
-      "/images/products/rings/peacock_ring.webp"
-    ],
-    "category": "rings"
-  },
-  {
-    "id": "chains_01",
-    "name": "Classic Silver Link Chain",
-    "price": 2200,
-    "image": "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp",
-    "images": [
-      "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp",
-      "/images/products/chains/1p_fcTXZxjqvEfvQICoa13B_l5Od9juCJ.webp",
-      "/images/products/chains/1FkLPc5xCDqalkWGUFBg-6OUXb174_6QO.webp",
-      "/images/products/chains/1IiUh5T93t5Mo3Ym5hUDmqkpXUytW6Mx_.webp",
-      "/images/products/chains/1csN5zcXVZ4r-h9hg5eEiV9wMaSrNpgDV.webp"
-    ],
-    "category": "chains"
-  },
-  {
-    "id": "chains_02",
-    "name": "Dainty Silver Link Chain",
-    "price": 2350,
-    "image": "/images/products/chains/1Bfrqx9O8xR8EwqadyIqIu8HbowUge0Yd.webp",
-    "images": [
-      "/images/products/chains/1Bfrqx9O8xR8EwqadyIqIu8HbowUge0Yd.webp",
-      "/images/products/chains/1flfEqjE6DfIcv8rZx1-2QmSOA3kbZOL1.webp",
-      "/images/products/chains/1xNPn1EsqbOHpCbxjyKgsjRe790ul5POV.webp",
-      "/images/products/chains/12OEHSE-_n7r794fnYIWxfu3yWDeYjhpd.webp",
-      "/images/products/chains/188HxqNevsMIvJB5W5gjQo-dpbLCO0Sk1.webp"
-    ],
-    "category": "chains"
-  },
-  {
-    "id": "earrings_Type01",
-    "name": "Classic Silver Drop Earrings",
-    "price": 1400,
-    "image": "/images/products/Ear-ring/Type 01/01/0101.png",
-    "images": [
-      "/images/products/Ear-ring/Type 01/01/0101.png",
-      "/images/products/Ear-ring/Type 01/01/0102.png",
-      "/images/products/Ear-ring/Type 01/01/0103.png",
-      "/images/products/Ear-ring/Type 01/01/0104.png"
-    ],
-    "category": "earrings"
-  },
-  {
-    "id": "earrings_Type02",
-    "name": "Dainty Silver Drop Earrings",
-    "price": 1550,
-    "image": "/images/products/Ear-ring/Type 02/01/0101.png",
-    "images": [
-      "/images/products/Ear-ring/Type 02/01/0101.png",
-      "/images/products/Ear-ring/Type 02/01/0102.png",
-      "/images/products/Ear-ring/Type 02/01/0103.png",
-      "/images/products/Ear-ring/Type 02/01/0104.png"
-    ],
-    "category": "earrings"
-  },
-  {
-    "id": "earrings_Type03",
-    "name": "Elegant Silver Drop Earrings",
-    "price": 1700,
-    "image": "/images/products/Ear-ring/Type 03/01/0101.png",
-    "images": [
-      "/images/products/Ear-ring/Type 03/01/0101.png",
-      "/images/products/Ear-ring/Type 03/01/0102.png",
-      "/images/products/Ear-ring/Type 03/01/0103.png",
-      "/images/products/Ear-ring/Type 03/01/0104.png"
-    ],
-    "category": "earrings"
-  },
-  {
-    "id": "earrings_Type04",
-    "name": "Luxury Silver Drop Earrings",
-    "price": 1850,
-    "image": "/images/products/Ear-ring/Type 04/01/0101.png",
-    "images": [
-      "/images/products/Ear-ring/Type 04/01/0101.png",
-      "/images/products/Ear-ring/Type 04/01/0102.png",
-      "/images/products/Ear-ring/Type 04/01/0103.png",
-      "/images/products/Ear-ring/Type 04/01/0104.png",
-      "/images/products/Ear-ring/Type 04/01/0105.png"
-    ],
-    "category": "earrings"
-  },
-  {
-    "id": "earrings_Type05MOONBALIYAN",
-    "name": "Timeless Silver Drop Earrings",
-    "price": 2000,
-    "image": "/images/products/earrings/1iEYlkPyQTKOOG05nIZfw6rpbiJM6DvJM.webp",
-    "images": [
-      "/images/products/earrings/1iEYlkPyQTKOOG05nIZfw6rpbiJM6DvJM.webp",
-      "/images/products/earrings/1YFo1qiz7NXUCgF-yeUkdK0h5YMUlH1_5.webp"
-    ],
-    "category": "earrings"
-  },
-  {
-    "id": "earrings_Type06GIYA",
-    "name": "Minimalist Silver Drop Earrings",
-    "price": 2150,
-    "image": "/images/products/earrings/1frx0TUc1HdEkSHGpI3hRjGjJfKwsIoaq.webp",
-    "images": [
-      "/images/products/earrings/1frx0TUc1HdEkSHGpI3hRjGjJfKwsIoaq.webp",
-      "/images/products/earrings/126gy3J1RaeVrweENjTe2garGCm7wmfPe.webp",
-      "/images/products/earrings/1jmvUzjjAhomQSe8frOqg8NBn89-xials.webp",
-      "/images/products/earrings/1jc0OPhAU41EfHPd3uZSXmCWVoqMrRhbL.webp",
-      "/images/products/earrings/1PYiSowD-Qh70ZvF4MVDAtVAHlfVbX-9z.webp",
-      "/images/products/earrings/1xJW5rDiLxKlYcTRZbWB61eYs4HA1y_1g.webp"
-    ],
-    "category": "earrings"
-  },
-  {
-    "id": "bracelets_01",
-    "name": "Classic Silver Charm Bracelet",
-    "price": 2800,
-    "image": "/images/products/bracelets/1CNIq164zi5BDcdqrYAFYZJ3rIfDXfO8F.webp",
-    "images": [
-      "/images/products/bracelets/1CNIq164zi5BDcdqrYAFYZJ3rIfDXfO8F.webp",
-      "/images/products/bracelets/1BbJ-VNVATqhziYJ4Uu_n-t5KffgqGgpd.webp",
-      "/images/products/bracelets/1he1qf7iDvF0C9mzz1ffZ0ORO57Z9NfdY.webp",
-      "/images/products/bracelets/1byN_S0UKE28K2cZ7fdaC2RdW3gpNq_Uh.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_02",
-    "name": "Dainty Silver Charm Bracelet",
-    "price": 2950,
-    "image": "/images/products/bracelets/1vGchyiF3BPj_EtvJdFpJq0aycZpTzxJw.webp",
-    "images": [
-      "/images/products/bracelets/1vGchyiF3BPj_EtvJdFpJq0aycZpTzxJw.webp",
-      "/images/products/bracelets/1_H8vBdwCjPF9qHyc2rCNv-FpNEkZmrIR.webp",
-      "/images/products/bracelets/1MSrNzN2VLojwpgIik6ixMt2-6xl0tz4H.webp",
-      "/images/products/bracelets/1X631FfWAGi6xk_ggKVxUTCxbDjAx_0zu.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_03",
-    "name": "Elegant Silver Charm Bracelet",
-    "price": 3100,
-    "image": "/images/products/bracelets/12O8l8SYZTzoE-E6E6R7VpIFeLiULgCC7.webp",
-    "images": [
-      "/images/products/bracelets/12O8l8SYZTzoE-E6E6R7VpIFeLiULgCC7.webp",
-      "/images/products/bracelets/1JeW0sH2FbDshC99IzA3GD-O1EyNhojDX.webp",
-      "/images/products/bracelets/1KFstQ9hJg4ptD4aPoC331_fI_FholzYM.webp",
-      "/images/products/bracelets/1sYxZjxmXlE7Qfd--hxNZhHyI0PIXxfqA.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_04",
-    "name": "Luxury Silver Charm Bracelet",
-    "price": 3250,
-    "image": "/images/products/bracelets/1zbyQZs2qPvXsbI-iSvaX5dJSYRyl7AB3.webp",
-    "images": [
-      "/images/products/bracelets/1zbyQZs2qPvXsbI-iSvaX5dJSYRyl7AB3.webp",
-      "/images/products/bracelets/1EuRUU9B5uk15l1S_lbEYpgQkX2eK_PfG.webp",
-      "/images/products/bracelets/1Bmd65be1Uwyb35qjc3JTRUwQEL16OZay.webp",
-      "/images/products/bracelets/1g4jt8EntTb2KdwqsU534wosB7tnn02kI.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_05",
-    "name": "Timeless Silver Charm Bracelet",
-    "price": 3400,
-    "image": "/images/products/bracelets/1US-I1_5QEITuunT5YNLjrJjCCG_IqPZl.webp",
-    "images": [
-      "/images/products/bracelets/1US-I1_5QEITuunT5YNLjrJjCCG_IqPZl.webp",
-      "/images/products/bracelets/1W3rynZXxvvAjWfSvPQJCcir1Owwn9tP6.webp",
-      "/images/products/bracelets/1uLeswOy87lmdKSCAF34ZBXPc1uxjCSwf.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_06",
-    "name": "Minimalist Silver Charm Bracelet",
-    "price": 3550,
-    "image": "/images/products/bracelets/1UULgYz_1hxeTR7w7bto_SWHfApJ2N3ty.webp",
-    "images": [
-      "/images/products/bracelets/1UULgYz_1hxeTR7w7bto_SWHfApJ2N3ty.webp",
-      "/images/products/bracelets/1VA30sGRgW9u_Y8cBwF4fUSrB8V6lpR9x.webp",
-      "/images/products/bracelets/1MSNSUVyP0qeKXiuU5_dOnWKJ5KYMXxd5.webp",
-      "/images/products/bracelets/1mtJKkUWnMLyG4b6RUwKCfhtp7EJL_Vxg.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_07",
-    "name": "Royal Silver Charm Bracelet",
-    "price": 3700,
-    "image": "/images/products/bracelets/1FnoI01HBi8iejj_JHE6KWJTn-7vTVZXM.webp",
-    "images": [
-      "/images/products/bracelets/1FnoI01HBi8iejj_JHE6KWJTn-7vTVZXM.webp",
-      "/images/products/bracelets/18YavWFsTwjosutPEjcTCmwEz4KOHVWYW.webp",
-      "/images/products/bracelets/19zmWvwMMfF6MpWGY-9OtNlD4u9suG9I7.webp",
-      "/images/products/bracelets/1Gh_p3jLviGrTuiiiIBFCJc0S2nxYk8B1.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_08",
-    "name": "Sterling Silver Charm Bracelet",
-    "price": 3850,
-    "image": "/images/products/bracelets/1KkSpeK2-TwZN-V5TjFLNaTIetGkYZ1_I.webp",
-    "images": [
-      "/images/products/bracelets/1KkSpeK2-TwZN-V5TjFLNaTIetGkYZ1_I.webp",
-      "/images/products/bracelets/1NrQ59BczMJK6gbRo35Fygdr44CR7qoAr.webp",
-      "/images/products/bracelets/1V0H9K0Xn02Uy8YFl988XJHJQ1aN8Cc6r.webp",
-      "/images/products/bracelets/1LFXCmcHlpYEG3U2QZOv0GOdzIRU5GFEi.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_09",
-    "name": "Vintage Silver Charm Bracelet",
-    "price": 2800,
-    "image": "/images/products/bracelets/1wgz0xf9sphnZ7oUV9HxOpUM9QZ5aD87B.webp",
-    "images": [
-      "/images/products/bracelets/1wgz0xf9sphnZ7oUV9HxOpUM9QZ5aD87B.webp",
-      "/images/products/bracelets/1WrJ5R6kELuveAT-6eawE72pSfNrPkebw.webp",
-      "/images/products/bracelets/1AFH--k-RD01_IXlRE9OQUUzILcAoq2Ui.webp",
-      "/images/products/bracelets/1CU_PxvAo1p9BZwtB4QRHnHeyIjmSKaf0.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_10",
-    "name": "Modern Silver Charm Bracelet",
-    "price": 2950,
-    "image": "/images/products/bracelets/15BeY8hUIga3UfzcS6XdCosoo2mF_gY-y.webp",
-    "images": [
-      "/images/products/bracelets/15BeY8hUIga3UfzcS6XdCosoo2mF_gY-y.webp",
-      "/images/products/bracelets/1qPejCyGA8vGGBaNHdirAdUcg9N1NbMwh.webp",
-      "/images/products/bracelets/1-LKnvTWxHFLLx_DBAppqnGgqU79Yb0wV.webp",
-      "/images/products/bracelets/1KlQof9Zkz6M8Q7-gSgJZBM9SbfJpev5I.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_11",
-    "name": "Classic Silver Charm Bracelet",
-    "price": 3100,
-    "image": "/images/products/bracelets/1K40kQSLxD8a04gDANqocH_tJhApu1B7h.webp",
-    "images": [
-      "/images/products/bracelets/1K40kQSLxD8a04gDANqocH_tJhApu1B7h.webp",
-      "/images/products/bracelets/1iF4GSNRpLlZQak-hrxs3sqssRjZ9rmTF.webp",
-      "/images/products/bracelets/1gS80XHmT_AQZyH4-R_5L-Xc7n2BNfFPr.webp",
-      "/images/products/bracelets/1M4LUfBPFwiOK7J3MCQZUxtgNdEwbklxE.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_12",
-    "name": "Dainty Silver Charm Bracelet",
-    "price": 3250,
-    "image": "/images/products/bracelets/1SHvZBnaAvSoZbVh-xEYEa3OMrMN3LvDl.webp",
-    "images": [
-      "/images/products/bracelets/1SHvZBnaAvSoZbVh-xEYEa3OMrMN3LvDl.webp",
-      "/images/products/bracelets/10rA-qkP5oBpIm-zweEGO6PGLByF44lbZ.webp",
-      "/images/products/bracelets/1q9s3Qjo647AJ-3vHXujlTJGpcey-2rVQ.webp",
-      "/images/products/bracelets/1qRfc11wtc_GdTLt7gWCtYHcrAELrUHx8.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_13",
-    "name": "Elegant Silver Charm Bracelet",
-    "price": 3400,
-    "image": "/images/products/bracelets/1qlsvR0m67TuZJe20DDBx-1eNLy1qniB9.webp",
-    "images": [
-      "/images/products/bracelets/1qlsvR0m67TuZJe20DDBx-1eNLy1qniB9.webp",
-      "/images/products/bracelets/1hLs9xdpOOO-6r6IKUuvoUqGTyD_n--Vr.webp",
-      "/images/products/bracelets/1uUhQg3GcFO9gR8_eOChJwfwjBQkjJ22r.webp",
-      "/images/products/bracelets/18n7J3QwNSskDO9ykVwqAYw-VSfWkQ_Ma.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_14",
-    "name": "Luxury Silver Charm Bracelet",
-    "price": 3550,
-    "image": "/images/products/bracelets/1X6GIxGmqmtWQCkBAmmGukg3Fc78PNUjt.webp",
-    "images": [
-      "/images/products/bracelets/1X6GIxGmqmtWQCkBAmmGukg3Fc78PNUjt.webp",
-      "/images/products/bracelets/1ywwVLhi9b1_Q6QG_DWwX68BGYzNf4gvH.webp",
-      "/images/products/bracelets/1cwUXB4W_QjdY1Amq68uJfOwqT5IzBkL9.webp",
-      "/images/products/bracelets/1nlzwC2-WZndYSaq9MylH4dcQbiuJ50Y4.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_15",
-    "name": "Timeless Silver Charm Bracelet",
-    "price": 3700,
-    "image": "/images/products/bracelets/1JiBQ13rjt2Wqs71ajnVThJNnWjmBORJT.webp",
-    "images": [
-      "/images/products/bracelets/1JiBQ13rjt2Wqs71ajnVThJNnWjmBORJT.webp",
-      "/images/products/bracelets/1N-Ly4gb_bIycMOns18F_KsRjkXjQYsBP.webp",
-      "/images/products/bracelets/1UJ5F4BySxeNnFLfsKzT66DzKGOKpM3mB.webp",
-      "/images/products/bracelets/1kvgXHfNM9AZO61z_KvXwH5CZybGPSzLR.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_16",
-    "name": "Minimalist Silver Charm Bracelet",
-    "price": 3850,
-    "image": "/images/products/bracelets/1eL1aIJR6oNcy6ASdRSIoNU-9wwEMxZcQ.webp",
-    "images": [
-      "/images/products/bracelets/1eL1aIJR6oNcy6ASdRSIoNU-9wwEMxZcQ.webp",
-      "/images/products/bracelets/1aJgqi1_VWSguOSZGimmgKKbUmbefmYpQ.webp",
-      "/images/products/bracelets/1z0L0AUx2nDsI8nIgeQFw83ippkWboqK9.webp",
-      "/images/products/bracelets/1WFD326vuEiJUmpIppH0bRpmbXywu325a.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_17",
-    "name": "Royal Silver Charm Bracelet",
-    "price": 2800,
-    "image": "/images/products/bracelets/184u2lplWRU_3uWaxN02eyVkxkSWAqjTa.webp",
-    "images": [
-      "/images/products/bracelets/184u2lplWRU_3uWaxN02eyVkxkSWAqjTa.webp",
-      "/images/products/bracelets/1_7gpSZmHoXJ3gUaoj8kuEfdFk7U33UXk.webp",
-      "/images/products/bracelets/1vsy4wqJjtimeKIu5Q2ImhI_aKRRnrF36.webp",
-      "/images/products/bracelets/1sqYIB0OAMe5cvfkAsY1L0HRW6EZVkQ6V.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_18",
-    "name": "Sterling Silver Charm Bracelet",
-    "price": 2950,
-    "image": "/images/products/bracelets/1XcoNhB29km2Id_XBV2zIKXB3OD7S7kpy.webp",
-    "images": [
-      "/images/products/bracelets/1XcoNhB29km2Id_XBV2zIKXB3OD7S7kpy.webp",
-      "/images/products/bracelets/1I9UV27FEMh7VTlFzn_vpK1FVYzjfCK4u.webp",
-      "/images/products/bracelets/1S13Kj-93WlmVWPZVJ355OiuLDMxR3MBI.webp",
-      "/images/products/bracelets/1yObYy3s0TeWACE4Fbtcg3nw0FmD5sgeu.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_19",
-    "name": "Vintage Silver Charm Bracelet",
-    "price": 3100,
-    "image": "/images/products/bracelets/1HczzFvVYu4OAVS4IVGDttiBqRgRIyBon.webp",
-    "images": [
-      "/images/products/bracelets/1HczzFvVYu4OAVS4IVGDttiBqRgRIyBon.webp",
-      "/images/products/bracelets/1UlGRx3OMXXQFqIy8-wrXI7s2seeeJi80.webp",
-      "/images/products/bracelets/1y4gCCgTkOlHi-2hO9KbS6l3RLedhyMaQ.webp",
-      "/images/products/bracelets/1xnVHvmE-5aIubobkrQCDhCmm5UKHEffa.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bracelets_20",
-    "name": "Modern Silver Charm Bracelet",
-    "price": 3250,
-    "image": "/images/products/bracelets/1Ct7DekZeAD_9pVzNXCvfeNUGl_BcN6_H.webp",
-    "images": [
-      "/images/products/bracelets/1Ct7DekZeAD_9pVzNXCvfeNUGl_BcN6_H.webp",
-      "/images/products/bracelets/1HoHHHoRrSqBuYUmKs_zr_tx1C43MLqpa.webp",
-      "/images/products/bracelets/1dFzh3h_twCtIcaapVweAGXg0nFzSbV-g.webp",
-      "/images/products/bracelets/1WJkPkdDHuc4pNapKipZSj7WrXedwaw4w.webp"
-    ],
-    "category": "bracelets"
-  },
-  {
-    "id": "bangles_01",
-    "name": "Classic Engraved Silver Bangle",
-    "price": 3200,
-    "image": "/images/products/bangles/1TQwPVBTN4IIEUgYLTzKXD_9P6v764Bl9.webp",
-    "images": [
-      "/images/products/bangles/1TQwPVBTN4IIEUgYLTzKXD_9P6v764Bl9.webp",
-      "/images/products/bangles/14cGYhFqkjKcaeVtc2JUp4WpYjMyDOQuD.webp",
-      "/images/products/bangles/1l7gFGes0ZExOfSrm9qKsnMuySD8wHWND.webp",
-      "/images/products/bangles/1oHnOZONMw_4KmTXqGgAieBFu3G3xMYvn.webp"
-    ],
-    "category": "bangles"
-  },
-  {
-    "id": "bangles_02",
-    "name": "Dainty Engraved Silver Bangle",
-    "price": 3350,
-    "image": "/images/products/bangles/1VLeGJDprfMjHIf55wknLRsgYJgwgZJEr.webp",
-    "images": [
-      "/images/products/bangles/1VLeGJDprfMjHIf55wknLRsgYJgwgZJEr.webp",
-      "/images/products/bangles/1j0ZOATdaZj3odkffOW4u_fGeY2jZ3ANS.webp",
-      "/images/products/bangles/1CUWSNerd1yck1KAOMDqlDXVh7B7jC4bB.webp",
-      "/images/products/bangles/1TsweK5goLJD1KuPAMU80TCymBwkdGj8P.webp"
-    ],
-    "category": "bangles"
-  },
-  {
-    "id": "bangles_03",
-    "name": "Elegant Engraved Silver Bangle",
-    "price": 3500,
-    "image": "/images/products/bangles/1WEhzEEHbngvclnkThY6JRxWTenyGpbyC.webp",
-    "images": [
-      "/images/products/bangles/1WEhzEEHbngvclnkThY6JRxWTenyGpbyC.webp",
-      "/images/products/bangles/1n9lpgh8l-0cT6c5DJ0BH41W-Rmao4TLW.webp",
-      "/images/products/bangles/1nQb2u2ZxE4tF-VBgTkzzsTJDIzp9EXy0.webp",
-      "/images/products/bangles/1TUaqr5OcehDh3Ucf5c1a7339D6VDG3UR.webp"
-    ],
-    "category": "bangles"
-  },
-  {
-    "id": "pendants_1",
-    "name": "Classic Crystal Silver Pendant",
-    "price": 1800,
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
-    "images": [
-      "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
-      "/images/products/pendants/1eXLZUzU5rgZO2pdjlAJ2eE9hIlAcdsmq.webp",
-      "/images/products/pendants/1IccchgJydVpS4hc3YL2nAtADZg8_Mll5.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_2",
-    "name": "Dainty Crystal Silver Pendant",
-    "price": 1950,
-    "image": "/images/products/pendants/1QhsOo_yGglxs2hl3as1qXbNwwEYVOuF9.webp",
-    "images": [
-      "/images/products/pendants/1QhsOo_yGglxs2hl3as1qXbNwwEYVOuF9.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_3",
-    "name": "Elegant Crystal Silver Pendant",
-    "price": 2100,
-    "image": "/images/products/pendants/1hDoW-hk1QTMSfy61Cjl0I2MbebWdoBno.webp",
-    "images": [
-      "/images/products/pendants/1hDoW-hk1QTMSfy61Cjl0I2MbebWdoBno.webp",
-      "/images/products/pendants/1ujGAY_3KpG4lEpT9zBYXdNFyJXVKljlo.webp",
-      "/images/products/pendants/1tmx2uPhlXQglHQknxjXRRqaSVEWI7WiO.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_4",
-    "name": "Luxury Crystal Silver Pendant",
-    "price": 2250,
-    "image": "/images/products/pendants/1r93dDEzD-6kn-1k62DmrSMlgpWcE7RdJ.webp",
-    "images": [
-      "/images/products/pendants/1r93dDEzD-6kn-1k62DmrSMlgpWcE7RdJ.webp",
-      "/images/products/pendants/1zO80IO5sVx4-nJ_lxXbvJqAWXqPItppj.webp",
-      "/images/products/pendants/1QkmhpaenBY7TrxLTHCGKiDoTEhGbzm3m.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_5",
-    "name": "Timeless Crystal Silver Pendant",
-    "price": 2400,
-    "image": "/images/products/pendants/1_eBUp8vRtOIfKMy-lQvLno7G4nfjPuC1.webp",
-    "images": [
-      "/images/products/pendants/1_eBUp8vRtOIfKMy-lQvLno7G4nfjPuC1.webp",
-      "/images/products/pendants/1p5bF85ZLozxBmA0ZdreXdxVxgp_seq6G.webp",
-      "/images/products/pendants/1SOJddaUp23bIW64IQbkR84HINvlX5Snx.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_6",
-    "name": "Minimalist Crystal Silver Pendant",
-    "price": 2550,
-    "image": "/images/products/pendants/162RrVALRBM9bEVpYb9N1xM3YJYxCpcux.webp",
-    "images": [
-      "/images/products/pendants/162RrVALRBM9bEVpYb9N1xM3YJYxCpcux.webp",
-      "/images/products/pendants/1xMxtIZg5TBoUlbQ5kLFC3PCO14QS7938.webp",
-      "/images/products/pendants/1YKJByQZ2G_UFTqZii7P5YldW5xBFo1ev.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_7",
-    "name": "Royal Crystal Silver Pendant",
-    "price": 2700,
-    "image": "/images/products/pendants/12QW2K3h5Z1frj97YbyhNO8-aZuRPlej6.webp",
-    "images": [
-      "/images/products/pendants/12QW2K3h5Z1frj97YbyhNO8-aZuRPlej6.webp",
-      "/images/products/pendants/1Vz2n_s_BAKFVBbmpg2v3-pabxY37qEv7.webp",
-      "/images/products/pendants/1edPjUIcKpS8ptLKLM6CmWZ41xIvwbybK.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_8",
-    "name": "Sterling Crystal Silver Pendant",
-    "price": 2850,
-    "image": "/images/products/pendants/1kz_1Foa9VuSXx5qyG2XwCoWZyWAS6e74.webp",
-    "images": [
-      "/images/products/pendants/1kz_1Foa9VuSXx5qyG2XwCoWZyWAS6e74.webp",
-      "/images/products/pendants/1vCIalhPdOLHKop-kzMECt_DrjddIyrqB.webp",
-      "/images/products/pendants/1PxtagtQYdg02yUkJjvx5iZMxvwCptK6W.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_9",
-    "name": "Vintage Crystal Silver Pendant",
-    "price": 1800,
-    "image": "/images/products/pendants/1khWe5J7OD1RwS9UUJObiy3tr7t47TmRR.webp",
-    "images": [
-      "/images/products/pendants/1khWe5J7OD1RwS9UUJObiy3tr7t47TmRR.webp",
-      "/images/products/pendants/1FkL1fOzC0nOSBiZZ_v4Zw8mvcUgiRZ0S.webp",
-      "/images/products/pendants/1DQzuZtv5yCwRfMPhjXOhO91FHHz3Na_x.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_10",
-    "name": "Modern Crystal Silver Pendant",
-    "price": 1950,
-    "image": "/images/products/pendants/19vQ3LEtqiqaYYsM2Ose-412BkrOmysav.webp",
-    "images": [
-      "/images/products/pendants/19vQ3LEtqiqaYYsM2Ose-412BkrOmysav.webp",
-      "/images/products/pendants/1iSTy7J32XLYuNiLXd5gIVh2ANMZEvuqv.webp",
-      "/images/products/pendants/1I5I3DYUiB1L_ASQqqb8xGdv7HWieIHZI.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_11",
-    "name": "Classic Crystal Silver Pendant",
-    "price": 2100,
-    "image": "/images/products/pendants/1klhzP4vCzxt6mzEWZguD6drq8_igNuKT.webp",
-    "images": [
-      "/images/products/pendants/1klhzP4vCzxt6mzEWZguD6drq8_igNuKT.webp",
-      "/images/products/pendants/1U-spszdDOzJNGHFHy6E2Wo18nnEEjBTs.webp",
-      "/images/products/pendants/1zqohL6IwrRZW7qAPXCSib6chbwj3UO-p.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_12",
-    "name": "Dainty Crystal Silver Pendant",
-    "price": 2250,
-    "image": "/images/products/pendants/13YF8eiaWYeuu2Q7IivmC18H1U14LNzDC.webp",
-    "images": [
-      "/images/products/pendants/13YF8eiaWYeuu2Q7IivmC18H1U14LNzDC.webp",
-      "/images/products/pendants/1vC8Ti9IFstcppbAZ3PoEGRRizZwGqyNp.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "pendants_13",
-    "name": "Elegant Crystal Silver Pendant",
-    "price": 2400,
-    "image": "/images/products/pendants/1fl3fclOwSQpzb63WdafmF-6gU3x4bU55.webp",
-    "images": [
-      "/images/products/pendants/1fl3fclOwSQpzb63WdafmF-6gU3x4bU55.webp",
-      "/images/products/pendants/1UBGF4u6VVk_rRUHv81e9uGl82uNgNO8v.webp"
-    ],
-    "category": "pendants"
-  },
-  {
-    "id": "sets_01",
-    "name": "Classic Luxury Silver Jewelry Set",
-    "price": 5500,
-    "image": "/images/products/sets/1Ib_JDcPJZHWx0pBDArbm0mfn5_74OI6O.webp",
-    "images": [
-      "/images/products/sets/1Ib_JDcPJZHWx0pBDArbm0mfn5_74OI6O.webp",
-      "/images/products/sets/1wKdgGt2wu9agkx6BxQOPfcV75IosKoom.webp",
-      "/images/products/sets/1GUL5vStG4Uc-tIvqiDD3BnflIo6nVt05.webp",
-      "/images/products/sets/1OgZqq9XXn86kgRyz5XBuzNrdlw_6CfHK.webp",
-      "/images/products/sets/1vMqb0ofzoX2tqWb2XHfb5ROL6giH4lKX.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_02",
-    "name": "Dainty Luxury Silver Jewelry Set",
-    "price": 5650,
-    "image": "/images/products/sets/1GStK-Pf231hqXCyPiSEw1RE8MCRnwJc3.webp",
-    "images": [
-      "/images/products/sets/1GStK-Pf231hqXCyPiSEw1RE8MCRnwJc3.webp",
-      "/images/products/sets/1a9S6EaPu4pFPWqBKWWsGIjPKe4sZbKmz.webp",
-      "/images/products/sets/1rwn6Rm0Rrj4COQSv8Z7eqWgTcW8Cf232.webp",
-      "/images/products/sets/1sqy7IoYcZBu10jRGDeGfc-BP_H8zuU_v.webp",
-      "/images/products/sets/1s-RzyQO7TgpxwsNeClM7bniC7wP6E-Ih.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_03",
-    "name": "Elegant Luxury Silver Jewelry Set",
-    "price": 5800,
-    "image": "/images/products/sets/1ifu6aHyTUz86u5pDMx1KX3cIon314Mqw.webp",
-    "images": [
-      "/images/products/sets/1ifu6aHyTUz86u5pDMx1KX3cIon314Mqw.webp",
-      "/images/products/sets/1wEDLrDsEvldfQjAjcnf51OEvjFO0XU5d.webp",
-      "/images/products/sets/1rDjNiHfstBBUtG08XI00J_VhrrpWCzT0.webp",
-      "/images/products/sets/1IhEDOOvtJqnnRGT06bCaoBuxxtf0Fjdw.webp",
-      "/images/products/sets/1d6el6SWEngvEqr83R0uKY8ZdgRNvm9Em.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_04",
-    "name": "Luxury Luxury Silver Jewelry Set",
-    "price": 5950,
-    "image": "/images/products/sets/1n_ng_vdbJq2L6qgw84PQW-HGbgQNG_Rg.webp",
-    "images": [
-      "/images/products/sets/1n_ng_vdbJq2L6qgw84PQW-HGbgQNG_Rg.webp",
-      "/images/products/sets/1GFrthn-QiVjRekmlOuKfQs95NEI3Fk13.webp",
-      "/images/products/sets/1rpcwAvoUte6a8__T6Jv0CMUU-oUI02Ur.webp",
-      "/images/products/sets/1wfRRWZInTAbPEOTmx0Qv720LoRzJQrZR.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_05",
-    "name": "Timeless Luxury Silver Jewelry Set",
-    "price": 6100,
-    "image": "/images/products/sets/1scfBG-BmSmBR-yFIKWkUr7Cdt3kK6Ww2.webp",
-    "images": [
-      "/images/products/sets/1scfBG-BmSmBR-yFIKWkUr7Cdt3kK6Ww2.webp",
-      "/images/products/sets/1bQhoocNn34wy9gbX5IJP8BFY8BsvPPDj.webp",
-      "/images/products/sets/1tCSuqbU-08HKrIHRCnX2whiMKOgAnkxj.webp",
-      "/images/products/sets/1ehQVaeZvkoJ8cZkxPbepbadomPtzJBm8.webp",
-      "/images/products/sets/1ttCAOwENf6E0ll26quEuXaxGkaZhB2p3.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_06",
-    "name": "Minimalist Luxury Silver Jewelry Set",
-    "price": 6250,
-    "image": "/images/products/sets/1rPr614ibLwEcKfbL1tDYa-fwkwVgVBeO.webp",
-    "images": [
-      "/images/products/sets/1rPr614ibLwEcKfbL1tDYa-fwkwVgVBeO.webp",
-      "/images/products/sets/1J9QLpOHtKNa_99kmcr2swxxkRT9wrK_S.webp",
-      "/images/products/sets/1O79sZe5mChfjZpSPcZBgYye3qtcL2Mf5.webp",
-      "/images/products/sets/1J0-JUDSABRlU1i6odBeTHwOOe_Xwu1iN.webp",
-      "/images/products/sets/1nM3djAXoEf4eKcbt40HJ3SJi3Ejk6EoR.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_07",
-    "name": "Royal Luxury Silver Jewelry Set",
-    "price": 6400,
-    "image": "/images/products/sets/1N9MGGrsqUNFGmTuSFcs4Zwza75H1oUFi.webp",
-    "images": [
-      "/images/products/sets/1N9MGGrsqUNFGmTuSFcs4Zwza75H1oUFi.webp",
-      "/images/products/sets/1rZ-xRlFYsJcbJmBcw0wOzZaYlbpJWIZU.webp",
-      "/images/products/sets/1zBR9zX1hzhi43F_JegWJQY4TAsgUL4H9.webp",
-      "/images/products/sets/1OtlpY3wNCdYeDJQLLybgptjp8ETqoRNu.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_08",
-    "name": "Sterling Luxury Silver Jewelry Set",
-    "price": 6550,
-    "image": "/images/products/sets/1WC0JrJIkywjoblTmhvtza-s6SJS02zZA.webp",
-    "images": [
-      "/images/products/sets/1WC0JrJIkywjoblTmhvtza-s6SJS02zZA.webp",
-      "/images/products/sets/1PLNDHMtQdLvJm23ve2CSdxLmQnXjALzC.webp",
-      "/images/products/sets/1NZoJqTOYQpD6Al7g7mdpekyETatZBvWL.webp",
-      "/images/products/sets/1Z0VtapT42wyKkBCTWI74lvBH-kTOM-Sn.webp",
-      "/images/products/sets/1xjwD6esQRIQJhW_f_Em6gVWrh9cb7DvK.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_09",
-    "name": "Vintage Luxury Silver Jewelry Set",
-    "price": 5500,
-    "image": "/images/products/sets/1K91B8IljCcoUvpmgDV2Yqs9SjDRYu6wc.webp",
-    "images": [
-      "/images/products/sets/1K91B8IljCcoUvpmgDV2Yqs9SjDRYu6wc.webp",
-      "/images/products/sets/1bzPw9FSwoA4yw-sR2U9sknCOjmuxBcdB.webp",
-      "/images/products/sets/1gqEkIsm6XZ6CevJg9m6xHosnSENEw5yZ.webp",
-      "/images/products/sets/1aB4Tf1_ZNxrLTSNr3OgTrwcEGZj_oKdQ.webp",
-      "/images/products/sets/1h96snDEl1CnVT7mxD9fwSlpWx2JRvkVM.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_10",
-    "name": "Modern Luxury Silver Jewelry Set",
-    "price": 5650,
-    "image": "/images/products/sets/11bZGbBvz8qlsHLmhtw7MTBQS1tCIFEBC.webp",
-    "images": [
-      "/images/products/sets/11bZGbBvz8qlsHLmhtw7MTBQS1tCIFEBC.webp",
-      "/images/products/sets/1NGOxPwrl7Cqf1ATLiEyevG8AuSbZ8uIb.webp",
-      "/images/products/sets/1-ovWzpVWwDhclNmoBJN3_OXrw2F4H78U.webp",
-      "/images/products/sets/1I2eEosL2ZmRnABz3d0VdwJUXiJ8ZUJCY.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_11",
-    "name": "Classic Luxury Silver Jewelry Set",
-    "price": 5800,
-    "image": "/images/products/sets/1PrLycukXTyRZHT0aqsIR8Hw4xhWiYsoE.webp",
-    "images": [
-      "/images/products/sets/1PrLycukXTyRZHT0aqsIR8Hw4xhWiYsoE.webp",
-      "/images/products/sets/1hQx32hvBVRtggpvbqY84suxQ85kJfxup.webp",
-      "/images/products/sets/1qxwAH0FX8UYtrdAqEiChMgNrLARn68kQ.webp",
-      "/images/products/sets/1iYE5pzEW1xJoIHvFm4I3iQ3gcSXp-gwY.webp",
-      "/images/products/sets/1h0L_i58gyxzbofdbnlsnpjYD7MIv3nkZ.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_12",
-    "name": "Dainty Luxury Silver Jewelry Set",
-    "price": 5950,
-    "image": "/images/products/sets/1Cy0K2Pp_3iHP7xI2KuKd__pPje7gLBuq.webp",
-    "images": [
-      "/images/products/sets/1Cy0K2Pp_3iHP7xI2KuKd__pPje7gLBuq.webp",
-      "/images/products/sets/1etrvqCt11OrzOvCX3bhmqqghFwD_KTJK.webp",
-      "/images/products/sets/1BBVCIIrMuJbkJk0W9JzW4mrSJvftfFXM.webp",
-      "/images/products/sets/1bzRXHlG2BNNh6S8mhu_DVpFqO62delH_.webp",
-      "/images/products/sets/19q8bibM5tZZh5b3Qsxf3GRKDg--mwxli.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_13",
-    "name": "Elegant Luxury Silver Jewelry Set",
-    "price": 6100,
-    "image": "/images/products/sets/110jl_o5kfgBLODHTEgtHpS8q3SIDzR1e.webp",
-    "images": [
-      "/images/products/sets/110jl_o5kfgBLODHTEgtHpS8q3SIDzR1e.webp",
-      "/images/products/sets/1LtF7pmiNh3XpVBVF9TT_NASjjzbHuw7M.webp",
-      "/images/products/sets/18dxyxAghVvXUt7EMw8fyluy9Vun7N6xp.webp",
-      "/images/products/sets/1e3o-WY_I8hfO6y5PFM4NCJ9aOBMpFue7.webp",
-      "/images/products/sets/13jNnzGR5MnuqAk43A_qYru26XIHuPO_l.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_14",
-    "name": "Luxury Luxury Silver Jewelry Set",
-    "price": 6250,
-    "image": "/images/products/sets/15u_i2EMBQcJcGWYjqCZQpXq0ArUUDDxf.webp",
-    "images": [
-      "/images/products/sets/15u_i2EMBQcJcGWYjqCZQpXq0ArUUDDxf.webp",
-      "/images/products/sets/1Ysw6jQ2Oj_TScslWvGcTJ2uf4G5eAnmc.webp",
-      "/images/products/sets/16sDGEGmJBVl49pn1kZdDxRX5SOGpvIHF.webp",
-      "/images/products/sets/1gzMnPhH3PGucqQtqANh_NJw__hVHnpz8.webp",
-      "/images/products/sets/13COqL7NNGNE0k4jE0wHbSifeyCBtfCCN.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_15",
-    "name": "Timeless Luxury Silver Jewelry Set",
-    "price": 6400,
-    "image": "/images/products/sets/1i8JpOXSG9rlxBmWe6OQumQ0nE3PU5dAa.webp",
-    "images": [
-      "/images/products/sets/1i8JpOXSG9rlxBmWe6OQumQ0nE3PU5dAa.webp",
-      "/images/products/sets/1IRMxQKSY5vW_jKdAUqwi9P7UY2AXuiKS.webp",
-      "/images/products/sets/1h9lJBYTuv2F5fJ0bO3eF7tNF9w0aW0L3.webp",
-      "/images/products/sets/12Kk_67y9yQWGwFegUrdTzl7xyJ9XWjbT.webp",
-      "/images/products/sets/1_fWYHloVXR9MJdTX4EhjecRjvpTYCdjy.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_16",
-    "name": "Minimalist Luxury Silver Jewelry Set",
-    "price": 6550,
-    "image": "/images/products/sets/1qovXxqXiJAZZT3CSyr8bGkZB0O8odrkN.webp",
-    "images": [
-      "/images/products/sets/1qovXxqXiJAZZT3CSyr8bGkZB0O8odrkN.webp",
-      "/images/products/sets/1xM9zffJYB5aXiaNNmCvrb1ZvCGuTruwR.webp",
-      "/images/products/sets/1Gs1aJsGmp1wJJCxmL6isw2WakK62hvUb.webp",
-      "/images/products/sets/1gWmbDLVnQecAJN7gI3oyfnbeuQ_xG41S.webp",
-      "/images/products/sets/11Gh5AMSS4IQnxhROprhVV4J60rO6jDZw.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_17",
-    "name": "Royal Luxury Silver Jewelry Set",
-    "price": 5500,
-    "image": "/images/products/sets/13wcQ3Fzk3G-BSOvDJd8qd9OPbdCP-woT.webp",
-    "images": [
-      "/images/products/sets/13wcQ3Fzk3G-BSOvDJd8qd9OPbdCP-woT.webp",
-      "/images/products/sets/1lFHQ970hhLLUD7xW54MFL9e4sU9wNRv7.webp",
-      "/images/products/sets/1hrYS253tJAGinGKKwwL0-eerHibsonXm.webp",
-      "/images/products/sets/1Au1MbRGTGUTJB3OlP0lJdrrb-uuilZB_.webp",
-      "/images/products/sets/1bkLIteb3Gydqh7ZXGz51SXEn-89P6PCt.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_18",
-    "name": "Sterling Luxury Silver Jewelry Set",
-    "price": 5650,
-    "image": "/images/products/sets/1v638IQFT8ZutSftzgGIraFqsWRao0hCp.webp",
-    "images": [
-      "/images/products/sets/1v638IQFT8ZutSftzgGIraFqsWRao0hCp.webp",
-      "/images/products/sets/1_X0SDaggTHwjN6WV3eDjhD7YEsUiYcNR.webp",
-      "/images/products/sets/10pJBM3jaPX604npSIUSQ3Ku1Z5OTWP1F.webp",
-      "/images/products/sets/1fAgXxWSfak9wwJcDej5CCZtf_gOf-Hnt.webp",
-      "/images/products/sets/1_PrdQy_fPt5AGruwntjmdHNiyO_AC4Lj.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_19",
-    "name": "Vintage Luxury Silver Jewelry Set",
-    "price": 5800,
-    "image": "/images/products/sets/1c23VRnFDXxcxDPzVTTH4f995N0KLlrdA.webp",
-    "images": [
-      "/images/products/sets/1c23VRnFDXxcxDPzVTTH4f995N0KLlrdA.webp",
-      "/images/products/sets/1BHmRKR9TRHSNYVzQu-mo5tSM1dE-4Xya.webp",
-      "/images/products/sets/1c2vrC71QWwYtck41fPHDjm3NJtZtgAru.webp",
-      "/images/products/sets/1Wsv8RGbDDikBhpQ2WezVYcUpGi-ob7Y0.webp",
-      "/images/products/sets/1JVFQcbpunlRCzIzxXqr2aP0Q_qy9W3RU.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "sets_20",
-    "name": "Modern Luxury Silver Jewelry Set",
-    "price": 5950,
-    "image": "/images/products/sets/1JEaU7dM0wCEbWBHekGhqBXkb6rkguDRB.webp",
-    "images": [
-      "/images/products/sets/1JEaU7dM0wCEbWBHekGhqBXkb6rkguDRB.webp",
-      "/images/products/sets/1vsk3MAmbAw0oi2Ky8OXeauo4q8wosdtF.webp",
-      "/images/products/sets/1nNNFSH0-WSKX2iiup0Wtg5w2qP0nw-II.webp",
-      "/images/products/sets/1QJpUlz4Z1poM3hEiWGleo2Ts9sWZzb9f.webp",
-      "/images/products/sets/1MjP1Y24OGb4poxR3fsqJ-JxBQf_6hvTk.webp"
-    ],
-    "category": "sets"
-  },
-  {
-    "id": "astro_aries",
-    "name": "Aries Zodiac Silver Pendant",
-    "price": 1850,
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
-    "images": [
-      "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
-      "/images/products/pendants/1eXLZUzU5rgZO2pdjlAJ2eE9hIlAcdsmq.webp",
-      "/images/products/pendants/1IccchgJydVpS4hc3YL2nAtADZg8_Mll5.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_taurus",
-    "name": "Taurus Zodiac Silver Pendant",
-    "price": 1900,
-    "image": "/images/products/pendants/1QhsOo_yGglxs2hl3as1qXbNwwEYVOuF9.webp",
-    "images": [
-      "/images/products/pendants/1QhsOo_yGglxs2hl3as1qXbNwwEYVOuF9.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_gemini",
-    "name": "Gemini Zodiac Silver Pendant",
-    "price": 1950,
-    "image": "/images/products/pendants/1hDoW-hk1QTMSfy61Cjl0I2MbebWdoBno.webp",
-    "images": [
-      "/images/products/pendants/1hDoW-hk1QTMSfy61Cjl0I2MbebWdoBno.webp",
-      "/images/products/pendants/1ujGAY_3KpG4lEpT9zBYXdNFyJXVKljlo.webp",
-      "/images/products/pendants/1tmx2uPhlXQglHQknxjXRRqaSVEWI7WiO.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_cancer",
-    "name": "Cancer Zodiac Silver Pendant",
-    "price": 2000,
-    "image": "/images/products/pendants/1r93dDEzD-6kn-1k62DmrSMlgpWcE7RdJ.webp",
-    "images": [
-      "/images/products/pendants/1r93dDEzD-6kn-1k62DmrSMlgpWcE7RdJ.webp",
-      "/images/products/pendants/1zO80IO5sVx4-nJ_lxXbvJqAWXqPItppj.webp",
-      "/images/products/pendants/1QkmhpaenBY7TrxLTHCGKiDoTEhGbzm3m.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_leo",
-    "name": "Leo Zodiac Silver Pendant",
-    "price": 2050,
-    "image": "/images/products/pendants/1_eBUp8vRtOIfKMy-lQvLno7G4nfjPuC1.webp",
-    "images": [
-      "/images/products/pendants/1_eBUp8vRtOIfKMy-lQvLno7G4nfjPuC1.webp",
-      "/images/products/pendants/1p5bF85ZLozxBmA0ZdreXdxVxgp_seq6G.webp",
-      "/images/products/pendants/1SOJddaUp23bIW64IQbkR84HINvlX5Snx.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_virgo",
-    "name": "Virgo Zodiac Silver Pendant",
-    "price": 1850,
-    "image": "/images/products/pendants/162RrVALRBM9bEVpYb9N1xM3YJYxCpcux.webp",
-    "images": [
-      "/images/products/pendants/162RrVALRBM9bEVpYb9N1xM3YJYxCpcux.webp",
-      "/images/products/pendants/1xMxtIZg5TBoUlbQ5kLFC3PCO14QS7938.webp",
-      "/images/products/pendants/1YKJByQZ2G_UFTqZii7P5YldW5xBFo1ev.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_libra",
-    "name": "Libra Zodiac Silver Pendant",
-    "price": 1900,
-    "image": "/images/products/pendants/12QW2K3h5Z1frj97YbyhNO8-aZuRPlej6.webp",
-    "images": [
-      "/images/products/pendants/12QW2K3h5Z1frj97YbyhNO8-aZuRPlej6.webp",
-      "/images/products/pendants/1Vz2n_s_BAKFVBbmpg2v3-pabxY37qEv7.webp",
-      "/images/products/pendants/1edPjUIcKpS8ptLKLM6CmWZ41xIvwbybK.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_scorpio",
-    "name": "Scorpio Zodiac Silver Pendant",
-    "price": 1950,
-    "image": "/images/products/pendants/1kz_1Foa9VuSXx5qyG2XwCoWZyWAS6e74.webp",
-    "images": [
-      "/images/products/pendants/1kz_1Foa9VuSXx5qyG2XwCoWZyWAS6e74.webp",
-      "/images/products/pendants/1vCIalhPdOLHKop-kzMECt_DrjddIyrqB.webp",
-      "/images/products/pendants/1PxtagtQYdg02yUkJjvx5iZMxvwCptK6W.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_sagittarius",
-    "name": "Sagittarius Zodiac Silver Pendant",
-    "price": 2000,
-    "image": "/images/products/pendants/1khWe5J7OD1RwS9UUJObiy3tr7t47TmRR.webp",
-    "images": [
-      "/images/products/pendants/1khWe5J7OD1RwS9UUJObiy3tr7t47TmRR.webp",
-      "/images/products/pendants/1FkL1fOzC0nOSBiZZ_v4Zw8mvcUgiRZ0S.webp",
-      "/images/products/pendants/1DQzuZtv5yCwRfMPhjXOhO91FHHz3Na_x.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_capricorn",
-    "name": "Capricorn Zodiac Silver Pendant",
-    "price": 2050,
-    "image": "/images/products/pendants/19vQ3LEtqiqaYYsM2Ose-412BkrOmysav.webp",
-    "images": [
-      "/images/products/pendants/19vQ3LEtqiqaYYsM2Ose-412BkrOmysav.webp",
-      "/images/products/pendants/1iSTy7J32XLYuNiLXd5gIVh2ANMZEvuqv.webp",
-      "/images/products/pendants/1I5I3DYUiB1L_ASQqqb8xGdv7HWieIHZI.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_aquarius",
-    "name": "Aquarius Zodiac Silver Pendant",
-    "price": 1850,
-    "image": "/images/products/pendants/1klhzP4vCzxt6mzEWZguD6drq8_igNuKT.webp",
-    "images": [
-      "/images/products/pendants/1klhzP4vCzxt6mzEWZguD6drq8_igNuKT.webp",
-      "/images/products/pendants/1U-spszdDOzJNGHFHy6E2Wo18nnEEjBTs.webp",
-      "/images/products/pendants/1zqohL6IwrRZW7qAPXCSib6chbwj3UO-p.webp"
-    ],
-    "category": "astro"
-  },
-  {
-    "id": "astro_pisces",
-    "name": "Pisces Zodiac Silver Pendant",
-    "price": 1900,
-    "image": "/images/products/pendants/13YF8eiaWYeuu2Q7IivmC18H1U14LNzDC.webp",
-    "images": [
-      "/images/products/pendants/13YF8eiaWYeuu2Q7IivmC18H1U14LNzDC.webp",
-      "/images/products/pendants/1vC8Ti9IFstcppbAZ3PoEGRRizZwGqyNp.webp"
-    ],
-    "category": "astro"
-  }
+  // ════════════════════════════════════════════════════════════════════════════
+  // ─── CATALOG PRODUCTS (327 ITEMS FROM Products/ FOLDER) ─────────────────────
+  // ════════════════════════════════════════════════════════════════════════════
+  {"id":"her_01_female_ear_rings_typ_01_01","name":"Silver Jhumka Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0104.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_01_02","name":"Silver Jhumka Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 01/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 01/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/02/0204.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_01_03","name":"Silver Jhumka Earrings (Design 03)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 01/03/0301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 01/03/0301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/03/0302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/03/0303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 01/03/0304.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_02_01","name":"Silver Drop Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 02/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 02/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/01/0104.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_02_02","name":"Silver Drop Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 02/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 02/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/02/0204.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_02_03","name":"Silver Drop Earrings (Design 03)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 02/03/0301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 02/03/0301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/03/0302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/03/0303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/03/0304.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_02_04","name":"Silver Drop Earrings (Design 04)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 02/04/0401.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 02/04/0401.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/04/0402.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/04/0403.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/04/0404.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_02_05","name":"Silver Drop Earrings (Design 05)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 02/05/0501.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 02/05/0501.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/05/0502.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/05/0503.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 02/05/0504.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_03_01","name":"Silver Hoop Bali Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 03/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 03/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/01/0104.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_03_02","name":"Silver Hoop Bali Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 03/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 03/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/02/0204.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_03_03","name":"Silver Hoop Bali Earrings (Design 03)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 03/03/0301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 03/03/0301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/03/0302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/03/0303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 03/03/0304.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_01","name":"Silver Stud Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/01/0104.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/01/0105.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_02","name":"Silver Stud Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/02/0204.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/02/0205.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_03","name":"Silver Stud Earrings (Design 03)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/03/0301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/03/0301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/03/0302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/03/0303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/03/0304.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/03/0305.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_04","name":"Silver Stud Earrings (Design 04)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/04/0401.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/04/0401.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/04/0402.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/04/0403.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/04/0404.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/04/0405.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_05","name":"Silver Stud Earrings (Design 05)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/05/0501.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/05/0501.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/05/0502.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/05/0503.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/05/0504.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/05/0505.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_06","name":"Silver Stud Earrings (Design 06)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/06/0601.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/06/0601.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/06/0602.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/06/0603.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/06/0604.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/06/0605.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_07","name":"Silver Stud Earrings (Design 07)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/07/0701.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/07/0701.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/07/0702.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/07/0703.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/07/0704.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_08","name":"Silver Stud Earrings (Design 08)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/08/0801.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/08/0801.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/08/0802.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/08/0803.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/08/0804.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/08/0805.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_09","name":"Silver Stud Earrings (Design 09)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/09/0901.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/09/0901.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/09/0902.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/09/0903.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/09/0904.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/09/0905.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_10","name":"Silver Stud Earrings (Design 10)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/10/1001.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/10/1001.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/10/1002.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/10/1003.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/10/1004.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/10/1005.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_11","name":"Silver Stud Earrings (Design 11)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/11/1101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/11/1101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/11/1102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/11/1103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/11/1104.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/11/1105.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_12","name":"Silver Stud Earrings (Design 12)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/12/1201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/12/1201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/12/1202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/12/1203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/12/1204.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/12/1205.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_13","name":"Silver Stud Earrings (Design 13)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/13/1301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/13/1301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/13/1302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/13/1303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/13/1304.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/13/1305.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_14","name":"Silver Stud Earrings (Design 14)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/14/1401.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/14/1401.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/14/1402.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/14/1403.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/14/1404.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/14/1405.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_15","name":"Silver Stud Earrings (Design 15)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/15/1501.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/15/1501.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/15/1502.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/15/1503.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/15/1504.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/15/1505.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_16","name":"Silver Stud Earrings (Design 16)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/16/1601.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/16/1601.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/16/1602.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/16/1603.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/16/1604.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/16/1605.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_17","name":"Silver Stud Earrings (Design 17)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/17/1701.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/17/1701.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/17/1702.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/17/1703.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/17/1704.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/17/1705.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_18","name":"Silver Stud Earrings (Design 18)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/18/1801.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/18/1801.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/18/1802.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/18/1803.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/18/1804.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/18/1805.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_19","name":"Silver Stud Earrings (Design 19)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/19/1901.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/19/1901.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/19/1902.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/19/1903.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/19/1904.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/19/1905.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_20","name":"Silver Stud Earrings (Design 20)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/20/2001.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/20/2001.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/20/2002.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/20/2003.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/20/2004.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/20/2005.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_21","name":"Silver Stud Earrings (Design 21)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/21/2101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/21/2101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/21/2102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/21/2103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/21/2104.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/21/2105.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_22","name":"Silver Stud Earrings (Design 22)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/22/2201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/22/2201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/22/2202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/22/2203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/22/2204.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/22/2205.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_23","name":"Silver Stud Earrings (Design 23)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/23/2301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/23/2301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/23/2302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/23/2303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/23/2304.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/23/2305.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_24","name":"Silver Stud Earrings (Design 24)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/24/2401.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/24/2401.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/24/2402.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/24/2403.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/24/2404.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/24/2405.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_25","name":"Silver Stud Earrings (Design 25)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/25/2501.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/25/2501.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/25/2502.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/25/2503.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/25/2504.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/25/2505.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_04_26","name":"Silver Stud Earrings (Design 26)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 04/26/2601.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 04/26/2601.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/26/2602.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/26/2603.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/26/2604.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 04/26/2605.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_05_moon_baliyna_01","name":"Moon Baliyna Silver Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/01/0104.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/01/0105.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_05_moon_baliyna_02","name":"Moon Baliyna Silver Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/02/0204.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 05 (MOON BALIYNA)/02/0205.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_07_01","name":"Silver Designer Bali Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 07/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 07/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/01/0104.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/01/0105.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_07_02","name":"Silver Designer Bali Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 07/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 07/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/02/0204.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/02/0205.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_typ_07_03","name":"Silver Designer Bali Earrings (Design 03)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/TYP 07/03/0301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/TYP 07/03/0301.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/03/0302.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/03/0303.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/03/0304.webp","/images/Products/01 Female/01 Female Ear-Rings/TYP 07/03/0305.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_type_06_giya_01","name":"Giya Chandbali Silver Earrings (Design 01)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/01/0101.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/01/0101.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/01/0102.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/01/0103.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/01/0104.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/01/0105.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_type_06_giya_02","name":"Giya Chandbali Silver Earrings (Design 02)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/02/0201.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/02/0201.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/02/0202.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/02/0203.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/02/0204.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/02/0205.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_type_06_giya_03","name":"Giya Chandbali Silver Earrings (Design 03)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/03/0301.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/03/0301.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/03/0302.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/03/0303.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/03/0304.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/03/0305.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_type_06_giya_04","name":"Giya Chandbali Silver Earrings (Design 04)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/04/0401.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/04/0401.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/04/0402.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/04/0403.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/04/0404.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/04/0405.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_type_06_giya_05","name":"Giya Chandbali Silver Earrings (Design 05)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/05/0501.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/05/0501.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/05/0502.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/05/0503.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/05/0504.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/05/0505.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_01_female_ear_rings_type_06_giya_06","name":"Giya Chandbali Silver Earrings (Design 06)","price":0,"image":"/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/06/0601.webp","images":["/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/06/0601.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/06/0602.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/06/0603.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/06/0604.webp","/images/Products/01 Female/01 Female Ear-Rings/Type 06 (GIYA)/06/0605.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_01","name":"925 Sterling Silver Charm Bracelet (Design 01)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0102.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0103.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_02","name":"925 Sterling Silver Charm Bracelet (Design 02)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/02/0201.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/02/0201.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/02/0202.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/02/0203.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_03","name":"925 Sterling Silver Charm Bracelet (Design 03)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/03/0301.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/03/0301.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/03/0302.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/03/0303.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_04","name":"925 Sterling Silver Charm Bracelet (Design 04)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/04/0401.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/04/0401.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/04/0402.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/04/0403.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_05","name":"925 Sterling Silver Charm Bracelet (Design 05)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/05/0501.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/05/0501.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/05/0502.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/05/0503.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_06","name":"925 Sterling Silver Charm Bracelet (Design 06)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/06/0601.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/06/0601.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/06/0602.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/06/0603.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_07","name":"925 Sterling Silver Charm Bracelet (Design 07)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/07/0701.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/07/0701.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/07/0702.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/07/0703.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_01_08","name":"925 Sterling Silver Charm Bracelet (Design 08)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/08/0801.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/08/0801.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/08/0802.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/08/0803.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_02_01","name":"Silver Link Bracelet (Design 01)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 02/01/0101.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 02/01/0101.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 02/01/0102.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 02/01/0103.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_03_01","name":"Silver Cuff Bracelet (Design 01)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/01/0101.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/01/0101.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/01/0102.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/01/0103.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_03_02","name":"Silver Cuff Bracelet (Design 02)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/02/0201.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/02/0201.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/02/0202.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/02/0203.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_03_03","name":"Silver Cuff Bracelet (Design 03)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/03/0301.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/03/0301.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/03/0302.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/03/0303.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_03_04","name":"Silver Cuff Bracelet (Design 04)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/04/0401.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/04/0401.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/04/0402.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/04/0403.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_03_05","name":"Silver Cuff Bracelet (Design 05)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/05/0501.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/05/0501.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/05/0502.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 03/05/0503.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_04_01","name":"Silver Bangle Bracelet (Design 01)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/01/0101.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/01/0101.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/01/0102.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/01/0103.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_04_02","name":"Silver Bangle Bracelet (Design 02)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/02/0201.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/02/0201.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/02/0202.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/02/0203.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_04_03","name":"Silver Bangle Bracelet (Design 03)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/03/0301.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/03/0301.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/03/0302.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/03/0303.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_04_04","name":"Silver Bangle Bracelet (Design 04)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/04/0401.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/04/0401.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/04/0402.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/04/0403.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_04_05","name":"Silver Bangle Bracelet (Design 05)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/05/0501.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/05/0501.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/05/0502.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 04/05/0503.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_05_01","name":"Artisan Silver Bracelet (Design 01)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/01/0101.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/01/0101.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/01/0102.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/01/0103.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/01/0104.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_05_02","name":"Artisan Silver Bracelet (Design 02)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/02/0201.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/02/0201.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/02/0202.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/02/0203.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/02/0204.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_05_03","name":"Artisan Silver Bracelet (Design 03)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/03/0301.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/03/0301.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/03/0302.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/03/0303.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/03/0304.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_05_04","name":"Artisan Silver Bracelet (Design 04)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/04/0401.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/04/0401.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/04/0402.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/04/0403.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/04/0404.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_05_05","name":"Artisan Silver Bracelet (Design 05)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/05/0501.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/05/0501.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/05/0502.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/05/0503.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/05/0504.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_01_925_silevr_typ_05_06","name":"Artisan Silver Bracelet (Design 06)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/06/0601.webp","images":["/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/06/0601.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/06/0602.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/06/0603.webp","/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 05/06/0604.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_02_indian_silver_01","name":"Artisan Silver Bracelet (Design 01)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/01/0101.webp","images":["/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/01/0101.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/01/0102.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/01/0103.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/01/0104.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_02_indian_silver_02","name":"Artisan Silver Bracelet (Design 02)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/02/0201.webp","images":["/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/02/0201.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/02/0202.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/02/0203.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/02/0204.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_02_indian_silver_03","name":"Artisan Silver Bracelet (Design 03)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/03/0301.webp","images":["/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/03/0301.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/03/0302.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/03/0303.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/03/0304.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_02_indian_silver_04","name":"Artisan Silver Bracelet (Design 04)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/04/0401.webp","images":["/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/04/0401.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/04/0402.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/04/0403.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/04/0404.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_02_female_bracelet_02_indian_silver_05","name":"Artisan Silver Bracelet (Design 05)","price":0,"image":"/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/05/0501.webp","images":["/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/05/0501.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/05/0502.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/05/0503.webp","/images/Products/01 Female/02 Female Bracelet/02 Indian Silver/05/0504.webp"],"category":"gifts-for-her","subcategory":"bracelets"},
+  {"id":"her_03_female_bangel_typ_01_01","name":"Silver Designer Bangle (Design 01)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 01/01/0101.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 01/01/0101.webp","/images/Products/01 Female/03 Female Bangel/TYP 01/01/0102.webp","/images/Products/01 Female/03 Female Bangel/TYP 01/01/0103.webp","/images/Products/01 Female/03 Female Bangel/TYP 01/01/0104.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_02_01","name":"Silver Designer Bangle (Design 01)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 02/01/0101.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 02/01/0101.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/01/0102.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/01/0103.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/01/0104.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/01/0105.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_02_02","name":"Silver Designer Bangle (Design 02)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 02/02/0201.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 02/02/0201.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/02/0202.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/02/0203.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/02/0204.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_02_03","name":"Silver Designer Bangle (Design 03)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 02/03/0301.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 02/03/0301.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/03/0302.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/03/0303.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/03/0304.webp","/images/Products/01 Female/03 Female Bangel/TYP 02/03/0305.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_03_01","name":"Silver Designer Bangle (Design 01)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 03/01/0101.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 03/01/0101.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/01/0102.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/01/0103.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/01/0104.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/01/0105.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_03_02","name":"Silver Designer Bangle (Design 02)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 03/02/0201.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 03/02/0201.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/02/0202.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/02/0203.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/02/0204.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_03_03","name":"Silver Designer Bangle (Design 03)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 03/03/0301.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 03/03/0301.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/03/0302.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/03/0303.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/03/0304.webp","/images/Products/01 Female/03 Female Bangel/TYP 03/03/0305.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_04_01","name":"Silver Designer Bangle (Design 01)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 04/01/0101.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 04/01/0101.webp","/images/Products/01 Female/03 Female Bangel/TYP 04/01/0102.webp","/images/Products/01 Female/03 Female Bangel/TYP 04/01/0103.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_04_02","name":"Silver Designer Bangle (Design 02)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 04/02/0201.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 04/02/0201.webp","/images/Products/01 Female/03 Female Bangel/TYP 04/02/0202.webp","/images/Products/01 Female/03 Female Bangel/TYP 04/02/0203.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_05_01","name":"Silver Designer Bangle (Design 01)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 05/01/0101.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 05/01/0101.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/01/0102.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/01/0103.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_05_02","name":"Silver Designer Bangle (Design 02)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 05/02/0201.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 05/02/0201.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/02/0202.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/02/0203.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_05_03","name":"Silver Designer Bangle (Design 03)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 05/03/0301.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 05/03/0301.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/03/0302.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/03/0303.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_05_04","name":"Silver Designer Bangle (Design 04)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 05/04/0401.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 05/04/0401.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/04/0402.webp","/images/Products/01 Female/03 Female Bangel/TYP 05/04/0403.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_06_01","name":"Silver Designer Bangle (Design 01)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 06/01/0101.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 06/01/0101.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/01/0102.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/01/0103.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_06_02","name":"Silver Designer Bangle (Design 02)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 06/02/0201.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 06/02/0201.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/02/0202.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/02/0203.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_06_03","name":"Silver Designer Bangle (Design 03)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 06/03/0301.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 06/03/0301.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/03/0302.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/03/0303.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_03_female_bangel_typ_06_04","name":"Silver Designer Bangle (Design 04)","price":0,"image":"/images/Products/01 Female/03 Female Bangel/TYP 06/04/0401.webp","images":["/images/Products/01 Female/03 Female Bangel/TYP 06/04/0401.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/04/0402.webp","/images/Products/01 Female/03 Female Bangel/TYP 06/04/0403.webp"],"category":"gifts-for-her","subcategory":"bangles"},
+  {"id":"her_04_female_chain_01_925_silver_female_chain_01","name":"Dainty Silver Chain (Design 01)","price":0,"image":"/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp","images":["/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp","/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0102.webp","/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0103.webp","/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0104.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_01_925_silver_female_chain_02","name":"Dainty Silver Chain (Design 02)","price":0,"image":"/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/02/0201.webp","images":["/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/02/0201.webp","/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/02/0202.webp","/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/02/0203.webp","/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/02/0204.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_01","name":"Dainty Silver Chain (Design 01)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/01/0101.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/01/0101.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/01/0102.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/01/0103.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/01/0104.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_02","name":"Dainty Silver Chain (Design 02)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/02/0201.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/02/0201.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/02/0202.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/02/0203.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/02/0204.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_03","name":"Dainty Silver Chain (Design 03)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/03/0301.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/03/0301.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/03/0302.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/03/0303.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/03/0304.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_04","name":"Dainty Silver Chain (Design 04)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/04/0401.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/04/0401.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/04/0402.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/04/0403.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/04/0404.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_05","name":"Dainty Silver Chain (Design 05)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/05/0501.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/05/0501.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/05/0502.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/05/0503.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/05/0504.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_06","name":"Dainty Silver Chain (Design 06)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/06/0601.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/06/0601.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/06/0602.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/06/0603.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/06/0604.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_07","name":"Dainty Silver Chain (Design 07)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/07/0701.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/07/0701.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/07/0702.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/07/0703.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/07/0704.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_04_female_chain_02_indian_silver_female_chains_08","name":"Dainty Silver Chain (Design 08)","price":0,"image":"/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/08/0801.webp","images":["/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/08/0801.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/08/0802.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/08/0803.webp","/images/Products/01 Female/04 Female Chain/02 Indian silver Female Chains/08/0804.webp"],"category":"gifts-for-her","subcategory":"chains"},
+  {"id":"her_05_female_sets_typ_01_01","name":"Luxury Silver Jewellery Set (Design 01)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/01/0101.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/01/0101.webp","/images/Products/01 Female/05 Female sets/TYP 01/01/0102.webp","/images/Products/01 Female/05 Female sets/TYP 01/01/0103.webp","/images/Products/01 Female/05 Female sets/TYP 01/01/0104.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_01_02","name":"Luxury Silver Jewellery Set (Design 02)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/02/0201.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/02/0201.webp","/images/Products/01 Female/05 Female sets/TYP 01/02/0202.webp","/images/Products/01 Female/05 Female sets/TYP 01/02/0203.webp","/images/Products/01 Female/05 Female sets/TYP 01/02/0204.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_01_03","name":"Luxury Silver Jewellery Set (Design 03)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/03/0301.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/03/0301.webp","/images/Products/01 Female/05 Female sets/TYP 01/03/0302.webp","/images/Products/01 Female/05 Female sets/TYP 01/03/0303.webp","/images/Products/01 Female/05 Female sets/TYP 01/03/0304.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_01_04","name":"Luxury Silver Jewellery Set (Design 04)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/04/0401.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/04/0401.webp","/images/Products/01 Female/05 Female sets/TYP 01/04/0402.webp","/images/Products/01 Female/05 Female sets/TYP 01/04/0403.webp","/images/Products/01 Female/05 Female sets/TYP 01/04/0404.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_01_05","name":"Luxury Silver Jewellery Set (Design 05)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/05/0501.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/05/0501.webp","/images/Products/01 Female/05 Female sets/TYP 01/05/0502.webp","/images/Products/01 Female/05 Female sets/TYP 01/05/0503.webp","/images/Products/01 Female/05 Female sets/TYP 01/05/0504.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_01_06","name":"Luxury Silver Jewellery Set (Design 06)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/06/0601.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/06/0601.webp","/images/Products/01 Female/05 Female sets/TYP 01/06/0602.webp","/images/Products/01 Female/05 Female sets/TYP 01/06/0603.webp","/images/Products/01 Female/05 Female sets/TYP 01/06/0604.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_01_07","name":"Luxury Silver Jewellery Set (Design 07)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 01/07/0701.webp","images":["/images/Products/01 Female/05 Female sets/TYP 01/07/0701.webp","/images/Products/01 Female/05 Female sets/TYP 01/07/0702.webp","/images/Products/01 Female/05 Female sets/TYP 01/07/0703.webp","/images/Products/01 Female/05 Female sets/TYP 01/07/0704.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_02_01","name":"Luxury Silver Jewellery Set (Design 01)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 02/01/0101.webp","images":["/images/Products/01 Female/05 Female sets/TYP 02/01/0101.webp","/images/Products/01 Female/05 Female sets/TYP 02/01/0102.webp","/images/Products/01 Female/05 Female sets/TYP 02/01/0103.webp","/images/Products/01 Female/05 Female sets/TYP 02/01/0104.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_02_02","name":"Luxury Silver Jewellery Set (Design 02)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 02/02/0201.webp","images":["/images/Products/01 Female/05 Female sets/TYP 02/02/0201.webp","/images/Products/01 Female/05 Female sets/TYP 02/02/0202.webp","/images/Products/01 Female/05 Female sets/TYP 02/02/0203.webp","/images/Products/01 Female/05 Female sets/TYP 02/02/0204.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_02_03","name":"Luxury Silver Jewellery Set (Design 03)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 02/03/0301.webp","images":["/images/Products/01 Female/05 Female sets/TYP 02/03/0301.webp","/images/Products/01 Female/05 Female sets/TYP 02/03/0302.webp","/images/Products/01 Female/05 Female sets/TYP 02/03/0303.webp","/images/Products/01 Female/05 Female sets/TYP 02/03/0304.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_02_04","name":"Luxury Silver Jewellery Set (Design 04)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 02/04/0401.webp","images":["/images/Products/01 Female/05 Female sets/TYP 02/04/0401.webp","/images/Products/01 Female/05 Female sets/TYP 02/04/0402.webp","/images/Products/01 Female/05 Female sets/TYP 02/04/0403.webp","/images/Products/01 Female/05 Female sets/TYP 02/04/0404.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_02_05","name":"Luxury Silver Jewellery Set (Design 05)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 02/05/0501.webp","images":["/images/Products/01 Female/05 Female sets/TYP 02/05/0501.webp","/images/Products/01 Female/05 Female sets/TYP 02/05/0502.webp","/images/Products/01 Female/05 Female sets/TYP 02/05/0503.webp","/images/Products/01 Female/05 Female sets/TYP 02/05/0504.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_01","name":"Luxury Silver Jewellery Set (Design 01)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/01/0101.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/01/0101.webp","/images/Products/01 Female/05 Female sets/TYP 03/01/0102.webp","/images/Products/01 Female/05 Female sets/TYP 03/01/0103.webp","/images/Products/01 Female/05 Female sets/TYP 03/01/0104.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_02","name":"Luxury Silver Jewellery Set (Design 02)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/02/0201.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/02/0201.webp","/images/Products/01 Female/05 Female sets/TYP 03/02/0202.webp","/images/Products/01 Female/05 Female sets/TYP 03/02/0203.webp","/images/Products/01 Female/05 Female sets/TYP 03/02/0204.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_03","name":"Luxury Silver Jewellery Set (Design 03)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/03/0301.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/03/0301.webp","/images/Products/01 Female/05 Female sets/TYP 03/03/0302.webp","/images/Products/01 Female/05 Female sets/TYP 03/03/0303.webp","/images/Products/01 Female/05 Female sets/TYP 03/03/0304.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_04","name":"Luxury Silver Jewellery Set (Design 04)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/04/0401.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/04/0401.webp","/images/Products/01 Female/05 Female sets/TYP 03/04/0402.webp","/images/Products/01 Female/05 Female sets/TYP 03/04/0403.webp","/images/Products/01 Female/05 Female sets/TYP 03/04/0404.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_05","name":"Luxury Silver Jewellery Set (Design 05)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/05/0501.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/05/0501.webp","/images/Products/01 Female/05 Female sets/TYP 03/05/0502.webp","/images/Products/01 Female/05 Female sets/TYP 03/05/0503.webp","/images/Products/01 Female/05 Female sets/TYP 03/05/0504.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_06","name":"Luxury Silver Jewellery Set (Design 06)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/06/0601.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/06/0601.webp","/images/Products/01 Female/05 Female sets/TYP 03/06/0602.webp","/images/Products/01 Female/05 Female sets/TYP 03/06/0603.webp","/images/Products/01 Female/05 Female sets/TYP 03/06/0604.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_07","name":"Luxury Silver Jewellery Set (Design 07)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/07/0701.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/07/0701.webp","/images/Products/01 Female/05 Female sets/TYP 03/07/0702.webp","/images/Products/01 Female/05 Female sets/TYP 03/07/0703.webp","/images/Products/01 Female/05 Female sets/TYP 03/07/0704.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_05_female_sets_typ_03_08","name":"Luxury Silver Jewellery Set (Design 08)","price":0,"image":"/images/Products/01 Female/05 Female sets/TYP 03/08/0801.webp","images":["/images/Products/01 Female/05 Female sets/TYP 03/08/0801.webp","/images/Products/01 Female/05 Female sets/TYP 03/08/0802.webp","/images/Products/01 Female/05 Female sets/TYP 03/08/0803.webp","/images/Products/01 Female/05 Female sets/TYP 03/08/0804.webp"],"category":"gifts-for-her","subcategory":"sets"},
+  {"id":"her_06_female_pendant_set_typ_01_01","name":"Silver Pendant & Earring Set (Design 01)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0101.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0101.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0103.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0104.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_01_02","name":"Silver Pendant & Earring Set (Design 02)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 01/02/0201.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 01/02/0201.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/02/0202.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/02/0203.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/02/0204.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_01_03","name":"Silver Pendant & Earring Set (Design 03)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 01/03/0301.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 01/03/0301.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/03/0302.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/03/0303.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 01/03/0304.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_01","name":"Silver Pendant & Earring Set (Design 01)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/01/0101.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/01/0101.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/01/0102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/01/0103.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/01/0104.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_02","name":"Silver Pendant & Earring Set (Design 02)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/02/0102.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/02/0102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/02/0201.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/02/0202.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/02/0204.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_03","name":"Silver Pendant & Earring Set (Design 03)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/03/0301.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/03/0301.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/03/0302.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/03/0303.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/03/0304.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_04","name":"Silver Pendant & Earring Set (Design 04)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/04/0401.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/04/0401.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/04/0402.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/04/0403.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/04/0404.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_05","name":"Silver Pendant & Earring Set (Design 05)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/05/0501.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/05/0501.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/05/0502.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/05/0503.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/05/0504.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_06","name":"Silver Pendant & Earring Set (Design 06)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/06/0601.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/06/0601.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/06/0602.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/06/0603.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/06/0604.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_02_07","name":"Silver Pendant & Earring Set (Design 07)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 02/07/0701.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 02/07/0701.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/07/0702.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/07/0703.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 02/07/0704.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_01","name":"Silver Pendant & Earring Set (Design 01)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/01/0101.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/01/0101.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/01/0102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/01/0103.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/01/0104.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_02","name":"Silver Pendant & Earring Set (Design 02)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/02/0201.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/02/0201.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/02/0202.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/02/0203.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/02/0204.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_03","name":"Silver Pendant & Earring Set (Design 03)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/03/0301.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/03/0301.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/03/0302.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/03/0303.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/03/0304.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_04","name":"Silver Pendant & Earring Set (Design 04)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/04/0401.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/04/0401.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/04/0402.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/04/0403.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/04/0404.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_05","name":"Silver Pendant & Earring Set (Design 05)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/05/0501.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/05/0501.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/05/0502.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/05/0503.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/05/0504.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_06","name":"Silver Pendant & Earring Set (Design 06)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/06/0601.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/06/0601.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/06/0602.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/06/0603.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/06/0604.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_07","name":"Silver Pendant & Earring Set (Design 07)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/07/0701.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/07/0701.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/07/0702.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/07/0703.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/07/0704.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_08","name":"Silver Pendant & Earring Set (Design 08)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/08/0801.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/08/0801.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/08/0802.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/08/0803.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/08/0804.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_09","name":"Silver Pendant & Earring Set (Design 09)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/09/0901.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/09/0901.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/09/0902.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/09/0903.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/09/0904.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_10","name":"Silver Pendant & Earring Set (Design 10)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/10/1001.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/10/1001.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/10/1002.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/10/1003.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/10/1004.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_03_11","name":"Silver Pendant & Earring Set (Design 11)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 03/11/1101.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 03/11/1101.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/11/1102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/11/1103.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 03/11/1104.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_01","name":"Silver Pendant & Earring Set (Design 01)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/01/0101.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/01/0101.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/01/0102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/01/0103.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/01/0104.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_02","name":"Silver Pendant & Earring Set (Design 02)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/02/0201.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/02/0201.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/02/0202.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/02/0203.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/02/0204.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_03","name":"Silver Pendant & Earring Set (Design 03)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/03/0301.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/03/0301.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/03/0302.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/03/0303.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/03/0304.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_04","name":"Silver Pendant & Earring Set (Design 04)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/04/0401.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/04/0401.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/04/0402.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/04/0403.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/04/0404.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_05","name":"Silver Pendant & Earring Set (Design 05)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/05/0501.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/05/0501.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/05/0502.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/05/0503.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/05/0504.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_06","name":"Silver Pendant & Earring Set (Design 06)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/06/0601.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/06/0601.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/06/0602.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/06/0603.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/06/0604.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_07","name":"Silver Pendant & Earring Set (Design 07)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/07/0701.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/07/0701.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/07/0702.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/07/0703.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/07/0704.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_08","name":"Silver Pendant & Earring Set (Design 08)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/08/0801.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/08/0801.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/08/0802.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/08/0803.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/08/0804.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_09","name":"Silver Pendant & Earring Set (Design 09)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/09/0901.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/09/0901.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/09/0902.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/09/0903.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/09/0904.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_10","name":"Silver Pendant & Earring Set (Design 10)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/10/1001.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/10/1001.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/10/1002.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/10/1003.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/10/1004.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_11","name":"Silver Pendant & Earring Set (Design 11)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/11/1101.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/11/1101.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/11/1102.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/11/1103.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/11/1104.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_06_female_pendant_set_typ_04_12","name":"Silver Pendant & Earring Set (Design 12)","price":0,"image":"/images/Products/01 Female/06 Female Pendant Set/TYP 04/12/1201.webp","images":["/images/Products/01 Female/06 Female Pendant Set/TYP 04/12/1201.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/12/1202.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/12/1203.webp","/images/Products/01 Female/06 Female Pendant Set/TYP 04/12/1204.webp"],"category":"gifts-for-her","subcategory":"pendants"},
+  {"id":"her_07_female_rings_typ_01_01","name":"925 Sterling Silver Ring (Design 01)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp","/images/Products/01 Female/07 Female Rings/TYP 01/01/0102.webp","/images/Products/01 Female/07 Female Rings/TYP 01/01/0103.webp","/images/Products/01 Female/07 Female Rings/TYP 01/01/0104.webp","/images/Products/01 Female/07 Female Rings/TYP 01/01/0105.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_01_02","name":"925 Sterling Silver Ring (Design 02)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 01/02/0201.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 01/02/0201.webp","/images/Products/01 Female/07 Female Rings/TYP 01/02/0202.webp","/images/Products/01 Female/07 Female Rings/TYP 01/02/0203.webp","/images/Products/01 Female/07 Female Rings/TYP 01/02/0204.webp","/images/Products/01 Female/07 Female Rings/TYP 01/02/0205.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_01","name":"Floral Silver Ring (Design 01)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/01/0101.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/01/0101.webp","/images/Products/01 Female/07 Female Rings/TYP 02/01/0102.webp","/images/Products/01 Female/07 Female Rings/TYP 02/01/0103.webp","/images/Products/01 Female/07 Female Rings/TYP 02/01/0104.webp","/images/Products/01 Female/07 Female Rings/TYP 02/01/0105.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_02","name":"Floral Silver Ring (Design 02)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/02/0201.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/02/0201.webp","/images/Products/01 Female/07 Female Rings/TYP 02/02/0202.webp","/images/Products/01 Female/07 Female Rings/TYP 02/02/0203.webp","/images/Products/01 Female/07 Female Rings/TYP 02/02/0204.webp","/images/Products/01 Female/07 Female Rings/TYP 02/02/0205.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_03","name":"Floral Silver Ring (Design 03)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/03/0301.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/03/0301.webp","/images/Products/01 Female/07 Female Rings/TYP 02/03/0302.webp","/images/Products/01 Female/07 Female Rings/TYP 02/03/0303.webp","/images/Products/01 Female/07 Female Rings/TYP 02/03/0304.webp","/images/Products/01 Female/07 Female Rings/TYP 02/03/0305.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_04","name":"Floral Silver Ring (Design 04)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/04/0401.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/04/0401.webp","/images/Products/01 Female/07 Female Rings/TYP 02/04/0402.webp","/images/Products/01 Female/07 Female Rings/TYP 02/04/0403.webp","/images/Products/01 Female/07 Female Rings/TYP 02/04/0404.webp","/images/Products/01 Female/07 Female Rings/TYP 02/04/0405.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_05","name":"Floral Silver Ring (Design 05)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/05/0501.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/05/0501.webp","/images/Products/01 Female/07 Female Rings/TYP 02/05/0502.webp","/images/Products/01 Female/07 Female Rings/TYP 02/05/0503.webp","/images/Products/01 Female/07 Female Rings/TYP 02/05/0504.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_06","name":"Floral Silver Ring (Design 06)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/06/0601.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/06/0601.webp","/images/Products/01 Female/07 Female Rings/TYP 02/06/0602.webp","/images/Products/01 Female/07 Female Rings/TYP 02/06/0603.webp","/images/Products/01 Female/07 Female Rings/TYP 02/06/0604.webp","/images/Products/01 Female/07 Female Rings/TYP 02/06/0605.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_02_07","name":"Floral Silver Ring (Design 07)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 02/07/0701.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 02/07/0701.webp","/images/Products/01 Female/07 Female Rings/TYP 02/07/0702.webp","/images/Products/01 Female/07 Female Rings/TYP 02/07/0703.webp","/images/Products/01 Female/07 Female Rings/TYP 02/07/0704.webp","/images/Products/01 Female/07 Female Rings/TYP 02/07/0705.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_03_01","name":"925 Sterling Silver Ring (Design 01)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 03/01/0101.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 03/01/0101.webp","/images/Products/01 Female/07 Female Rings/TYP 03/01/0102.webp","/images/Products/01 Female/07 Female Rings/TYP 03/01/0103.webp","/images/Products/01 Female/07 Female Rings/TYP 03/01/0104.webp","/images/Products/01 Female/07 Female Rings/TYP 03/01/0105.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_03_02","name":"925 Sterling Silver Ring (Design 02)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 03/02/0201.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 03/02/0201.webp","/images/Products/01 Female/07 Female Rings/TYP 03/02/0202.webp","/images/Products/01 Female/07 Female Rings/TYP 03/02/0203.webp","/images/Products/01 Female/07 Female Rings/TYP 03/02/0204.webp","/images/Products/01 Female/07 Female Rings/TYP 03/02/0205.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_03_03","name":"925 Sterling Silver Ring (Design 03)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 03/03/0301.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 03/03/0301.webp","/images/Products/01 Female/07 Female Rings/TYP 03/03/0302.webp","/images/Products/01 Female/07 Female Rings/TYP 03/03/0303.webp","/images/Products/01 Female/07 Female Rings/TYP 03/03/0304.webp","/images/Products/01 Female/07 Female Rings/TYP 03/03/0305.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_03_04","name":"925 Sterling Silver Ring (Design 04)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 03/04/0401.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 03/04/0401.webp","/images/Products/01 Female/07 Female Rings/TYP 03/04/0402.webp","/images/Products/01 Female/07 Female Rings/TYP 03/04/0403.webp","/images/Products/01 Female/07 Female Rings/TYP 03/04/0404.webp","/images/Products/01 Female/07 Female Rings/TYP 03/04/0405.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_03_05","name":"925 Sterling Silver Ring (Design 05)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 03/05/0501.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 03/05/0501.webp","/images/Products/01 Female/07 Female Rings/TYP 03/05/0502.webp","/images/Products/01 Female/07 Female Rings/TYP 03/05/0503.webp","/images/Products/01 Female/07 Female Rings/TYP 03/05/0504.webp","/images/Products/01 Female/07 Female Rings/TYP 03/05/0505.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_04_01","name":"925 Sterling Silver Ring (Design 01)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 04/01/0101.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 04/01/0101.webp","/images/Products/01 Female/07 Female Rings/TYP 04/01/0102.webp","/images/Products/01 Female/07 Female Rings/TYP 04/01/0103.webp","/images/Products/01 Female/07 Female Rings/TYP 04/01/0104.webp","/images/Products/01 Female/07 Female Rings/TYP 04/01/0105.webp","/images/Products/01 Female/07 Female Rings/TYP 04/01/0106.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_04_02","name":"925 Sterling Silver Ring (Design 02)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 04/02/0201.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 04/02/0201.webp","/images/Products/01 Female/07 Female Rings/TYP 04/02/0202.webp","/images/Products/01 Female/07 Female Rings/TYP 04/02/0203.webp","/images/Products/01 Female/07 Female Rings/TYP 04/02/0204.webp","/images/Products/01 Female/07 Female Rings/TYP 04/02/0205.webp","/images/Products/01 Female/07 Female Rings/TYP 04/02/0206.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_04_03","name":"925 Sterling Silver Ring (Design 03)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 04/03/0301.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 04/03/0301.webp","/images/Products/01 Female/07 Female Rings/TYP 04/03/0302.webp","/images/Products/01 Female/07 Female Rings/TYP 04/03/0303.webp","/images/Products/01 Female/07 Female Rings/TYP 04/03/0304.webp","/images/Products/01 Female/07 Female Rings/TYP 04/03/0305.webp","/images/Products/01 Female/07 Female Rings/TYP 04/03/0306.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_04_04","name":"925 Sterling Silver Ring (Design 04)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 04/04/0401.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 04/04/0401.webp","/images/Products/01 Female/07 Female Rings/TYP 04/04/0402.webp","/images/Products/01 Female/07 Female Rings/TYP 04/04/0403.webp","/images/Products/01 Female/07 Female Rings/TYP 04/04/0404.webp","/images/Products/01 Female/07 Female Rings/TYP 04/04/0405.webp","/images/Products/01 Female/07 Female Rings/TYP 04/04/0406.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_04_05","name":"925 Sterling Silver Ring (Design 05)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 04/05/0501.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 04/05/0501.webp","/images/Products/01 Female/07 Female Rings/TYP 04/05/0502.webp","/images/Products/01 Female/07 Female Rings/TYP 04/05/0503.webp","/images/Products/01 Female/07 Female Rings/TYP 04/05/0504.webp","/images/Products/01 Female/07 Female Rings/TYP 04/05/0505.webp","/images/Products/01 Female/07 Female Rings/TYP 04/05/0506.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_07_female_rings_typ_04_06","name":"925 Sterling Silver Ring (Design 06)","price":0,"image":"/images/Products/01 Female/07 Female Rings/TYP 04/06/0601.webp","images":["/images/Products/01 Female/07 Female Rings/TYP 04/06/0601.webp","/images/Products/01 Female/07 Female Rings/TYP 04/06/0602.webp","/images/Products/01 Female/07 Female Rings/TYP 04/06/0603.webp","/images/Products/01 Female/07 Female Rings/TYP 04/06/0604.webp","/images/Products/01 Female/07 Female Rings/TYP 04/06/0605.webp","/images/Products/01 Female/07 Female Rings/TYP 04/06/0606.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_08_female_anklet_typ_01_indian_silver_01","name":"Traditional Silver Payal (Design 01)","price":0,"image":"/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/01/0101.webp","images":["/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/01/0101.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/01/0102.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/01/0103.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/01/0104.webp"],"category":"gifts-for-her","subcategory":"anklets"},
+  {"id":"her_08_female_anklet_typ_01_indian_silver_02","name":"Traditional Silver Payal (Design 02)","price":0,"image":"/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/02/0201.webp","images":["/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/02/0201.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/02/0202.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/02/0203.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/02/0204.webp"],"category":"gifts-for-her","subcategory":"anklets"},
+  {"id":"her_08_female_anklet_typ_01_indian_silver_03","name":"Traditional Silver Payal (Design 03)","price":0,"image":"/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/03/0301.webp","images":["/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/03/0301.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/03/0302.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/03/0303.webp"],"category":"gifts-for-her","subcategory":"anklets"},
+  {"id":"her_08_female_anklet_typ_01_indian_silver_04","name":"Traditional Silver Payal (Design 04)","price":0,"image":"/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/04/0401.webp","images":["/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/04/0401.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/04/0402.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/04/0403.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/04/0404.webp"],"category":"gifts-for-her","subcategory":"anklets"},
+  {"id":"her_08_female_anklet_typ_01_indian_silver_05","name":"Traditional Silver Payal (Design 05)","price":0,"image":"/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/05/0501.webp","images":["/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/05/0501.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/05/0502.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/05/0503.webp","/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/05/0504.webp"],"category":"gifts-for-her","subcategory":"anklets"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_01","name":"925 Sterling Silver Ring (Design 01)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/01/0101.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/01/0101.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/01/0102.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/01/0103.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_02","name":"925 Sterling Silver Ring (Design 02)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/02/0201.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/02/0201.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/02/0202.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/02/0203.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_03","name":"925 Sterling Silver Ring (Design 03)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/03/0301.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/03/0301.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/03/0302.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/03/0303.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_04","name":"925 Sterling Silver Ring (Design 04)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/04/0401.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/04/0401.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/04/0402.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/04/0403.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_05","name":"925 Sterling Silver Ring (Design 05)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/05/0501.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/05/0501.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/05/0502.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/05/0503.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_06","name":"925 Sterling Silver Ring (Design 06)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/06/0601.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/06/0601.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/06/0602.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/06/0603.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_07","name":"925 Sterling Silver Ring (Design 07)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/07/0701.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/07/0701.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/07/0702.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/07/0703.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_08","name":"925 Sterling Silver Ring (Design 08)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/08/0801.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/08/0801.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/08/0802.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/08/0803.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_09","name":"925 Sterling Silver Ring (Design 09)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/09/0901.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/09/0901.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/09/0902.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/09/0903.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_09_female_toes_rings_typ_01_indian_silver_10","name":"925 Sterling Silver Ring (Design 10)","price":0,"image":"/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/10/1001.webp","images":["/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/10/1001.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/10/1002.webp","/images/Products/01 Female/09 Female Toes Rings/TYP 01 (Indian Silver)/10/1003.webp"],"category":"gifts-for-her","subcategory":"rings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_01","name":"Traditional Silver Nose Ring (Design 01)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/01/0101.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/01/0101.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/01/0102.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/01/0103.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_02","name":"Traditional Silver Nose Ring (Design 02)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/02/0201.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/02/0201.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/02/0202.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/02/0203.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_03","name":"Traditional Silver Nose Ring (Design 03)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/03/0301.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/03/0301.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/03/0302.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/03/0303.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_04","name":"Traditional Silver Nose Ring (Design 04)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/04/0401.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/04/0401.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/04/0402.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/04/0403.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_05","name":"Traditional Silver Nose Ring (Design 05)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/05/0501.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/05/0501.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/05/0502.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/05/0503.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_06","name":"Traditional Silver Nose Ring (Design 06)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/06/0601.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/06/0601.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/06/0602.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/06/0603.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_07","name":"Traditional Silver Nose Ring (Design 07)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/07/0701.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/07/0701.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/07/0702.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/07/0703.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"her_10_female_nose_ring_01_indian_nose_ring_08","name":"Traditional Silver Nose Ring (Design 08)","price":0,"image":"/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/08/0801.webp","images":["/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/08/0801.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/08/0802.webp","/images/Products/01 Female/10 Female Nose-ring/01 Indian Nose-ring -/08/0803.webp"],"category":"gifts-for-her","subcategory":"earrings"},
+  {"id":"him_01_male_bracelets_typ_01_01","name":"Men's Silver Link Bracelet (Design 01)","price":0,"image":"/images/Products/02 Male/01 Male Bracelets/TYP 01/01/0101.webp","images":["/images/Products/02 Male/01 Male Bracelets/TYP 01/01/0101.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/01/0102.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/01/0103.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/01/0104.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_01_male_bracelets_typ_01_02","name":"Men's Silver Link Bracelet (Design 02)","price":0,"image":"/images/Products/02 Male/01 Male Bracelets/TYP 01/02/0201.webp","images":["/images/Products/02 Male/01 Male Bracelets/TYP 01/02/0201.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/02/0202.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/02/0203.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/02/0204.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_01_male_bracelets_typ_01_03","name":"Men's Silver Link Bracelet (Design 03)","price":0,"image":"/images/Products/02 Male/01 Male Bracelets/TYP 01/03/0301.webp","images":["/images/Products/02 Male/01 Male Bracelets/TYP 01/03/0301.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/03/0302.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/03/0303.webp","/images/Products/02 Male/01 Male Bracelets/TYP 01/03/0304.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_02_male_rings_typ_01_01","name":"Men's Silver Signet Ring (Design 01)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 01/01/0101.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 01/01/0101.webp","/images/Products/02 Male/02 Male Rings/TYP 01/01/0102.webp","/images/Products/02 Male/02 Male Rings/TYP 01/01/0103.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_01_02","name":"Men's Silver Signet Ring (Design 02)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 01/02/0201.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 01/02/0201.webp","/images/Products/02 Male/02 Male Rings/TYP 01/02/0202.webp","/images/Products/02 Male/02 Male Rings/TYP 01/02/0203.webp","/images/Products/02 Male/02 Male Rings/TYP 01/02/0204.webp","/images/Products/02 Male/02 Male Rings/TYP 01/02/0205.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_01_03","name":"Men's Silver Signet Ring (Design 03)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 01/03/0301.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 01/03/0301.webp","/images/Products/02 Male/02 Male Rings/TYP 01/03/0303.webp","/images/Products/02 Male/02 Male Rings/TYP 01/03/ChatGPT Image Aug 16, 2026, 03_38_53 PM.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_02_01","name":"Men's Silver Signet Ring (Design 01)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 02/01/0101.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 02/01/0101.webp","/images/Products/02 Male/02 Male Rings/TYP 02/01/0102.webp","/images/Products/02 Male/02 Male Rings/TYP 02/01/0103.webp","/images/Products/02 Male/02 Male Rings/TYP 02/01/0104.webp","/images/Products/02 Male/02 Male Rings/TYP 02/01/0105.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_02_02","name":"Men's Silver Signet Ring (Design 02)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 02/02/0201.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 02/02/0201.webp","/images/Products/02 Male/02 Male Rings/TYP 02/02/0202.webp","/images/Products/02 Male/02 Male Rings/TYP 02/02/0203.webp","/images/Products/02 Male/02 Male Rings/TYP 02/02/0204.webp","/images/Products/02 Male/02 Male Rings/TYP 02/02/0205.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_02_03","name":"Men's Silver Signet Ring (Design 03)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 02/03/0301.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 02/03/0301.webp","/images/Products/02 Male/02 Male Rings/TYP 02/03/0304 (1).webp","/images/Products/02 Male/02 Male Rings/TYP 02/03/0304.webp","/images/Products/02 Male/02 Male Rings/TYP 02/03/0305.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_03_01","name":"Men's Silver Signet Ring (Design 01)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 03/01/0101.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 03/01/0101.webp","/images/Products/02 Male/02 Male Rings/TYP 03/01/0102.webp","/images/Products/02 Male/02 Male Rings/TYP 03/01/0103.webp","/images/Products/02 Male/02 Male Rings/TYP 03/01/0104.webp","/images/Products/02 Male/02 Male Rings/TYP 03/01/0105.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_04_01","name":"Men's Silver Signet Ring (Design 01)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 04/01/0101.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 04/01/0101.webp","/images/Products/02 Male/02 Male Rings/TYP 04/01/0102.webp","/images/Products/02 Male/02 Male Rings/TYP 04/01/0103.webp","/images/Products/02 Male/02 Male Rings/TYP 04/01/0104.webp","/images/Products/02 Male/02 Male Rings/TYP 04/01/0105.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_04_02","name":"Men's Silver Signet Ring (Design 02)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 04/02/0201.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 04/02/0201.webp","/images/Products/02 Male/02 Male Rings/TYP 04/02/0202.webp","/images/Products/02 Male/02 Male Rings/TYP 04/02/0203.webp","/images/Products/02 Male/02 Male Rings/TYP 04/02/0204.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_04_03","name":"Men's Silver Signet Ring (Design 03)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 04/03/0301.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 04/03/0301.webp","/images/Products/02 Male/02 Male Rings/TYP 04/03/0302.webp","/images/Products/02 Male/02 Male Rings/TYP 04/03/0303.webp","/images/Products/02 Male/02 Male Rings/TYP 04/03/0304.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_02_male_rings_typ_04_04","name":"Men's Silver Signet Ring (Design 04)","price":0,"image":"/images/Products/02 Male/02 Male Rings/TYP 04/04/0401.webp","images":["/images/Products/02 Male/02 Male Rings/TYP 04/04/0401.webp","/images/Products/02 Male/02 Male Rings/TYP 04/04/0402.webp","/images/Products/02 Male/02 Male Rings/TYP 04/04/0403.webp","/images/Products/02 Male/02 Male Rings/TYP 04/04/0404.webp"],"category":"gifts-for-him","subcategory":"rings"},
+  {"id":"him_03_male_chains_01_925_silver_chains_01","name":"Men's 925 Silver Chain (Design 01)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/01/0101.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/01/0101.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/01/0102.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/01/0103.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/01/0104.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_02","name":"Men's 925 Silver Chain (Design 02)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/02/0201.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/02/0201.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/02/0202.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/02/0203.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/02/0204.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_03","name":"Men's 925 Silver Chain (Design 03)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/03/0301.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/03/0301.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/03/0302.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/03/0303.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/03/0304.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_04","name":"Men's 925 Silver Chain (Design 04)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/04/0401.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/04/0401.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/04/0402.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/04/0403.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/04/0404.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_05","name":"Men's 925 Silver Chain (Design 05)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/05/0501.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/05/0501.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/05/0502.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/05/0503.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/05/0504.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_06","name":"Men's 925 Silver Chain (Design 06)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/06/0601.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/06/0601.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/06/0602.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/06/0603.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/06/0604.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_07","name":"Men's 925 Silver Chain (Design 07)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/07/0701.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/07/0701.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/07/0702.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/07/0703.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/07/0704.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_01_925_silver_chains_08","name":"Men's 925 Silver Chain (Design 08)","price":0,"image":"/images/Products/02 Male/03 Male chains/01 925 Silver Chains/08/0801.webp","images":["/images/Products/02 Male/03 Male chains/01 925 Silver Chains/08/0801.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/08/0802.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/08/0803.webp","/images/Products/02 Male/03 Male chains/01 925 Silver Chains/08/0804.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_01","name":"Men's 925 Silver Chain (Design 01)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/01/0101.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/01/0101.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/01/0102.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/01/0103.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/01/0104.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_02","name":"Men's 925 Silver Chain (Design 02)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/02/0201.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/02/0201.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/02/0202.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/02/0203.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/02/0204.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_03","name":"Men's 925 Silver Chain (Design 03)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/03/0301.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/03/0301.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/03/0302.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/03/0303.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/03/0304.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_04","name":"Men's 925 Silver Chain (Design 04)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/04/0401.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/04/0401.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/04/0402.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/04/0403.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/04/0404.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_05","name":"Men's 925 Silver Chain (Design 05)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/05/0501.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/05/0501.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/05/0502.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/05/0503.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/05/0504.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_06","name":"Men's 925 Silver Chain (Design 06)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/06/0601.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/06/0601.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/06/0602.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/06/0603.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/06/0604.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_07","name":"Men's 925 Silver Chain (Design 07)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/07/0701.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/07/0701.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/07/0702.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/07/0703.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/07/0704.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_08","name":"Men's 925 Silver Chain (Design 08)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/08/0801.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/08/0801.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/08/0802.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/08/0803.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/08/0804.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_03_male_chains_02_indian_silver_chain_09","name":"Men's 925 Silver Chain (Design 09)","price":0,"image":"/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/09/0901.webp","images":["/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/09/0901.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/09/0902.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/09/0903.webp","/images/Products/02 Male/03 Male chains/02 Indian Silver Chain/09/0904.webp"],"category":"gifts-for-him","subcategory":"chains"},
+  {"id":"him_04_male_studs_typ_01_01","name":"Men's Silver Ear Stud (Design 01)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 01/01/0101.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 01/01/0101.webp","/images/Products/02 Male/04 Male Studs/TYP 01/01/0102.webp","/images/Products/02 Male/04 Male Studs/TYP 01/01/0103.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_01_02","name":"Men's Silver Ear Stud (Design 02)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 01/02/0201.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 01/02/0201.webp","/images/Products/02 Male/04 Male Studs/TYP 01/02/0202.webp","/images/Products/02 Male/04 Male Studs/TYP 01/02/0203.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_01_03","name":"Men's Silver Ear Stud (Design 03)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 01/03/0301.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 01/03/0301.webp","/images/Products/02 Male/04 Male Studs/TYP 01/03/0302.webp","/images/Products/02 Male/04 Male Studs/TYP 01/03/0303.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_01_04","name":"Men's Silver Ear Stud (Design 04)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 01/04/0401.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 01/04/0401.webp","/images/Products/02 Male/04 Male Studs/TYP 01/04/0402.webp","/images/Products/02 Male/04 Male Studs/TYP 01/04/0403.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_01","name":"Men's Silver Ear Stud (Design 01)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/01/0101.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/01/0101.webp","/images/Products/02 Male/04 Male Studs/TYP 02/01/0102.webp","/images/Products/02 Male/04 Male Studs/TYP 02/01/0103.webp","/images/Products/02 Male/04 Male Studs/TYP 02/01/0104.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_02","name":"Men's Silver Ear Stud (Design 02)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/02/0201.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/02/0201.webp","/images/Products/02 Male/04 Male Studs/TYP 02/02/0202.webp","/images/Products/02 Male/04 Male Studs/TYP 02/02/0203.webp","/images/Products/02 Male/04 Male Studs/TYP 02/02/0204.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_03","name":"Men's Silver Ear Stud (Design 03)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/03/0301.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/03/0301.webp","/images/Products/02 Male/04 Male Studs/TYP 02/03/0302.webp","/images/Products/02 Male/04 Male Studs/TYP 02/03/0303.webp","/images/Products/02 Male/04 Male Studs/TYP 02/03/0304.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_04","name":"Men's Silver Ear Stud (Design 04)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/04/0401.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/04/0401.webp","/images/Products/02 Male/04 Male Studs/TYP 02/04/0402.webp","/images/Products/02 Male/04 Male Studs/TYP 02/04/0403.webp","/images/Products/02 Male/04 Male Studs/TYP 02/04/0404.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_05","name":"Men's Silver Ear Stud (Design 05)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/05/0501.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/05/0501.webp","/images/Products/02 Male/04 Male Studs/TYP 02/05/0502.webp","/images/Products/02 Male/04 Male Studs/TYP 02/05/0503.webp","/images/Products/02 Male/04 Male Studs/TYP 02/05/0504.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_06","name":"Men's Silver Ear Stud (Design 06)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/06/0601.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/06/0601.webp","/images/Products/02 Male/04 Male Studs/TYP 02/06/0602.webp","/images/Products/02 Male/04 Male Studs/TYP 02/06/0603.webp","/images/Products/02 Male/04 Male Studs/TYP 02/06/0604.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_07","name":"Men's Silver Ear Stud (Design 07)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/07/0701.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/07/0701.webp","/images/Products/02 Male/04 Male Studs/TYP 02/07/0702.webp","/images/Products/02 Male/04 Male Studs/TYP 02/07/0703.webp","/images/Products/02 Male/04 Male Studs/TYP 02/07/0704.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_04_male_studs_typ_02_08","name":"Men's Silver Ear Stud (Design 08)","price":0,"image":"/images/Products/02 Male/04 Male Studs/TYP 02/08/0801.webp","images":["/images/Products/02 Male/04 Male Studs/TYP 02/08/0801.webp","/images/Products/02 Male/04 Male Studs/TYP 02/08/0802.webp","/images/Products/02 Male/04 Male Studs/TYP 02/08/0803.webp","/images/Products/02 Male/04 Male Studs/TYP 02/08/0804.webp"],"category":"gifts-for-him","subcategory":"earrings"},
+  {"id":"him_05_male_kada_01_925_silver_male_kada_01","name":"Men's Royal Silver Kada (Design 01)","price":0,"image":"/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/01/0101.webp","images":["/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/01/0101.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/01/0102.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/01/0103.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/01/0104.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_05_male_kada_01_925_silver_male_kada_02","name":"Men's Royal Silver Kada (Design 02)","price":0,"image":"/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/02/0201.webp","images":["/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/02/0201.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/02/0202.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/02/0203.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/02/0204.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_05_male_kada_01_925_silver_male_kada_03","name":"Men's Royal Silver Kada (Design 03)","price":0,"image":"/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/03/0301.webp","images":["/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/03/0301.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/03/0302.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/03/0303.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/03/0304.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_05_male_kada_01_925_silver_male_kada_04","name":"Men's Royal Silver Kada (Design 04)","price":0,"image":"/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/04/0101.webp","images":["/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/04/0101.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/04/0102.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/04/0103.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/04/0104.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_05_male_kada_01_925_silver_male_kada_05","name":"Men's Royal Silver Kada (Design 05)","price":0,"image":"/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/05/0501.webp","images":["/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/05/0501.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/05/0502.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/05/0503.webp","/images/Products/02 Male/05 Male Kada/01 925 Silver Male Kada/05/0504.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_05_male_kada_02_indian_silver_male_kada_01","name":"Men's Royal Silver Kada (Design 01)","price":0,"image":"/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/01/0101.webp","images":["/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/01/0101.webp","/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/01/0102.webp","/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/01/0103.webp","/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/01/0104.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"him_05_male_kada_02_indian_silver_male_kada_02","name":"Men's Royal Silver Kada (Design 02)","price":0,"image":"/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/02/0201.webp","images":["/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/02/0201.webp","/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/02/0202.webp","/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/02/0203.webp","/images/Products/02 Male/05 Male Kada/02 Indian Silver Male Kada/02/0204.webp"],"category":"gifts-for-him","subcategory":"bracelets"},
+  {"id":"kids_01_kids_pendant_typ_01_01","name":"Kids Silver Charm Pendant (Design 01)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/01/0101.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/01/0101.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/01/0102.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/01/0103.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/01/0104.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_02","name":"Kids Silver Charm Pendant (Design 02)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/02/0201.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/02/0201.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/02/0202.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/02/0203.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/02/0204.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_04","name":"Kids Silver Charm Pendant (Design 04)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/04/0401.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/04/0401.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/04/0402.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/04/0403.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/04/0404.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_05","name":"Kids Silver Charm Pendant (Design 05)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/05/0501.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/05/0501.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/05/0502.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/05/0503.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/05/0504.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_06","name":"Kids Silver Charm Pendant (Design 06)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/06/0601.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/06/0601.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/06/0602.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/06/0603.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/06/0604.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_08","name":"Kids Silver Charm Pendant (Design 08)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/08/0801.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/08/0801.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/08/0802.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/08/0803.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/08/0804.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_09","name":"Kids Silver Charm Pendant (Design 09)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/09/0901.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/09/0901.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/09/0902.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/09/0903.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/09/0904.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_10","name":"Kids Silver Charm Pendant (Design 10)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/10/1001.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/10/1001.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/10/1002.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/10/1003.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/10/1004.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_11","name":"Kids Silver Charm Pendant (Design 11)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/11/1101.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/11/1101.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/11/1102.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/11/1103.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/11/1104.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_12","name":"Kids Silver Charm Pendant (Design 12)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/12/1201.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/12/1201.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/12/1202.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/12/1203.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/12/1204.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_13","name":"Kids Silver Charm Pendant (Design 13)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/13/1301.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/13/1301.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/13/1302.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/13/1303.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/13/1304.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_14","name":"Kids Silver Charm Pendant (Design 14)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/14/1401.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/14/1401.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/14/1402.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/14/1403.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/14/1404.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_15","name":"Kids Silver Charm Pendant (Design 15)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/15/1501.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/15/1501.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/15/1502.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/15/1503.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/15/1504.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_16","name":"Kids Silver Charm Pendant (Design 16)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/16/1601.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/16/1601.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/16/1602.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/16/1603.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/16/1604.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_17","name":"Kids Silver Charm Pendant (Design 17)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/17/1701.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/17/1701.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/17/1702.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/17/1703.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/17/1704.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_18","name":"Kids Silver Charm Pendant (Design 18)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/18/1801.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/18/1801.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/18/1802.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/18/1803.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/18/1804.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_19","name":"Kids Silver Charm Pendant (Design 19)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/19/1901.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/19/1901.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/19/1902.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/19/1903.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/19/1904.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_20","name":"Kids Silver Charm Pendant (Design 20)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/20/2001.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/20/2001.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/20/2002.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/20/2003.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/20/2004.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_01_kids_pendant_typ_01_21","name":"Kids Silver Charm Pendant (Design 21)","price":0,"image":"/images/Products/03 Kids/01 Kids Pendant/TYP 01/21/2101.webp","images":["/images/Products/03 Kids/01 Kids Pendant/TYP 01/21/2101.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/21/2102.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/21/2103.webp","/images/Products/03 Kids/01 Kids Pendant/TYP 01/21/2104.webp"],"category":"kids","subcategory":"pendants"},
+  {"id":"kids_02_kids_rings_typ_01_indian_silver_01","name":"Kids Silver Adjustable Ring (Design 01)","price":0,"image":"/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/01/0101.webp","images":["/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/01/0101.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/01/0102.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/01/0103.webp"],"category":"kids","subcategory":"rings"},
+  {"id":"kids_02_kids_rings_typ_01_indian_silver_02","name":"Kids Silver Adjustable Ring (Design 02)","price":0,"image":"/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/02/0201.webp","images":["/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/02/0201.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/02/0202.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/02/0203.webp"],"category":"kids","subcategory":"rings"},
+  {"id":"kids_02_kids_rings_typ_01_indian_silver_03","name":"Kids Silver Adjustable Ring (Design 03)","price":0,"image":"/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/03/0301.webp","images":["/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/03/0301.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/03/0302.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/03/0303.webp"],"category":"kids","subcategory":"rings"},
+  {"id":"kids_02_kids_rings_typ_01_indian_silver_04","name":"Kids Silver Adjustable Ring (Design 04)","price":0,"image":"/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/04/0401.webp","images":["/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/04/0401.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/04/0402.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/04/0403.webp"],"category":"kids","subcategory":"rings"},
+  {"id":"kids_02_kids_rings_typ_01_indian_silver_05","name":"Kids Silver Adjustable Ring (Design 05)","price":0,"image":"/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/05/0501.webp","images":["/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/05/0501.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/05/0502.webp","/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/05/0503.webp"],"category":"kids","subcategory":"rings"},
+  {"id":"kids_03_kids_anklet_typ_01_indian_silver_01","name":"Kids Silver Nazariya Payal (Design 01)","price":0,"image":"/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/01/0101.webp","images":["/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/01/0101.webp","/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/01/0102.webp","/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/01/0103.webp"],"category":"kids","subcategory":"anklets"},
+  {"id":"kids_03_kids_anklet_typ_01_indian_silver_02","name":"Kids Silver Nazariya Payal (Design 02)","price":0,"image":"/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/02/0201.webp","images":["/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/02/0201.webp","/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/02/0202.webp","/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/02/0203.webp"],"category":"kids","subcategory":"anklets"},
+  {"id":"kids_04_kids_bangles_01_925_kids_breslet_01","name":"Kids Silver Kada Bangle (Design 01)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/01/0101.webp","images":["/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/01/0101.webp","/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/01/0102.webp","/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/01/0103.webp","/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/01/0104.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_01_925_kids_breslet_02","name":"Kids Silver Kada Bangle (Design 02)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/02/0201.webp","images":["/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/02/0201.webp","/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/02/0202.webp","/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/02/0203.webp","/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/02/0204.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_02_kids_bangles_indian_silver_01","name":"Kids Silver Kada Bangle (Design 01)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/01/0101.webp","images":["/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/01/0101.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/01/0102.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/01/0103.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/01/0104.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_02_kids_bangles_indian_silver_02","name":"Kids Silver Kada Bangle (Design 02)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/02/0201.webp","images":["/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/02/0201.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/02/0202.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/02/0203.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/02/0204.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_02_kids_bangles_indian_silver_03","name":"Kids Silver Kada Bangle (Design 03)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/03/0301.webp","images":["/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/03/0301.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/03/0302.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/03/0303.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/03/0304.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_02_kids_bangles_indian_silver_04","name":"Kids Silver Kada Bangle (Design 04)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/04/0401.webp","images":["/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/04/0401.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/04/0402.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/04/0403.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/04/0404.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_02_kids_bangles_indian_silver_05","name":"Kids Silver Kada Bangle (Design 05)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/05/0501.webp","images":["/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/05/0501.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/05/0502.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/05/0503.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/05/0504.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_04_kids_bangles_02_kids_bangles_indian_silver_06","name":"Kids Silver Kada Bangle (Design 06)","price":0,"image":"/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/06/0601.webp","images":["/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/06/0601.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/06/0602.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/06/0603.webp","/images/Products/03 Kids/04 Kids Bangles/02 Kids Bangles (Indian Silver )/06/0604.webp"],"category":"kids","subcategory":"bangles"},
+  {"id":"kids_05_kids_bracelet_chain_wale_typ_01_925_silver","name":"Kids Silver Chain Bracelet (Design TYP 01 (925 silver))","price":0,"image":"/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 01 (925 silver)/0101.webp","images":["/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 01 (925 silver)/0101.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 01 (925 silver)/0102.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 01 (925 silver)/0103.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 01 (925 silver)/0104.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_05_kids_bracelet_chain_wale_typ_02_indian_silver_01","name":"Kids Silver Chain Bracelet (Design 01)","price":0,"image":"/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/01/0101.webp","images":["/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/01/0101.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/01/0102.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/01/0103.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/01/0104.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_05_kids_bracelet_chain_wale_typ_02_indian_silver_02","name":"Kids Silver Chain Bracelet (Design 02)","price":0,"image":"/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/02/0201.webp","images":["/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/02/0201.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/02/0202.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/02/0203.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/02/0204.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_05_kids_bracelet_chain_wale_typ_02_indian_silver_03","name":"Kids Silver Chain Bracelet (Design 03)","price":0,"image":"/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/03/0301.webp","images":["/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/03/0301.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/03/0302.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/03/0303.webp","/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 02 (Indian Silver)/03/0304.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_06_kids_nazar_jewellery_01","name":"Kids Protective Nazariya (Design 01)","price":0,"image":"/images/Products/03 Kids/06 Kids Nazar jewellery/01/0101.webp","images":["/images/Products/03 Kids/06 Kids Nazar jewellery/01/0101.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/01/0102.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/01/0103.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_06_kids_nazar_jewellery_02","name":"Kids Protective Nazariya (Design 02)","price":0,"image":"/images/Products/03 Kids/06 Kids Nazar jewellery/02/0201.webp","images":["/images/Products/03 Kids/06 Kids Nazar jewellery/02/0201.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/02/0202.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/02/0203.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_06_kids_nazar_jewellery_03","name":"Kids Protective Nazariya (Design 03)","price":0,"image":"/images/Products/03 Kids/06 Kids Nazar jewellery/03/0301.webp","images":["/images/Products/03 Kids/06 Kids Nazar jewellery/03/0301.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/03/0302.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/03/0303.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_06_kids_nazar_jewellery_04","name":"Kids Protective Nazariya (Design 04)","price":0,"image":"/images/Products/03 Kids/06 Kids Nazar jewellery/04/0401.webp","images":["/images/Products/03 Kids/06 Kids Nazar jewellery/04/0401.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/04/0402.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/04/0403.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_06_kids_nazar_jewellery_05","name":"Kids Protective Nazariya (Design 05)","price":0,"image":"/images/Products/03 Kids/06 Kids Nazar jewellery/05/0501.webp","images":["/images/Products/03 Kids/06 Kids Nazar jewellery/05/0501.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/05/0502.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/05/0503.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_06_kids_nazar_jewellery_06","name":"Kids Protective Nazariya (Design 06)","price":0,"image":"/images/Products/03 Kids/06 Kids Nazar jewellery/06/0601.webp","images":["/images/Products/03 Kids/06 Kids Nazar jewellery/06/0601.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/06/0602.webp","/images/Products/03 Kids/06 Kids Nazar jewellery/06/0603.webp"],"category":"kids","subcategory":"bracelets"},
+  {"id":"kids_07_kids_chain_01","name":"Kids Dainty Silver Chain (Design 01)","price":0,"image":"/images/Products/03 Kids/07 Kids Chain/01/0101.webp","images":["/images/Products/03 Kids/07 Kids Chain/01/0101.webp","/images/Products/03 Kids/07 Kids Chain/01/0102.webp","/images/Products/03 Kids/07 Kids Chain/01/0103.webp","/images/Products/03 Kids/07 Kids Chain/01/0104.webp"],"category":"kids","subcategory":"chains"},
+  {"id":"kids_07_kids_chain_02","name":"Kids Dainty Silver Chain (Design 02)","price":0,"image":"/images/Products/03 Kids/07 Kids Chain/02/0201.webp","images":["/images/Products/03 Kids/07 Kids Chain/02/0201.webp","/images/Products/03 Kids/07 Kids Chain/02/0202.webp","/images/Products/03 Kids/07 Kids Chain/02/0203.webp","/images/Products/03 Kids/07 Kids Chain/02/0204.webp"],"category":"kids","subcategory":"chains"},
+  {"id":"astro_01_astro_pendnat_typ_01_01","name":"Aries Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0101.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/010101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0102.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0103.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0104.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_02","name":"Taurus Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/02/0201.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/02/0201.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/02/020101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/02/0202.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/02/0203.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/02/0204.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_03","name":"Gemini Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/03/0301.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/03/0301.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/03/030101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/03/0302.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/03/0303.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/03/0304.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_04","name":"Cancer Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/04/0401.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/04/0401.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/04/040101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/04/0402.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/04/0403.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/04/0404.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_05","name":"Leo Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/05/0501.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/05/0501.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/05/050101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/05/0502.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/05/0503.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/05/0504.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_06","name":"Virgo Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/06/0601.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/06/0601.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/06/060101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/06/0602.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/06/0603.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/06/0604.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_07","name":"Libra Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/07/0701.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/07/0701.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/07/070101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/07/0702.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/07/0703.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/07/0704.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_08","name":"Scorpio Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/08/0801.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/08/0801.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/08/080101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/08/0802.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/08/0803.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/08/0804.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_09","name":"Sagittarius Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/09/0901.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/09/0901.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/09/090101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/09/0902.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/09/0903.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/09/0904.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_10","name":"Capricorn Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/10/1001.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/10/1001.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/10/100101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/10/1002.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/10/1003.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/10/1004.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_11","name":"Aquarius Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/11/1101.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/11/1101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/11/1102.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/11/1103.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/11/1104.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/11/120101.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_01_astro_pendnat_typ_01_12","name":"Pisces Zodiac 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/12/1201.webp","images":["/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/12/1201.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/12/120101.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/12/1202.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/12/1203.webp","/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/12/1204.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_02_astro_ring_typ_01_01","name":"Astro Navratna Silver Ring","price":0,"image":"/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0101.webp","images":["/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0101.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0102.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0103.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0104.webp"],"category":"astro-collection","subcategory":"rings"},
+  {"id":"astro_02_astro_ring_typ_01_02","name":"Astro Planetary Silver Ring","price":0,"image":"/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/02/0201.webp","images":["/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/02/0201.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/02/0202.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/02/0203.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/02/0204.webp"],"category":"astro-collection","subcategory":"rings"},
+  {"id":"astro_02_astro_ring_typ_01_03","name":"Astro Cosmic Gem Silver Ring","price":0,"image":"/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/03/0301.webp","images":["/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/03/0301.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/03/0302.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/03/0303.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/03/0304.webp"],"category":"astro-collection","subcategory":"rings"},
+  {"id":"astro_02_astro_ring_typ_01_04","name":"Astro Solitaire Silver Band Ring","price":0,"image":"/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/04/0401.webp","images":["/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/04/0401.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/04/0402.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/04/0403.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/04/0404.webp"],"category":"astro-collection","subcategory":"rings"},
+  {"id":"astro_02_astro_ring_typ_01_05","name":"Astro Sacred Zodiac Silver Ring","price":0,"image":"/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/05/0501.webp","images":["/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/05/0501.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/05/0502.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/05/0503.webp","/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/05/0504.webp"],"category":"astro-collection","subcategory":"rings"},
+  {"id":"astro_03_silver_coins_01","name":"Pure Silver Lakshmi Ganesha 999 Coin","price":0,"image":"/images/Products/04 Astro Jewellery/03 Silver Coins/01/0101.webp","images":["/images/Products/04 Astro Jewellery/03 Silver Coins/01/0101.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/01/0102.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/01/0103.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_03_silver_coins_02","name":"Pure Silver Saraswati & Lakshmi Puja Coin","price":0,"image":"/images/Products/04 Astro Jewellery/03 Silver Coins/02/0201.webp","images":["/images/Products/04 Astro Jewellery/03 Silver Coins/02/0201.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/02/0202.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/02/0203.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_03_silver_coins_03","name":"Sacred Om & Swastik Silver Coin","price":0,"image":"/images/Products/04 Astro Jewellery/03 Silver Coins/03/0301.webp","images":["/images/Products/04 Astro Jewellery/03 Silver Coins/03/0301.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/03/0302.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/03/0303.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_03_silver_coins_04","name":"Traditional Shubh Labh Silver Coin","price":0,"image":"/images/Products/04 Astro Jewellery/03 Silver Coins/04/0401.webp","images":["/images/Products/04 Astro Jewellery/03 Silver Coins/04/0401.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/04/0402.webp","/images/Products/04 Astro Jewellery/03 Silver Coins/04/0403.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_01","name":"Lord Ganesha 925 Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0101.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0101.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0102.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0103.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0104.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_02","name":"Lord Shiva Mahadev Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/02/0202.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/02/0202.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/02/0203.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/02/0204.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/02/ChatGPT Image Sep 5, 2026, 11_00_09 PM.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_03","name":"Lord Hanuman Ji Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/03/0301.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/03/0301.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/03/0302.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/03/0303.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/03/0304.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_04","name":"Sacred Om Trishul Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/04/0401.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/04/0401.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/04/0402.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/04/0403.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/04/0404.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_05","name":"Radha Krishna Divine Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/05/0501.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/05/0501.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/05/0502.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/05/0503.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/05/0504.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_06","name":"Goddess Durga Mata Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/06/0601.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/06/0601.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/06/0602.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/06/0603.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/06/0604.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_07","name":"Lord Balaji Tirupati Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/07/0701.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/07/0701.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/07/0702.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/07/0703.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/07/0704.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_08","name":"Shri Ram Darbar Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/08/0801.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/08/0801.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/08/0802.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/08/0803.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/08/0804.webp"],"category":"astro-collection","subcategory":"pendants"},
+  {"id":"astro_04_idol_pendant_09","name":"Sacred Mahamrityunjaya Silver Pendant","price":0,"image":"/images/Products/04 Astro Jewellery/04 Idol Pendant/09/0901.webp","images":["/images/Products/04 Astro Jewellery/04 Idol Pendant/09/0901.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/09/0902.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/09/0903.webp","/images/Products/04 Astro Jewellery/04 Idol Pendant/09/0904.webp"],"category":"astro-collection","subcategory":"pendants"}
 ];
 
 export const featuredProducts: Product[] = [
   {
-    "id": "chains_01",
-    "name": "Classic Silver Link Chain",
-    "price": 2200,
-    "image": "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp",
+    "id": "her_01_female_ear_rings_typ_01_01",
+    "name": "Silver Jhumka Earrings (Design 01)",
+    "price": 0,
+    "image": "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp",
     "images": [
-      "/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp",
-      "/images/products/chains/1p_fcTXZxjqvEfvQICoa13B_l5Od9juCJ.webp",
-      "/images/products/chains/1FkLPc5xCDqalkWGUFBg-6OUXb174_6QO.webp",
-      "/images/products/chains/1IiUh5T93t5Mo3Ym5hUDmqkpXUytW6Mx_.webp",
-      "/images/products/chains/1csN5zcXVZ4r-h9hg5eEiV9wMaSrNpgDV.webp"
+      "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp",
+      "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0102.webp",
+      "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0103.webp",
+      "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0104.webp"
     ],
-    "category": "chains"
+    "category": "gifts-for-her",
+    "subcategory": "earrings"
   },
   {
-    "id": "earrings_Type01",
-    "name": "Classic Silver Drop Earrings",
-    "price": 1400,
-    "image": "/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp",
+    "id": "her_07_female_rings_typ_01_01",
+    "name": "925 Sterling Silver Ring (Design 01)",
+    "price": 0,
+    "image": "/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp",
     "images": [
-      "/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp",
-      "/images/products/earrings/1IG8ebCDXTnURg3ziNU7KGNGFmCBRENdN.webp",
-      "/images/products/earrings/1Q36JNF7LyGWkNXlbecWfqtsqHkFzCydY.webp",
-      "/images/products/earrings/1edtyq8scF8oMBfYDAyOQjoK4UHc5XW4Z.webp",
-      "/images/products/earrings/1KyVapDuqAanJwi34gO9desmpY_6PCwFi.webp",
-      "/images/products/earrings/1mQzmZzMvrDwpjLNFMzgSEtr51Yxg27gx.webp",
-      "/images/products/earrings/1zviVc70lRHh7x57EHYpD-tNjL8iOepaJ.webp",
-      "/images/products/earrings/18PFZbGmAhC_w3ywvKehZB3s--sWgphZ0.webp",
-      "/images/products/earrings/14gAocqlHtFwuWtHf4-Mt9iDRqyUViDRx.webp",
-      "/images/products/earrings/1qiILMow1FkLzMUlg8MCr5Tt-NJnikZ5H.webp",
-      "/images/products/earrings/15ONjsvECervrWCUrC72Uhsl8LZudtVEY.webp",
-      "/images/products/earrings/1fH1Hn0OXrx8W9Evvy6Bo3F98VU-CuV0D.webp",
-      "/images/products/earrings/1EuPIBkvNWnw5iigLL9y9t9SIDdRafbbr.webp",
-      "/images/products/earrings/1ebooPiY2k2nXGMpqjTeAseYws-goauk9.webp",
-      "/images/products/earrings/1zH7kK5mMYOPeRpc2fkrTGyf_TPRNFW_7.webp",
-      "/images/products/earrings/1iIGHkQr4i1sMKRxA5m2aX3bNySVXXGGI.webp",
-      "/images/products/earrings/1JJJqFpXfh6Tum-StKxMyGYWhUK9Wg62U.webp"
+      "/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp",
+      "/images/Products/01 Female/07 Female Rings/TYP 01/01/0102.webp",
+      "/images/Products/01 Female/07 Female Rings/TYP 01/01/0103.webp",
+      "/images/Products/01 Female/07 Female Rings/TYP 01/01/0104.webp",
+      "/images/Products/01 Female/07 Female Rings/TYP 01/01/0105.webp"
     ],
-    "category": "earrings"
+    "category": "gifts-for-her",
+    "subcategory": "rings"
   },
   {
-    "id": "bracelets_01",
-    "name": "Classic Silver Charm Bracelet",
-    "price": 2800,
-    "image": "/images/products/bracelets/1CNIq164zi5BDcdqrYAFYZJ3rIfDXfO8F.webp",
+    "id": "her_02_female_bracelet_01_925_silevr_typ_01_01",
+    "name": "925 Sterling Silver Charm Bracelet (Design 01)",
+    "price": 0,
+    "image": "/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp",
     "images": [
-      "/images/products/bracelets/1CNIq164zi5BDcdqrYAFYZJ3rIfDXfO8F.webp",
-      "/images/products/bracelets/1BbJ-VNVATqhziYJ4Uu_n-t5KffgqGgpd.webp",
-      "/images/products/bracelets/1he1qf7iDvF0C9mzz1ffZ0ORO57Z9NfdY.webp",
-      "/images/products/bracelets/1byN_S0UKE28K2cZ7fdaC2RdW3gpNq_Uh.webp"
+      "/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp",
+      "/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0102.webp",
+      "/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0103.webp"
     ],
-    "category": "bracelets"
+    "category": "gifts-for-her",
+    "subcategory": "bracelets"
   },
   {
-    "id": "bangles_01",
-    "name": "Classic Engraved Silver Bangle",
-    "price": 3200,
-    "image": "/images/products/bangles/1TQwPVBTN4IIEUgYLTzKXD_9P6v764Bl9.webp",
+    "id": "her_04_female_chain_01_925_silver_female_chain_01",
+    "name": "Dainty Silver Chain (Design 01)",
+    "price": 0,
+    "image": "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp",
     "images": [
-      "/images/products/bangles/1TQwPVBTN4IIEUgYLTzKXD_9P6v764Bl9.webp",
-      "/images/products/bangles/14cGYhFqkjKcaeVtc2JUp4WpYjMyDOQuD.webp",
-      "/images/products/bangles/1l7gFGes0ZExOfSrm9qKsnMuySD8wHWND.webp",
-      "/images/products/bangles/1oHnOZONMw_4KmTXqGgAieBFu3G3xMYvn.webp"
+      "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp",
+      "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0102.webp",
+      "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0103.webp",
+      "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0104.webp"
     ],
-    "category": "bangles"
+    "category": "gifts-for-her",
+    "subcategory": "chains"
   },
   {
-    "id": "pendants_1",
-    "name": "Classic Crystal Silver Pendant",
-    "price": 1800,
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
+    "id": "astro_01_astro_pendnat_typ_01_01",
+    "name": "Aries Zodiac 925 Silver Pendant",
+    "price": 0,
+    "image": "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0101.webp",
     "images": [
-      "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
-      "/images/products/pendants/1eXLZUzU5rgZO2pdjlAJ2eE9hIlAcdsmq.webp",
-      "/images/products/pendants/1IccchgJydVpS4hc3YL2nAtADZg8_Mll5.webp"
+      "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0101.webp",
+      "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/010101.webp",
+      "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0102.webp",
+      "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0103.webp",
+      "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0104.webp"
     ],
-    "category": "pendants"
+    "category": "astro-collection",
+    "subcategory": "pendants"
   },
   {
-    "id": "sets_01",
-    "name": "Classic Luxury Silver Jewelry Set",
-    "price": 5500,
-    "image": "/images/products/sets/1Ib_JDcPJZHWx0pBDArbm0mfn5_74OI6O.webp",
+    "id": "astro_02_astro_ring_typ_01_01",
+    "name": "Astro Navratna Silver Ring",
+    "price": 0,
+    "image": "/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0101.webp",
     "images": [
-      "/images/products/sets/1Ib_JDcPJZHWx0pBDArbm0mfn5_74OI6O.webp",
-      "/images/products/sets/1wKdgGt2wu9agkx6BxQOPfcV75IosKoom.webp",
-      "/images/products/sets/1GUL5vStG4Uc-tIvqiDD3BnflIo6nVt05.webp",
-      "/images/products/sets/1OgZqq9XXn86kgRyz5XBuzNrdlw_6CfHK.webp",
-      "/images/products/sets/1vMqb0ofzoX2tqWb2XHfb5ROL6giH4lKX.webp"
+      "/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0101.webp",
+      "/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0102.webp",
+      "/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0103.webp",
+      "/images/Products/04 Astro Jewellery/02 Astro Ring/TYP 01/01/0104.webp"
     ],
-    "category": "sets"
+    "category": "astro-collection",
+    "subcategory": "rings"
   },
   {
-    "id": "astro_aries",
-    "name": "Aries Zodiac Silver Pendant",
-    "price": 1850,
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
+    "id": "astro_03_silver_coins_01",
+    "name": "Pure Silver Lakshmi Ganesha 999 Coin",
+    "price": 0,
+    "image": "/images/Products/04 Astro Jewellery/03 Silver Coins/01/0101.webp",
     "images": [
-      "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp",
-      "/images/products/pendants/1eXLZUzU5rgZO2pdjlAJ2eE9hIlAcdsmq.webp",
-      "/images/products/pendants/1IccchgJydVpS4hc3YL2nAtADZg8_Mll5.webp"
+      "/images/Products/04 Astro Jewellery/03 Silver Coins/01/0101.webp",
+      "/images/Products/04 Astro Jewellery/03 Silver Coins/01/0102.webp",
+      "/images/Products/04 Astro Jewellery/03 Silver Coins/01/0103.webp"
     ],
-    "category": "astro"
+    "category": "astro-collection",
+    "subcategory": "pendants"
   },
   {
-    "id": "chains_02",
-    "name": "Dainty Silver Link Chain",
-    "price": 2350,
-    "image": "/images/products/chains/1Bfrqx9O8xR8EwqadyIqIu8HbowUge0Yd.webp",
+    "id": "astro_04_idol_pendant_01",
+    "name": "Lord Ganesha 925 Silver Pendant",
+    "price": 0,
+    "image": "/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0101.webp",
     "images": [
-      "/images/products/chains/1Bfrqx9O8xR8EwqadyIqIu8HbowUge0Yd.webp",
-      "/images/products/chains/1flfEqjE6DfIcv8rZx1-2QmSOA3kbZOL1.webp",
-      "/images/products/chains/1xNPn1EsqbOHpCbxjyKgsjRe790ul5POV.webp",
-      "/images/products/chains/12OEHSE-_n7r794fnYIWxfu3yWDeYjhpd.webp",
-      "/images/products/chains/188HxqNevsMIvJB5W5gjQo-dpbLCO0Sk1.webp"
+      "/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0101.webp",
+      "/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0102.webp",
+      "/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0103.webp",
+      "/images/Products/04 Astro Jewellery/04 Idol Pendant/01/0104.webp"
     ],
-    "category": "chains"
+    "category": "astro-collection",
+    "subcategory": "pendants"
   }
 ];
 
@@ -1134,49 +453,49 @@ export const shopCategories: Category[] = [
     "id": "rings",
     "name": "Rings",
     "key": "rings",
-    "image": "/images/products/rings/peacock_ring.webp"
+    "image": "/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp"
   },
   {
     "id": "earrings",
     "name": "Earrings",
     "key": "earrings",
-    "image": "/images/products/earrings/1-G0mKkb0HqYFF9eP_w0Xv8HanEnTlKGl.webp"
+    "image": "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp"
   },
   {
     "id": "bracelets",
     "name": "Bracelets",
     "key": "bracelets",
-    "image": "/images/products/bracelets/1-LKnvTWxHFLLx_DBAppqnGgqU79Yb0wV.webp"
+    "image": "/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp"
   },
   {
     "id": "pendants",
     "name": "Pendants",
     "key": "pendants",
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp"
+    "image": "/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0101.webp"
   },
   {
     "id": "chains",
     "name": "Chains",
     "key": "chains",
-    "image": "/images/products/chains/12OEHSE-_n7r794fnYIWxfu3yWDeYjhpd.webp"
+    "image": "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp"
   },
   {
     "id": "bangles",
     "name": "Bangles",
     "key": "bangles",
-    "image": "/images/products/bangles/14cGYhFqkjKcaeVtc2JUp4WpYjMyDOQuD.webp"
+    "image": "/images/Products/01 Female/03 Female Bangel/TYP 01/01/0101.webp"
   },
   {
     "id": "sets",
     "name": "Sets",
     "key": "sets",
-    "image": "/images/products/sets/1-ovWzpVWwDhclNmoBJN3_OXrw2F4H78U.webp"
+    "image": "/images/Products/01 Female/05 Female sets/TYP 01/01/0101.webp"
   },
   {
     "id": "astro",
     "name": "Personalised",
     "key": "astro",
-    "image": "/images/products/pendants/11EYtNFKycNrIZyGOSRBWw36wXY1XqpRl.webp"
+    "image": "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0101.webp"
   }
 ];
 

@@ -1,5 +1,13 @@
+const CATALOG_MODE = false;
+
 export function PromoStrip() {
-  const items = [
+  const items = CATALOG_MODE ? [
+    "Certified 925 Sterling Silver",
+    "Handcrafted Artisan Jewellery",
+    "Authentic Hallmarked Purity",
+    "Exclusive Showcase Catalog",
+    "Rhodium Anti-Tarnish Finish"
+  ] : [
     "7-Day Easy Returns",
     "Globally Delivered",
     "Extra 5% OFF Above ₹3,000",

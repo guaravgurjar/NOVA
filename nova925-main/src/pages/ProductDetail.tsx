@@ -23,6 +23,11 @@ import {
 } from 'lucide-react';
 
 export function ProductDetail() {
+  // ─── CATALOG MODE ─────────────────────────────────────────────────────────
+  // Set to true to hide pricing, Add-to-Cart, and quantity controls.
+  // Set to false to re-enable the full e-commerce experience.
+  const CATALOG_MODE = false;
+  // ──────────────────────────────────────────────────────────────────────────
   const { products } = useProducts();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -291,23 +296,35 @@ export function ProductDetail() {
               <span className="text-white/60 font-light">(4.8 rating based on 32 reviews)</span>
             </div>
 
-            {/* Price section */}
-            <div className="glass-dark rounded-xl p-5 mb-8 border border-white/5 flex flex-col gap-1.5 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-24 h-24 bg-nova-gold/5 rounded-full blur-2xl"></div>
-              <span className="text-white/40 text-xs tracking-wider uppercase">Special Price</span>
-              <div className="flex items-baseline gap-2 md:gap-4 flex-wrap">
-                <span className="text-2xl md:text-3xl font-bold text-nova-gold font-serif">
-                  Rs. {product.price.toLocaleString('en-IN')}/-
-                </span>
-                <span className="text-white/30 line-through text-sm">
-                  Rs. {originalPrice.toLocaleString('en-IN')}/-
-                </span>
-                <span className="text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-                  {discountPercent}% OFF
+            {/* Price section — hidden in catalog mode */}
+            {!CATALOG_MODE ? (
+              <div className="glass-dark rounded-xl p-5 mb-8 border border-white/5 flex flex-col gap-1.5 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-nova-gold/5 rounded-full blur-2xl"></div>
+                <span className="text-white/40 text-xs tracking-wider uppercase">Special Price</span>
+                <div className="flex items-baseline gap-2 md:gap-4 flex-wrap">
+                  <span className="text-2xl md:text-3xl font-bold text-nova-gold font-serif">
+                    Rs. {product.price.toLocaleString('en-IN')}/-
+                  </span>
+                  <span className="text-white/30 line-through text-sm">
+                    Rs. {originalPrice.toLocaleString('en-IN')}/-
+                  </span>
+                  <span className="text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                    {discountPercent}% OFF
+                  </span>
+                </div>
+                <span className="text-[10px] text-white/40">Inclusive of all local taxes & duties</span>
+              </div>
+            ) : (
+              <div className="glass-dark rounded-xl p-4 mb-8 border border-nova-gold/20 flex items-center justify-between relative overflow-hidden bg-gradient-to-r from-nova-gold/10 via-transparent to-transparent">
+                <div>
+                  <span className="text-nova-gold text-[11px] font-semibold tracking-widest uppercase block mb-0.5">925 Sterling Silver Showcase</span>
+                  <span className="text-white/60 text-xs font-light">Certified Hallmarked Purity • Handcrafted Masterpiece</span>
+                </div>
+                <span className="px-3 py-1 rounded-full bg-nova-gold/15 border border-nova-gold/30 text-nova-gold text-[10px] font-semibold uppercase tracking-wider shrink-0">
+                  Catalog Piece
                 </span>
               </div>
-              <span className="text-[10px] text-white/40">Inclusive of all local taxes & duties</span>
-            </div>
+            )}
 
             {/* Bullet Highlights */}
             <div className="space-y-3.5 mb-8 text-xs text-white/70 font-light">
@@ -325,56 +342,74 @@ export function ProductDetail() {
               </div>
             </div>
 
-            {/* Quantity Selector */}
-            <div className="flex items-center gap-4 mb-8">
-              <span className="text-xs uppercase tracking-widest text-white/50">Quantity</span>
-              <div className="flex bg-[#181c2b] border border-white/10 rounded-lg overflow-hidden items-center">
-                <button onClick={handleDecrement} className="px-3.5 py-2 hover:bg-white/5 text-white/75 transition-colors font-bold"><Minus className="w-3.5 h-3.5" /></button>
-                <span className="px-5 py-2 font-mono text-xs font-semibold text-nova-gold">{String(quantity).padStart(2, '0')}</span>
-                <button
-                  onClick={handleIncrement}
-                  disabled={stockLimit !== undefined && quantity >= stockLimit}
-                  className={`px-3.5 py-2 transition-colors font-bold ${stockLimit !== undefined && quantity >= stockLimit
-                      ? 'text-white/20 cursor-not-allowed'
-                      : 'hover:bg-white/5 text-white/75'
-                    }`}
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                </button>
+            {/* Quantity Selector — hidden in catalog mode */}
+            {!CATALOG_MODE && (
+              <div className="flex items-center gap-4 mb-8">
+                <span className="text-xs uppercase tracking-widest text-white/50">Quantity</span>
+                <div className="flex bg-[#181c2b] border border-white/10 rounded-lg overflow-hidden items-center">
+                  <button onClick={handleDecrement} className="px-3.5 py-2 hover:bg-white/5 text-white/75 transition-colors font-bold"><Minus className="w-3.5 h-3.5" /></button>
+                  <span className="px-5 py-2 font-mono text-xs font-semibold text-nova-gold">{String(quantity).padStart(2, '0')}</span>
+                  <button
+                    onClick={handleIncrement}
+                    disabled={stockLimit !== undefined && quantity >= stockLimit}
+                    className={`px-3.5 py-2 transition-colors font-bold ${stockLimit !== undefined && quantity >= stockLimit
+                        ? 'text-white/20 cursor-not-allowed'
+                        : 'hover:bg-white/5 text-white/75'
+                      }`}
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+                {/* Stock info badge */}
+                {stockLimit !== undefined && (
+                  <span className={`text-[10px] font-medium ${quantity >= stockLimit ? 'text-amber-400' : stockLimit <= 3 ? 'text-rose-400' : 'text-white/40'
+                    }`}>
+                    {quantity >= stockLimit ? `Max ${stockLimit} in stock` : `${stockLimit - quantity} more available`}
+                  </span>
+                )}
               </div>
-              {/* Stock info badge */}
-              {stockLimit !== undefined && (
-                <span className={`text-[10px] font-medium ${quantity >= stockLimit ? 'text-amber-400' : stockLimit <= 3 ? 'text-rose-400' : 'text-white/40'
-                  }`}>
-                  {quantity >= stockLimit ? `Max ${stockLimit} in stock` : `${stockLimit - quantity} more available`}
-                </span>
-              )}
-            </div>
+            )}
 
             {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <button
-                onClick={() => addToCart(product.id, quantity, stockLimit)}
-                className="flex-1 bg-nova-gold hover:bg-nova-gold-light text-nova-darker py-4 rounded-xl font-sans font-bold tracking-[0.2em] text-xs uppercase transition-all duration-300 shadow-md shadow-nova-gold/15 flex items-center justify-center gap-2"
-              >
-
-                <ShoppingBag className="w-4.5 h-4.5" />
-                <span>Add to Cart</span>
-              </button>
-              <button
-                onClick={() => {
-                  if (product) toggleWishlist(product.id);
-                }}
-                className={`px-6 py-4 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2 ${isWishlisted
-                    ? 'bg-red-500/20 border-red-500/30 text-red-500 hover:bg-red-500/30'
-                    : 'bg-[#181c2b] hover:bg-white/5 border-white/10 text-white/80 hover:text-white'
-                  }`}
-                aria-label="Wishlist"
-              >
-                <Heart className={`w-4.5 h-4.5 ${isWishlisted ? 'fill-current' : ''}`} />
-                <span className="sm:hidden font-medium text-xs tracking-wider uppercase">Wishlist</span>
-              </button>
-            </div>
+            {CATALOG_MODE ? (
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <button
+                  onClick={() => {
+                    if (product) toggleWishlist(product.id);
+                  }}
+                  className={`flex-1 py-4 px-6 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2.5 font-medium text-xs tracking-widest uppercase cursor-pointer ${isWishlisted
+                      ? 'bg-red-500/20 border-red-500/30 text-red-400 hover:bg-red-500/30'
+                      : 'bg-[#181c2b] hover:bg-white/10 border-white/10 text-white/90 hover:text-white shadow-lg'
+                    }`}
+                >
+                  <Heart className={`w-4 h-4 ${isWishlisted ? 'fill-current text-red-500' : 'text-nova-gold'}`} />
+                  <span>{isWishlisted ? 'Saved in Wishlist' : 'Add to Wishlist'}</span>
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <button
+                  onClick={() => addToCart(product.id, quantity, stockLimit)}
+                  className="flex-1 bg-nova-gold hover:bg-nova-gold-light text-nova-darker py-4 rounded-xl font-sans font-bold tracking-[0.2em] text-xs uppercase transition-all duration-300 shadow-md shadow-nova-gold/15 flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag className="w-4.5 h-4.5" />
+                  <span>Add to Cart</span>
+                </button>
+                <button
+                  onClick={() => {
+                    if (product) toggleWishlist(product.id);
+                  }}
+                  className={`px-6 py-4 rounded-xl border transition-all duration-300 flex items-center justify-center gap-2 ${isWishlisted
+                      ? 'bg-red-500/20 border-red-500/30 text-red-500 hover:bg-red-500/30'
+                      : 'bg-[#181c2b] hover:bg-white/5 border-white/10 text-white/80 hover:text-white'
+                    }`}
+                  aria-label="Wishlist"
+                >
+                  <Heart className={`w-4.5 h-4.5 ${isWishlisted ? 'fill-current' : ''}`} />
+                  <span className="sm:hidden font-medium text-xs tracking-wider uppercase">Wishlist</span>
+                </button>
+              </div>
+            )}
 
             {/* Pincode Estimator */}
             <div className="glass-dark border border-white/5 rounded-xl p-5 mb-8 text-sm">

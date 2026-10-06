@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 import { Product } from '../types';
 import { useWishlist } from '../contexts/WishlistContext';
@@ -6,11 +7,33 @@ import { useAuth } from '../contexts/AuthContext';
 import { useLoginModal } from '../contexts/LoginModalContext';
 import { Link } from 'react-router-dom';
 
+// ─── CATALOG MODE ─────────────────────────────────────────────────────────────
+// Set to true to hide pricing, Add-to-Cart buttons, and price-drop tags.
+// Set to false to re-enable full e-commerce experience once prices are ready.
+const CATALOG_MODE = false;
+// ──────────────────────────────────────────────────────────────────────────────
+
 export function ProductCard({ product }: { product: Product }) {
+  const [imageError, setImageError] = useState(false);
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { user } = useAuth();
   const { openLoginModal } = useLoginModal();
+
+  // If product is empty or has no image or the image failed to load, do not render card
+  if (
+    !product ||
+    !product.name ||
+    typeof product.name !== 'string' ||
+    !product.name.trim() ||
+    !product.image ||
+    typeof product.image !== 'string' ||
+    !product.image.trim() ||
+    imageError
+  ) {
+    return null;
+  }
+
   const isWishlisted = isInWishlist(product.id);
 
   const safePrice = product.price || 0;
@@ -30,6 +53,7 @@ export function ProductCard({ product }: { product: Product }) {
             decoding="async"
             width={400}
             height={400}
+            onError={() => setImageError(true)}
           />
 
           {/* Wishlist Button */}
@@ -60,46 +84,59 @@ export function ProductCard({ product }: { product: Product }) {
         {/* Details Section */}
         <div className="p-2.5 md:p-4 flex-1 flex flex-col justify-between">
           <div>
-            {/* Pricing */}
-            <div className="flex items-baseline gap-1.5 md:gap-2 mb-0.5 md:mb-1 flex-wrap">
-              <span className="text-base md:text-xl font-bold text-neutral-900 tracking-tight">
-                ₹{safePrice.toLocaleString('en-IN')}
-              </span>
-              <span className="text-[10px] md:text-sm text-neutral-400 line-through font-normal">
-                ₹{originalPrice.toLocaleString('en-IN')}
-              </span>
-            </div>
+            {/* Pricing — hidden in catalog mode */}
+            {!CATALOG_MODE && (
+              <div className="flex items-baseline gap-1.5 md:gap-2 mb-0.5 md:mb-1 flex-wrap">
+                <span className="text-base md:text-xl font-bold text-neutral-900 tracking-tight">
+                  ₹{safePrice.toLocaleString('en-IN')}
+                </span>
+                <span className="text-[10px] md:text-sm text-neutral-400 line-through font-normal">
+                  ₹{originalPrice.toLocaleString('en-IN')}
+                </span>
+              </div>
+            )}
 
             {/* Title */}
             <h3 className="text-neutral-600 text-[11px] md:text-sm font-normal line-clamp-1 leading-snug mb-0.5 md:mb-1">
               {product.name}
             </h3>
 
-            {/* Offer Tag */}
-            <p className="text-blue-700 font-bold text-[9px] md:text-xs uppercase tracking-wider">
-              PRICE DROP!
-            </p>
+            {/* Offer Tag — hidden in catalog mode */}
+            {!CATALOG_MODE && (
+              <p className="text-blue-700 font-bold text-[9px] md:text-xs uppercase tracking-wider">
+                PRICE DROP!
+              </p>
+            )}
+
+            {/* Catalog badge */}
+            {CATALOG_MODE && (
+              <p className="text-nova-gold font-semibold text-[9px] md:text-xs uppercase tracking-wider">
+                925 Sterling Silver
+              </p>
+            )}
           </div>
         </div>
       </Link>
 
-      {/* Add To Cart Button */}
-      <div className="px-2.5 pb-2.5 md:px-4 md:pb-4 pt-0">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            if (!user) {
-              openLoginModal('Sign in to add items to your cart.');
-              return;
-            }
-            addToCart(product.id, 1, product.stock);
-          }}
-          className="w-full bg-linear-to-r from-blue-900 to-blue-300 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 md:py-3 rounded-xl shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-300 text-[11px] md:text-sm tracking-wide flex items-center justify-center gap-2 cursor-pointer"
-        >
-          Add to Cart
-        </button>
-      </div>
+      {/* Add To Cart Button — hidden in catalog mode */}
+      {!CATALOG_MODE && (
+        <div className="px-2.5 pb-2.5 md:px-4 md:pb-4 pt-0">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (!user) {
+                openLoginModal('Sign in to add items to your cart.');
+                return;
+              }
+              addToCart(product.id, 1, product.stock);
+            }}
+            className="w-full bg-linear-to-r from-blue-900 to-blue-300 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 md:py-3 rounded-xl shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-300 text-[11px] md:text-sm tracking-wide flex items-center justify-center gap-2 cursor-pointer"
+          >
+            Add to Cart
+          </button>
+        </div>
+      )}
     </article>
   );
 }

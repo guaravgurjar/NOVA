@@ -277,3 +277,243 @@ h6,
 .glow-border:hover::after {
   opacity: 1;
 }
+
+/* ─── Order Button Truck Animation ─────────────────────────────────────────── */
+.order-btn {
+  --btn-gold: #c5a880;
+  --btn-gold-light: #e8d8b8;
+  --btn-dark: #0f121d;
+  --btn-green: #16bf78;
+  --btn-sand: #c5a880;
+  --btn-sand-light: #e8d8b8;
+  appearance: none;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: var(--btn-gold);
+  color: var(--btn-dark);
+  border-radius: 12px;
+  width: 100%;
+  padding: 14px 28px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.order-btn:hover:not(:disabled):not(.animating) {
+  background: var(--btn-gold-light);
+  box-shadow: 0 8px 25px rgba(197, 168, 128, 0.3);
+}
+
+.order-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.order-btn.animating {
+  cursor: default;
+}
+
+/* Text spans */
+.order-btn .ob-default,
+.order-btn .ob-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.order-btn .ob-success {
+  opacity: 0;
+  transform: translateY(calc(-50% + 8px));
+}
+
+.order-btn .ob-success svg {
+  width: 14px;
+  height: 12px;
+  stroke: var(--btn-dark);
+  stroke-width: 2.5;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+}
+
+/* Box */
+.order-btn .ob-box {
+  position: absolute;
+  left: -80px;
+  bottom: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: var(--btn-dark);
+  opacity: 0;
+  transition: none;
+}
+
+/* Truck */
+.order-btn .ob-truck {
+  position: absolute;
+  left: -80px;
+  bottom: 0;
+  width: 56px;
+  height: 34px;
+  opacity: 0;
+  transition: none;
+}
+
+.order-btn .ob-truck .ob-back {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 36px;
+  height: 26px;
+  background: var(--btn-dark);
+  border-radius: 3px 0 0 3px;
+}
+
+.order-btn .ob-truck .ob-front {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 22px;
+  height: 20px;
+  background: #1c212e;
+  border-radius: 3px 0 0 3px;
+  overflow: hidden;
+}
+
+.order-btn .ob-truck .ob-window {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 12px;
+  height: 8px;
+  background: var(--btn-gold);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.order-btn .ob-truck .ob-light {
+  position: absolute;
+  right: -2px;
+  width: 6px;
+  border-radius: 2px;
+  background: var(--btn-sand-light);
+}
+
+.order-btn .ob-truck .ob-light.ob-top {
+  bottom: 14px;
+  height: 4px;
+}
+
+.order-btn .ob-truck .ob-light.ob-bottom {
+  bottom: 8px;
+  height: 3px;
+  opacity: 0.6;
+}
+
+/* Road lines */
+.order-btn .ob-lines {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  height: 2px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.order-btn .ob-lines::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 200%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--btn-dark) 0px,
+    var(--btn-dark) 18px,
+    transparent 18px,
+    transparent 30px
+  );
+  animation: roadLines 0.4s linear infinite;
+}
+
+@keyframes roadLines {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-30px); }
+}
+
+/* ─── Keyframe Sequences ─── */
+@keyframes obBoxSlide {
+  0%   { left: -40px; opacity: 0; bottom: 8px; }
+  10%  { opacity: 1; }
+  35%  { left: 50%; bottom: 8px; opacity: 1; }
+  55%  { left: 50%; bottom: 8px; opacity: 1; }
+  70%  { bottom: 50px; opacity: 0; }
+  100% { bottom: 50px; opacity: 0; left: 50%; }
+}
+
+@keyframes obTruckDrive {
+  0%   { left: -80px; opacity: 0; }
+  10%  { opacity: 1; }
+  40%  { left: calc(50% - 30px); }
+  60%  { left: calc(50% - 30px); }
+  90%  { left: calc(100% + 10px); opacity: 1; }
+  100% { left: calc(100% + 10px); opacity: 0; }
+}
+
+@keyframes obLinesShow {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ─── Triggered States ─── */
+.order-btn.animating .ob-default {
+  opacity: 0;
+  transform: translateY(calc(-50% - 8px));
+}
+
+.order-btn.animating .ob-box {
+  animation: obBoxSlide 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.order-btn.animating .ob-truck {
+  animation: obTruckDrive 2.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.order-btn.animating .ob-lines {
+  animation: obLinesShow 2.4s ease forwards;
+}
+
+/* Success state */
+.order-btn.success-state {
+  background: var(--btn-green);
+}
+
+.order-btn.success-state .ob-success {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.order-btn.success-state .ob-success svg {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.4s ease 0.1s;
+}
+/* ────────────────────────────────────────────────────────────────────────────── */

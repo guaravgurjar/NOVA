@@ -6,7 +6,7 @@ import { Sparkles, CircleDot, ShieldCheck, Tag, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants' | 'sets' | 'anklets';
 
 interface CategoryPill {
     id: CategoryFilter;
@@ -26,37 +26,49 @@ const CATEGORIES: CategoryPill[] = [
         id: 'rings',
         label: 'Female Rings',
         subLabel: 'Signets & Band Rings',
-        image: '/images/products/rings/peacock_ring.webp'
+        image: '/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp'
     },
     {
         id: 'earrings',
         label: 'Female Earrings',
-        subLabel: 'Single & Pair Studs',
-        image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
+        subLabel: 'Jhumkas & Studs',
+        image: '/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp'
     },
     {
         id: 'bracelets',
         label: 'Female Bracelets',
-        subLabel: 'Kadas & Cuffs',
-        image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
+        subLabel: 'Kadas & Charms',
+        image: '/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp'
     },
     {
         id: 'chains',
         label: 'Chains',
         subLabel: 'Link & Snake Chains',
-        image: '/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'
+        image: '/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp'
     },
     {
         id: 'bangles',
         label: 'Bangles',
-        subLabel: 'Kadas & Bangles',
-        image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
+        subLabel: 'Designer Bangles',
+        image: '/images/Products/01 Female/03 Female Bangel/TYP 01/01/0101.webp'
     },
     {
         id: 'pendants',
         label: 'Pendants',
         subLabel: 'Necklace Pendants',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400&h=300'
+        image: '/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0101.webp'
+    },
+    {
+        id: 'sets',
+        label: 'Jewellery Sets',
+        subLabel: 'Necklace & Earring Sets',
+        image: '/images/Products/01 Female/05 Female sets/TYP 01/01/0101.webp'
+    },
+    {
+        id: 'anklets',
+        label: 'Payals & Anklets',
+        subLabel: 'Traditional Silver Payals',
+        image: '/images/Products/01 Female/08 Female Anklet/TYP 01 (Indian Silver)/01/0101.webp'
     },
 ];
 
@@ -66,12 +78,16 @@ export function GiftsForHer() {
     const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
 
     // Filter products by selected category.
-    // Products added via admin have category='gifts-for-her' and a subcategory
-    // like 'rings', 'earrings', 'bracelets', etc.
+    // Exclude any empty product cards or products without valid images.
     const filteredProducts = useMemo(() => {
         if (!products) return [];
 
         return products.filter((product: any) => {
+            // Strictly remove empty product cards or products without images
+            if (!product || !product.name || typeof product.name !== 'string' || !product.name.trim()) return false;
+            if (!product.image || typeof product.image !== 'string' || !product.image.trim()) return false;
+            if (product.image.startsWith('/images/products/')) return false;
+
             const cat = (product.category || '').toLowerCase();
             const sub = (product.subcategory || '').toLowerCase();
             const name = (product.name || '').toLowerCase();
@@ -90,7 +106,7 @@ export function GiftsForHer() {
             if (selectedCategory === 'rings')
                 return sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring');
             if (selectedCategory === 'earrings')
-                return sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud');
+                return sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud') || sub === 'nose-rings' || name.includes('nose');
             if (selectedCategory === 'bracelets')
                 return sub === 'bracelets' || cat === 'bracelets' || cat.includes('bracelet');
             if (selectedCategory === 'chains')
@@ -99,6 +115,10 @@ export function GiftsForHer() {
                 return sub === 'bangles' || cat === 'bangles' || cat.includes('bangle') || cat.includes('kada');
             if (selectedCategory === 'pendants')
                 return sub === 'pendants' || cat === 'pendants' || cat.includes('pendant');
+            if (selectedCategory === 'sets')
+                return sub === 'sets' || cat === 'sets' || cat.includes('set') || name.includes('set');
+            if (selectedCategory === 'anklets')
+                return sub === 'anklets' || cat.includes('anklet') || name.includes('payal') || name.includes('anklet');
 
             return true;
         });

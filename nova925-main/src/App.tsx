@@ -36,7 +36,6 @@ const Kids = lazy(() => import('./pages/Kids').then(m => ({ default: m.Kids })))
 const NotFound = lazy(() => import('./pages/NotFound').then(m => ({ default: m.NotFound })));
 
 // Non-Critical Widgets Deferred
-const ChatBot = lazy(() => import('./components/ChatBot').then(m => ({ default: m.ChatBot })));
 const CookieBanner = lazy(() => import('./components/CookieBanner').then(m => ({ default: m.CookieBanner })));
 
 // Minimal Loading Fallback
@@ -84,7 +83,6 @@ export function AppContent() {
       </main>
       <Footer />
       <Suspense fallback={null}>
-        <ChatBot />
         <CookieBanner />
       </Suspense>
     </div>

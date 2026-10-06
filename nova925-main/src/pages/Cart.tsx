@@ -10,6 +10,12 @@ import { Product } from '../types';
 import { usePageSEO } from '../lib/usePageSEO';
 import { useLoginModal } from '../contexts/LoginModalContext';
 
+// ─── CATALOG MODE ─────────────────────────────────────────────────────────────
+// Set to true to show Catalog Showcase mode and hide Cart / Checkout processing.
+// Set to false to unhide full shopping bag & checkout when pricing is ready.
+const CATALOG_MODE = false;
+// ──────────────────────────────────────────────────────────────────────────────
+
 export function Cart() {
   usePageSEO({ title: 'Shopping Bag', description: 'Review your NOVA Jewellery shopping bag. Secure checkout with free shipping and cash on delivery.', noIndex: true });
   const { addToast } = useToast();
@@ -25,6 +31,8 @@ export function Cart() {
   const [shippingAddress, setShippingAddress] = useState('');
   const [engravingText, setEngravingText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [orderAnimating, setOrderAnimating] = useState(false);
+  const [orderSuccess, setOrderSuccess] = useState(false);
 
   // Auto-fill buyer details if logged in
   useEffect(() => {
@@ -100,11 +108,20 @@ export function Cart() {
       if (res.ok) {
         const resData = (await res.json()) as any;
         if (resData.success) {
-          addToast(`Success! Order Number ${resData.order.orderNumber} placed.`);
-          clearCart();
-          setShowCheckoutForm(false);
-          setShippingAddress('');
-          setEngravingText('');
+          // Trigger truck animation then show success state
+          setOrderAnimating(true);
+          setTimeout(() => {
+            setOrderAnimating(false);
+            setOrderSuccess(true);
+            addToast(`Success! Order Number ${resData.order.orderNumber} placed.`);
+            clearCart();
+            setTimeout(() => {
+              setOrderSuccess(false);
+              setShowCheckoutForm(false);
+              setShippingAddress('');
+              setEngravingText('');
+            }, 2000);
+          }, 2400);
         } else {
           addToast(resData.error || 'Failed to place order.');
         }
@@ -123,10 +140,29 @@ export function Cart() {
     <div className="flex flex-col min-h-screen bg-nova-darker text-white">
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl flex-1">
         <h1 className="text-3xl md:text-5xl font-serif text-center tracking-wider mb-16 font-light">
-          Shopping Bag
+          {CATALOG_MODE ? 'NOVA Catalog' : 'Shopping Bag'}
         </h1>
         
-        {resolvedItems.length > 0 ? (
+        {CATALOG_MODE ? (
+          <div className="text-center py-16 md:py-20 glass-dark rounded-2xl border border-nova-gold/20 max-w-lg mx-auto p-8 shadow-2xl bg-gradient-to-b from-white/5 to-transparent">
+            <div className="w-16 h-16 rounded-full bg-nova-gold/10 border border-nova-gold/30 flex items-center justify-center mx-auto mb-6 shadow-inner">
+              <span className="text-2xl">✨</span>
+            </div>
+            <span className="text-nova-gold text-[10px] tracking-[0.25em] font-semibold uppercase block mb-2">CATALOG SHOWCASE</span>
+            <h3 className="font-serif text-2xl md:text-3xl mb-3 text-white">Online Ordering Coming Soon</h3>
+            <p className="text-white/60 text-xs md:text-sm font-light mb-8 leading-relaxed">
+              NOVA is currently operating in Showcase Catalog Mode while our new pricing tiers are being finalized. Browse our authentic 925 sterling silver collections or save your favourite pieces to your wishlist.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Link to="/shop" className="btn-premium inline-block bg-nova-gold hover:bg-nova-gold-light text-nova-darker px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors shadow-lg">
+                Explore Catalog
+              </Link>
+              <Link to="/wishlist" className="inline-block border border-white/20 hover:border-nova-gold text-white hover:text-nova-gold px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-colors">
+                View Saved Wishlist
+              </Link>
+            </div>
+          </div>
+        ) : resolvedItems.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
             
             {/* Left Column: Cart items / Checkout Form */}
@@ -271,19 +307,42 @@ export function Cart() {
                     />
                   </div>
 
-                  <button 
+                  <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-nova-gold-light transition-all cursor-pointer"
+                    disabled={isSubmitting || orderAnimating || orderSuccess}
+                    className={`order-btn h-12${orderAnimating ? ' animating' : ''}${orderSuccess ? ' success-state' : ''}`}
                   >
-                    {isSubmitting ? (
-                      <span className="w-4 h-4 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <Landmark className="w-4 h-4" />
-                        <span>Place Order (Cash on Delivery)</span>
-                      </>
-                    )}
+                    {/* Default label */}
+                    <span className="ob-default">
+                      {isSubmitting ? (
+                        <span className="w-4 h-4 border-2 border-[#0f121d] border-t-transparent rounded-full animate-spin inline-block" />
+                      ) : (
+                        <>
+                          <Landmark className="w-4 h-4" />
+                          Place Order (Cash on Delivery)
+                        </>
+                      )}
+                    </span>
+
+                    {/* Success label */}
+                    <span className="ob-success">
+                      Order Placed
+                      <svg viewBox="0 0 12 10">
+                        <polyline points="1.5 6 4.5 9 10.5 1" />
+                      </svg>
+                    </span>
+
+                    {/* Animation elements */}
+                    <div className="ob-box" />
+                    <div className="ob-truck">
+                      <div className="ob-back" />
+                      <div className="ob-front">
+                        <div className="ob-window" />
+                      </div>
+                      <div className="ob-light ob-top" />
+                      <div className="ob-light ob-bottom" />
+                    </div>
+                    <div className="ob-lines" />
                   </button>
                 </form>
               )}

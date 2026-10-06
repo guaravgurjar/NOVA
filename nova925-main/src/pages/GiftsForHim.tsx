@@ -26,25 +26,25 @@ const CATEGORIES: CategoryPill[] = [
     id: 'rings',
     label: 'Male Rings',
     subLabel: 'Signets & Band Rings',
-    image: '/images/products/rings/peacock_ring.webp'
+    image: '/images/Products/02 Male/02 Male Rings/TYP 01/01/0101.webp'
   },
   {
     id: 'earrings',
     label: 'Male Ear Studs',
     subLabel: 'Single & Pair Studs',
-    image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
+    image: '/images/Products/02 Male/04 Male Studs/TYP 01/01/0101.webp'
   },
   {
     id: 'bracelets',
     label: 'Male Bracelets',
     subLabel: 'Kadas & Cuffs',
-    image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
+    image: '/images/Products/02 Male/01 Male Bracelets/TYP 01/01/0101.webp'
   },
   {
     id: 'chains',
     label: 'Chains',
-    subLabel: 'Link & Snake Chains',
-    image: '/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'
+    subLabel: 'Link & Heavy Chains',
+    image: '/images/Products/02 Male/03 Male chains/01 925 Silver Chains/01/0101.webp'
   },
 ];
 
@@ -74,11 +74,11 @@ export function GiftsForHim() {
       if (selectedCategory === 'rings')
         return sub === 'rings' || cat.includes('ring') || name.includes('ring');
       if (selectedCategory === 'earrings')
-        return sub === 'earrings' || cat.includes('earring') || cat.includes('stud');
+        return sub === 'earrings' || cat.includes('earring') || cat.includes('stud') || name.includes('stud');
       if (selectedCategory === 'bracelets')
-        return sub === 'bracelets' || cat.includes('bracelet');
+        return sub === 'bracelets' || cat.includes('bracelet') || cat.includes('kada') || name.includes('kada') || name.includes('bracelet');
       if (selectedCategory === 'chains')
-        return sub === 'chains' || cat.includes('chain') || cat.includes('necklace');
+        return sub === 'chains' || cat.includes('chain') || cat.includes('necklace') || name.includes('chain');
 
       return true;
     });

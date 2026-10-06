@@ -5,34 +5,45 @@ import { Sparkles, Stars, CircleDot } from 'lucide-react';
 import { usePageSEO } from '../lib/usePageSEO';
 
 const ZODIAC_DATES: Record<string, string> = {
-  astro_aries: 'Mar 21 – Apr 19',
-  astro_taurus: 'Apr 20 – May 20',
-  astro_gemini: 'May 21 – Jun 20',
-  astro_cancer: 'Jun 21 – Jul 22',
-  astro_leo: 'Jul 23 – Aug 22',
-  astro_virgo: 'Aug 23 – Sep 22',
-  astro_libra: 'Sep 23 – Oct 22',
-  astro_scorpio: 'Oct 23 – Nov 21',
-  astro_sagittarius: 'Nov 22 – Dec 21',
-  astro_capricorn: 'Dec 22 – Jan 19',
-  astro_aquarius: 'Jan 20 – Feb 18',
-  astro_pisces: 'Feb 19 – Mar 20',
+  aries: 'Mar 21 – Apr 19',
+  taurus: 'Apr 20 – May 20',
+  gemini: 'May 21 – Jun 20',
+  cancer: 'Jun 21 – Jul 22',
+  leo: 'Jul 23 – Aug 22',
+  virgo: 'Aug 23 – Sep 22',
+  libra: 'Sep 23 – Oct 22',
+  scorpio: 'Oct 23 – Nov 21',
+  sagittarius: 'Nov 22 – Dec 21',
+  capricorn: 'Dec 22 – Jan 19',
+  aquarius: 'Jan 20 – Feb 18',
+  pisces: 'Feb 19 – Mar 20',
 };
 
-type AstroFilter = 'all' | 'pendants' | 'rings' | 'bracelets';
+function getZodiacDate(product: { id?: string; name?: string }): string | null {
+  if (!product) return null;
+  const name = (product.name || '').toLowerCase();
+  const id = (product.id || '').toLowerCase();
+  for (const [sign, date] of Object.entries(ZODIAC_DATES)) {
+    if (name.includes(sign) || id.includes(sign)) return date;
+  }
+  return null;
+}
+
+type AstroFilter = 'all' | 'pendants' | 'rings' | 'coins' | 'idols';
 
 const ASTRO_TABS: { id: AstroFilter; label: string }[] = [
-  { id: 'all', label: '✦ All Zodiac' },
-  { id: 'pendants', label: '🔮 Pendants' },
-  { id: 'rings', label: '💍 Rings' },
-  { id: 'bracelets', label: '📿 Bracelets' },
+  { id: 'all', label: '✦ All Astro Collection' },
+  { id: 'pendants', label: '🔮 Zodiac Pendants' },
+  { id: 'rings', label: '💍 Astro Rings' },
+  { id: 'coins', label: '🪙 Sacred Coins' },
+  { id: 'idols', label: '🕉️ Deity Pendants' },
 ];
 
 export function AstroCollection() {
   usePageSEO({
     title: 'Astro Collection',
     description:
-      'Discover your zodiac sign pendant — 925 sterling silver astro jewellery handcrafted for every star sign at NOVA.',
+      'Discover your zodiac sign pendant, deity pendants, silver coins & astro rings — 925 sterling silver astro jewellery handcrafted at NOVA.',
   });
 
   const { products, isLoading } = useProducts();
@@ -41,8 +52,14 @@ export function AstroCollection() {
   const astroProducts = useMemo(() => {
     if (!products) return [];
     return (products as any[]).filter((p) => {
+      // Filter out empty cards or cards without images
+      if (!p || !p.name || typeof p.name !== 'string' || !p.name.trim()) return false;
+      if (!p.image || typeof p.image !== 'string' || !p.image.trim()) return false;
+      if (p.image.startsWith('/images/products/')) return false;
+
       const cat = (p.category || '').toLowerCase();
       const sub = (p.subcategory || '').toLowerCase();
+      const name = (p.name || '').toLowerCase();
 
       // Accept both new slug and legacy 'astro' value
       const isAstro = cat === 'astro-collection' || cat === 'astro';
@@ -50,11 +67,13 @@ export function AstroCollection() {
 
       if (astroFilter === 'all') return true;
       if (astroFilter === 'pendants')
-        return sub === 'pendants' || cat.includes('pendant') || (p.name || '').toLowerCase().includes('pendant');
+        return name.includes('zodiac') || ((sub === 'pendants' || cat.includes('pendant')) && !name.includes('coin') && !name.includes('deity') && !name.includes('lord') && !name.includes('goddess') && !name.includes('shiva') && !name.includes('ganesha') && !name.includes('hanuman') && !name.includes('om'));
       if (astroFilter === 'rings')
-        return sub === 'rings' || cat.includes('ring') || (p.name || '').toLowerCase().includes('ring');
-      if (astroFilter === 'bracelets')
-        return sub === 'bracelets' || cat.includes('bracelet');
+        return sub === 'rings' || cat.includes('ring') || name.includes('ring');
+      if (astroFilter === 'coins')
+        return name.includes('coin');
+      if (astroFilter === 'idols')
+        return name.includes('deity') || name.includes('lord') || name.includes('goddess') || name.includes('shiva') || name.includes('ganesha') || name.includes('hanuman') || name.includes('om') || name.includes('shri') || name.includes('radha');
       return true;
     });
   }, [products, astroFilter]);
@@ -63,11 +82,16 @@ export function AstroCollection() {
     <div className="flex flex-col min-h-screen  text-nova-dark font-sans">
       {/* ─── Hero Banner ────────────────────────────────────────────── */}
       <div className="relative w-full h-65 md:h-95 overflow-hidden border-b border-nova-gold/20 shadow-2xl flex items-center">
-        <img
-          src="/images/banners/astro.webp"
-          alt="Astro Collection — Zodiac Sterling Silver Pendants"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        <picture className="w-full h-full block">
+          <source media="(max-width: 767px)" srcSet="/images/banners/Mob Banners/Astro Mob.webp" />
+          <img
+            src="/images/banners/Web Banners/Astro Web.webp"
+            alt="Astro Collection — Zodiac Sterling Silver Pendants"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+            loading="eager"
+            fetchPriority="high"
+          />
+        </picture>
       </div>
 
       {/* ─── Product Grid Section ───────────────────────────────────── */}
@@ -118,10 +142,10 @@ export function AstroCollection() {
               <div key={product.id} className="w-full flex flex-col">
                 <ProductCard product={product} />
                 {/* Zodiac date range badge */}
-                {ZODIAC_DATES[product.id] && (
+                {getZodiacDate(product) && (
                   <div className="mt-1.5 text-center">
                     <span className="inline-block text-[10px] md:text-xs text-neutral-500 bg-neutral-100 px-3 py-1 rounded-full font-medium tracking-wide">
-                      ✦ {ZODIAC_DATES[product.id]}
+                      ✦ {getZodiacDate(product)}
                     </span>
                   </div>
                 )}

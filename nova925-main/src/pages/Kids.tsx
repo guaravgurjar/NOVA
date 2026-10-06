@@ -6,7 +6,7 @@ import { Sparkles, CircleDot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants' | 'anklets';
 
 interface CategoryPill {
     id: CategoryFilter;
@@ -22,36 +22,41 @@ const CATEGORIES: CategoryPill[] = [
         subLabel: 'Explore All Kids Gifts',
         image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&q=80&w=400&h=300'
     },
-
     {
-        id: 'earrings',
-        label: 'Kids Earrings',
-        subLabel: 'Fun Ear Studs',
-        image: '/images/products/earrings/1lgr1ZN3nw8rHPAC4NZ0nxHIzhaAOofUk.webp'
+        id: 'pendants',
+        label: 'Kids Pendants',
+        subLabel: 'Cute Pendants',
+        image: '/images/Products/03 Kids/01 Kids Pendant/TYP 01/01/0101.webp'
+    },
+    {
+        id: 'rings',
+        label: 'Kids Rings',
+        subLabel: 'Adjustable Bands',
+        image: '/images/Products/03 Kids/02 Kids Rings/TYP 01 (Indian Silver)/01/0101.webp'
     },
     {
         id: 'bracelets',
         label: 'Kids Bracelets',
-        subLabel: 'Playful Cuffs',
-        image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
+        subLabel: 'Playful Cuffs & Nazariya',
+        image: '/images/Products/03 Kids/05 Kids bracelet chain wale/TYP 01 (925 silver)/01.webp'
+    },
+    {
+        id: 'bangles',
+        label: 'Kids Bangles',
+        subLabel: 'Kadas & Bangles',
+        image: '/images/Products/03 Kids/04 Kids Bangles/01 925 Kids breslet/01/0101.webp'
     },
     {
         id: 'chains',
         label: 'Kids Chains',
         subLabel: 'Dainty Necklaces',
-        image: '/images/products/chains/15OWZ4q7jDXSoPmI2oQ1BJMLjb0ASwyTZ.webp'
+        image: '/images/Products/03 Kids/07 Kids Chain/01/0101.webp'
     },
     {
-        id: 'bangles',
-        label: 'Kids Bangles',
-        subLabel: 'Charm Bangles',
-        image: 'https://images.unsplash.com/photo-1611591475140-4388584ae237?auto=format&fit=crop&q=80&w=400&h=300'
-    },
-    {
-        id: 'pendants',
-        label: 'Kids Pendants',
-        subLabel: 'Cute Pendants',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&q=80&w=400&h=300'
+        id: 'anklets',
+        label: 'Nazariya & Payal',
+        subLabel: 'Protective Silver Charms',
+        image: '/images/Products/03 Kids/03 Kids Anklet/TYP 01 (Indian Silver)/01/0101.webp'
     },
 ];
 
@@ -98,6 +103,8 @@ export function Kids() {
                 return sub === 'bangles' || cat.includes('bangle') || cat.includes('kada');
             if (selectedCategory === 'pendants')
                 return sub === 'pendants' || cat.includes('pendant');
+            if (selectedCategory === 'anklets')
+                return sub === 'anklets' || cat.includes('anklet') || name.includes('payal') || name.includes('nazariya');
 
             return true;
         });

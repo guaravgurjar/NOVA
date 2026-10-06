@@ -1,11 +1,17 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, MapPin, Share2 } from 'lucide-react';
+import { Search, Share2 } from 'lucide-react';
 import { useState, useEffect, FormEvent } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
 import { DeliveryPincode } from './DeliveryPincode';
+
+// ─── CATALOG MODE ─────────────────────────────────────────────────────────────
+// Set to true to hide Cart icon in the header.
+// Set to false to re-enable when pricing is ready.
+const CATALOG_MODE = false;
+// ──────────────────────────────────────────────────────────────────────────────
 
 export function Header() {
   const { user } = useAuth();
@@ -157,14 +163,17 @@ export function Header() {
               <img src="/images/icons/user.png" alt="Account" width="28" height="28" className="w-6.0 h-6.0 md:w-7 md:h-7 group-hover:scale-110 transition-transform" />
             </Link>
           )}
-          <Link to="/cart" className="hover:opacity-80 transition-opacity duration-300 relative group flex items-center justify-center" aria-label="Cart">
-            <img src="/images/icons/shopping-bag.png" alt="Cart" width="28" height="28" className="w-6.0 h-6.0 md:w-7 md:h-7 group-hover:scale-110 transition-transform" />
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-nova-gold text-nova-darker text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center border border-nova-darker shadow-sm">
-                {cartCount}
-              </span>
-            )}
-          </Link>
+          {/* Cart Icon — hidden in catalog mode, restore by setting CATALOG_MODE = false */}
+          {!CATALOG_MODE && (
+            <Link to="/cart" className="hover:opacity-80 transition-opacity duration-300 relative group flex items-center justify-center" aria-label="Cart">
+              <img src="/images/icons/shopping-bag.png" alt="Cart" width="28" height="28" className="w-6.0 h-6.0 md:w-7 md:h-7 group-hover:scale-110 transition-transform" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-nova-gold text-nova-darker text-[8px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center border border-nova-darker shadow-sm">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+          )}
         </div>
       </div>
 

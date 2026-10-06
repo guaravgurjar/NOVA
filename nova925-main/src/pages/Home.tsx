@@ -3,8 +3,10 @@ import { shopCategories, reviews } from '../data';
 import { ProductCard } from '../components/ProductCard';
 import { useProducts } from '../contexts/ProductsContext';
 import { PromoStrip } from '../components/PromoStrip';
+import { HeroSlider } from '../components/HeroSlider';
 import { ShieldCheck, Award, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState, useEffect } from 'react';
+
 import { usePageSEO } from '../lib/usePageSEO';
 
 const zodiacDates: Record<string, string> = {
@@ -32,28 +34,6 @@ export function Home() {
   const featuredProducts = products.slice(0, 4);
   const [activeReviewIndex, setActiveReviewIndex] = useState(0);
   const [activeStoryTab, setActiveStoryTab] = useState<'legacy' | 'purity' | 'meaning'>('legacy');
-  const [activeSlide, setActiveSlide] = useState(0);
-  const totalSlides = 5;
-  const bannerImages = [
-    '/images/banners/hero1.webp',
-    '/images/banners/hero2.webp',
-    '/images/banners/hero3.webp',
-    '/images/banners/astro.webp',
-    '/images/banners/kids.webp',
-
-
-  ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev + 1) % totalSlides);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [activeSlide]);
-
-  const goToSlide = (index: number) => {
-    setActiveSlide(index);
-  };
 
   const nextReview = () => {
     setActiveReviewIndex((prev) => (prev + 1) % reviews.length);
@@ -70,41 +50,8 @@ export function Home() {
       <h1 className="sr-only">NOVA Jewellery — Buy 925 Sterling Silver Jewellery Online</h1>
 
       {/* Hero Banner Slider */}
-      <section aria-label="Featured promotions" className="relative w-full overflow-hidden bg-white  aspect-video md:aspect-6250/1953">
-        <div
-          className="flex h-full transition-transform duration-700 ease-in-out"
-          style={{ width: `${totalSlides * 100}%`, transform: `translateX(-${activeSlide * (100 / totalSlides)}%)` }}
-        >
-          {bannerImages.map((src, index) => (
-            <div key={index} className="w-full h-full shrink-0" style={{ width: `${100 / totalSlides}%` }}>
-              <img
-                src={src}
-                alt={`Banner ${index + 1}`}
-                className="w-full h-full object-cover"
-                draggable={false}
-                decoding="async"
-                fetchPriority={index === 0 ? "high" : "low"}
-                loading={index === 0 ? "eager" : "lazy"}
-              />
-            </div>
-          ))}
-        </div>
+      <HeroSlider />
 
-        {/* Carousel dot indicators */}
-        <div className="absolute bottom-3 md:bottom-8 left-1/2 -translate-x-1/2 z-20 flex space-x-2 md:space-x-3">
-          {bannerImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`h-1.5 md:h-2 rounded-full transition-all duration-500 cursor-pointer ${activeSlide === index
-                ? 'bg-nova-gold w-5 md:w-7 shadow-[0_0_8px_rgba(197,168,128,0.5)]'
-                : 'bg-white/40 w-1.5 md:w-2 hover:bg-white/60'
-                }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      </section>
 
       {/* Promo Strip */}
       <PromoStrip />

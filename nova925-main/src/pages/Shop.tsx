@@ -7,6 +7,12 @@ import { ChevronDown, X, SlidersHorizontal, RefreshCw } from 'lucide-react';
 import { Product } from '../types';
 import { usePageSEO } from '../lib/usePageSEO';
 
+// ─── CATALOG MODE ─────────────────────────────────────────────────────────────
+// Set to true to hide price filter dropdowns and price-based sorting options.
+// Set to false to re-enable when pricing is ready.
+const CATALOG_MODE = false;
+// ──────────────────────────────────────────────────────────────────────────────
+
 // Helper to derive luxury attributes dynamically for the products
 function getProductAttributes(product: any, index: number) {
   // Color derivation
@@ -396,37 +402,39 @@ export function Shop() {
                 )}
               </div>
 
-              {/* 2. Price */}
-              <div className="relative">
-                <button
-                  onClick={() => toggleFilterDropdown('price')}
-                  className={`flex items-center gap-1.5 px-4 py-3 hover:text-nova-gold transition-colors tracking-wide ${openFilter === 'price' ? 'text-nova-gold border-b-2 border-nova-gold' : 'text-white/80'
-                    } ${selectedPriceRanges.length > 0 ? 'font-medium text-nova-gold' : ''}`}
-                >
-                  <span>Price</span>
-                  <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'price' ? 'rotate-180' : ''}`} />
-                </button>
-                {openFilter === 'price' && (
-                  <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
-                    <div className="space-y-2.5">
-                      {priceRangeOptions.map(opt => (
-                        <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
-                          <div className="flex items-center gap-2.5">
-                            <input
-                              type="checkbox"
-                              checked={selectedPriceRanges.includes(opt.value)}
-                              onChange={() => toggleSelection(opt.value, selectedPriceRanges, setSelectedPriceRanges)}
-                              className="accent-nova-gold w-4 h-4 rounded border-white/10"
-                            />
-                            <span>{opt.label}</span>
-                          </div>
-                          <span className="text-[10px] text-white/30">({opt.count})</span>
-                        </label>
-                      ))}
+              {/* 2. Price — hidden in catalog mode */}
+              {!CATALOG_MODE && (
+                <div className="relative">
+                  <button
+                    onClick={() => toggleFilterDropdown('price')}
+                    className={`flex items-center gap-1.5 px-4 py-3 hover:text-nova-gold transition-colors tracking-wide ${openFilter === 'price' ? 'text-nova-gold border-b-2 border-nova-gold' : 'text-white/80'
+                      } ${selectedPriceRanges.length > 0 ? 'font-medium text-nova-gold' : ''}`}
+                  >
+                    <span>Price</span>
+                    <ChevronDown className={`w-3 h-3 transition-transform ${openFilter === 'price' ? 'rotate-180' : ''}`} />
+                  </button>
+                  {openFilter === 'price' && (
+                    <div className="absolute left-0 top-full mt-2 w-64 bg-[#0f121d] border border-white/10 rounded-xl p-4 shadow-2xl z-30 max-h-[300px] overflow-y-auto">
+                      <div className="space-y-2.5">
+                        {priceRangeOptions.map(opt => (
+                          <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1">
+                            <div className="flex items-center gap-2.5">
+                              <input
+                                type="checkbox"
+                                checked={selectedPriceRanges.includes(opt.value)}
+                                onChange={() => toggleSelection(opt.value, selectedPriceRanges, setSelectedPriceRanges)}
+                                className="accent-nova-gold w-4 h-4 rounded border-white/10"
+                              />
+                              <span>{opt.label}</span>
+                            </div>
+                            <span className="text-[10px] text-white/30">({opt.count})</span>
+                          </label>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
 
               {/* 3. Shop For */}
               <div className="relative">
@@ -644,18 +652,22 @@ export function Shop() {
                   >
                     Best selling
                   </button>
-                  <button
-                    onClick={() => { setSortBy("price-low"); setOpenFilter(null); }}
-                    className={`w-full text-left py-2.5 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors ${sortBy === 'price-low' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
-                  >
-                    Price: Low to High
-                  </button>
-                  <button
-                    onClick={() => { setSortBy("price-high"); setOpenFilter(null); }}
-                    className={`w-full text-left py-2.5 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors ${sortBy === 'price-high' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
-                  >
-                    Price: High to Low
-                  </button>
+                  {!CATALOG_MODE && (
+                    <>
+                      <button
+                        onClick={() => { setSortBy("price-low"); setOpenFilter(null); }}
+                        className={`w-full text-left py-2.5 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors ${sortBy === 'price-low' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                      >
+                        Price: Low to High
+                      </button>
+                      <button
+                        onClick={() => { setSortBy("price-high"); setOpenFilter(null); }}
+                        className={`w-full text-left py-2.5 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors ${sortBy === 'price-high' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                      >
+                        Price: High to Low
+                      </button>
+                    </>
+                  )}
                   <button
                     onClick={() => { setSortBy("new-arrivals"); setOpenFilter(null); }}
                     className={`w-full text-left py-2.5 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors ${sortBy === 'new-arrivals' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
@@ -710,18 +722,22 @@ export function Shop() {
                 >
                   Best selling
                 </button>
-                <button
-                  onClick={() => { setSortBy("price-low"); setOpenFilter(null); }}
-                  className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'price-low' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
-                >
-                  Price: Low to High
-                </button>
-                <button
-                  onClick={() => { setSortBy("price-high"); setOpenFilter(null); }}
-                  className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'price-high' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
-                >
-                  Price: High to Low
-                </button>
+                {!CATALOG_MODE && (
+                  <>
+                    <button
+                      onClick={() => { setSortBy("price-low"); setOpenFilter(null); }}
+                      className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'price-low' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                    >
+                      Price: Low to High
+                    </button>
+                    <button
+                      onClick={() => { setSortBy("price-high"); setOpenFilter(null); }}
+                      className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'price-high' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
+                    >
+                      Price: High to Low
+                    </button>
+                  </>
+                )}
                 <button
                   onClick={() => { setSortBy("new-arrivals"); setOpenFilter(null); }}
                   className={`w-full text-left py-3 px-4 hover:bg-nova-gold hover:text-nova-darker transition-colors border-b border-white/5 last:border-b-0 ${sortBy === 'new-arrivals' ? 'text-nova-gold font-medium' : 'text-white/70'}`}
@@ -830,24 +846,27 @@ export function Shop() {
                 </div>
               </MobileFilterAccordion>
 
-              <MobileFilterAccordion title="Price" count={selectedPriceRanges.length}>
-                <div className="space-y-2.5 pt-2">
-                  {priceRangeOptions.map(opt => (
-                    <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
-                      <div className="flex items-center gap-2.5">
-                        <input
-                          type="checkbox"
-                          checked={selectedPriceRanges.includes(opt.value)}
-                          onChange={() => toggleSelection(opt.value, selectedPriceRanges, setSelectedPriceRanges)}
-                          className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10"
-                        />
-                        <span>{opt.label}</span>
-                      </div>
-                      <span className="text-[10px] text-white/30">({opt.count})</span>
-                    </label>
-                  ))}
-                </div>
-              </MobileFilterAccordion>
+              {/* Mobile Price Accordion — hidden in catalog mode */}
+              {!CATALOG_MODE && (
+                <MobileFilterAccordion title="Price" count={selectedPriceRanges.length}>
+                  <div className="space-y-2.5 pt-2">
+                    {priceRangeOptions.map(opt => (
+                      <label key={opt.value} className="flex items-center justify-between text-white/70 hover:text-white cursor-pointer select-none py-1 text-xs">
+                        <div className="flex items-center gap-2.5">
+                          <input
+                            type="checkbox"
+                            checked={selectedPriceRanges.includes(opt.value)}
+                            onChange={() => toggleSelection(opt.value, selectedPriceRanges, setSelectedPriceRanges)}
+                            className="accent-nova-gold w-4.5 h-4.5 rounded border-white/10"
+                          />
+                          <span>{opt.label}</span>
+                        </div>
+                        <span className="text-[10px] text-white/30">({opt.count})</span>
+                      </label>
+                    ))}
+                  </div>
+                </MobileFilterAccordion>
+              )}
 
               <MobileFilterAccordion title="Shop For" count={selectedShopFor.length}>
                 <div className="space-y-2.5 pt-2">

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Product } from '../types';
+import { products as fallbackProducts } from '../data';
 
 interface ProductsContextType {
   products: Product[];
@@ -63,8 +64,17 @@ function normalizeCategory(raw: string | undefined | null): string {
   return CATEGORY_MAP[key] || key;
 }
 
-const PRODUCTS_CACHE_KEY = 'nova_products_cache_v3'; // bumped — clears old static-seeded cache
+const PRODUCTS_CACHE_KEY = 'nova_products_cache_v5'; // bumped to clear legacy broken cards
 const PRODUCTS_CACHE_TTL_MS = 30_000; // 30 seconds
+
+// Filter helper: ensure product has non-empty name and a valid non-empty image
+function isValidProduct(p: Product): boolean {
+  if (!p || !p.name || typeof p.name !== 'string' || !p.name.trim()) return false;
+  if (!p.image || typeof p.image !== 'string' || !p.image.trim()) return false;
+  // Discard broken legacy paths pointing to non-existent folders
+  if (p.image.startsWith('/images/products/')) return false;
+  return true;
+}
 
 function readLocalCache(): Product[] | null {
   try {
@@ -75,7 +85,7 @@ function readLocalCache(): Product[] | null {
       localStorage.removeItem(PRODUCTS_CACHE_KEY);
       return null;
     }
-    return data as Product[];
+    return (data as Product[]).filter(isValidProduct);
   } catch {
     return null;
   }
@@ -88,8 +98,12 @@ function writeLocalCache(data: Product[]) {
 }
 
 export function ProductsProvider({ children }: { children: ReactNode }) {
-  const [products, setProducts] = useState<Product[]>(() => readLocalCache() ?? []);
-  const [isLoading, setIsLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const cached = readLocalCache();
+    if (cached && cached.length > 0) return cached;
+    return fallbackProducts.filter(isValidProduct);
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchProducts = async (forceFresh = false) => {
     setIsLoading(true);
@@ -97,7 +111,7 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
     // Serve from fresh cache unless forced
     if (!forceFresh) {
       const cached = readLocalCache();
-      if (cached) {
+      if (cached && cached.length > 0) {
         setProducts(cached);
         setIsLoading(false);
         return;
@@ -109,55 +123,57 @@ export function ProductsProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const data = (await response.json()) as any;
         if (data.products && data.products.length > 0) {
-          const dbProds: Product[] = data.products.map((p: any) => {
-            const defaultImg = p.fullImageUrl
-              ? p.fullImageUrl
-              : p.imageKey
-                ? `/uploads/${p.imageKey}`
-                : (p.image || (p.images && p.images[0]) || '');
-            const imgList =
-              p.fullImageUrls && p.fullImageUrls.length > 0
-                ? p.fullImageUrls
-                : p.images && p.images.length > 0
-                  ? p.images
-                  : [defaultImg];
+          const dbProds: Product[] = data.products
+            .map((p: any) => {
+              const defaultImg = p.fullImageUrl
+                ? p.fullImageUrl
+                : p.imageKey
+                  ? `/uploads/${p.imageKey}`
+                  : (p.image || (p.images && p.images[0]) || '');
+              const imgList =
+                p.fullImageUrls && p.fullImageUrls.length > 0
+                  ? p.fullImageUrls
+                  : p.images && p.images.length > 0
+                    ? p.images
+                    : [defaultImg];
 
-            return {
-              id: p._id || p.id || `db-${Date.now()}`,
-              name: p.name,
-              price: Number(p.price) || 0,
-              originalPrice: p.originalPrice
-                ? Number(p.originalPrice)
-                : p.hasActiveOffer && p.offerDiscountPercentage
-                  ? Math.round(Number(p.price) / (1 - Number(p.offerDiscountPercentage) / 100))
-                  : undefined,
-              image: defaultImg,
-              images: imgList,
-              category: normalizeCategory(p.category),
-              subcategory: p.subcategory
-                ? (CATEGORY_MAP[p.subcategory.toLowerCase()] || p.subcategory)
-                : undefined,
-              isNew: p.stockStatus === 'IN_STOCK',
-              stock:
-                typeof p.stock === 'number'
-                  ? p.stock
-                  : typeof p.stockQuantity === 'number'
-                    ? p.stockQuantity
+              return {
+                id: p._id || p.id || `db-${Date.now()}`,
+                name: p.name,
+                price: Number(p.price) || 0,
+                originalPrice: p.originalPrice
+                  ? Number(p.originalPrice)
+                  : p.hasActiveOffer && p.offerDiscountPercentage
+                    ? Math.round(Number(p.price) / (1 - Number(p.offerDiscountPercentage) / 100))
                     : undefined,
-            };
-          });
+                image: defaultImg,
+                images: imgList,
+                category: normalizeCategory(p.category),
+                subcategory: p.subcategory
+                  ? (CATEGORY_MAP[p.subcategory.toLowerCase()] || p.subcategory)
+                  : undefined,
+                isNew: p.stockStatus === 'IN_STOCK',
+                stock:
+                  typeof p.stock === 'number'
+                    ? p.stock
+                    : typeof p.stockQuantity === 'number'
+                      ? p.stockQuantity
+                      : undefined,
+              };
+            })
+            .filter(isValidProduct);
 
           setProducts(dbProds);
           writeLocalCache(dbProds);
           return;
         }
       }
-      // API returned nothing — show empty list, do NOT fall back to static data
-      setProducts([]);
+      // If API returned empty products, use fallback catalog products
+      setProducts(fallbackProducts.filter(isValidProduct));
     } catch (error) {
       console.error('Failed to load products from API:', error);
-      // Network failure — keep existing cached state if available, else empty
-      setProducts((prev) => (prev.length > 0 ? prev : []));
+      // Network failure — keep existing cached state if available, else fallbackProducts
+      setProducts((prev) => (prev.length > 0 ? prev.filter(isValidProduct) : fallbackProducts.filter(isValidProduct)));
     } finally {
       setIsLoading(false);
     }
