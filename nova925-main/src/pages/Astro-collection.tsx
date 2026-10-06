@@ -98,8 +98,8 @@ export function AstroCollection() {
       <section className="container mx-auto px-4 md:px-12 py-14 md:py-20 max-w-7xl flex-1">
         {/* Section Heading */}
         {/* ─── Subcategory Filter Tabs ─────────────────────────────────── */}
-        <div className="flex items-center justify-between pb-6 mb-10 border-b border-neutral-200">
-          <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-6 mb-10 border-b border-neutral-200">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
             <Stars className="w-5 h-5 text-amber-500 animate-pulse shrink-0" />
             {ASTRO_TABS.map(tab => (
               <button
@@ -114,7 +114,7 @@ export function AstroCollection() {
               </button>
             ))}
           </div>
-          <span className="text-[11px] text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 font-semibold shrink-0">
+          <span className="self-start text-[11px] text-amber-700 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 font-semibold shrink-0">
             {astroProducts.length} items
           </span>
         </div>

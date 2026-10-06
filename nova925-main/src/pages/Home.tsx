@@ -143,7 +143,7 @@ export function Home() {
               <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
             </button>
 
-            <div className="text-center px-6 md:px-8">
+            <div className="text-center px-10 md:px-12">
               <span className="text-4xl md:text-6xl text-nova-gold/20 font-serif block -mt-2 md:-mt-4 leading-none">"</span>
               <p className="text-white/80 font-light text-xs md:text-base leading-relaxed mb-4 md:mb-6 italic">
                 {reviews[activeReviewIndex]?.content}

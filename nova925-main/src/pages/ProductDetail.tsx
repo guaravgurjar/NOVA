@@ -168,7 +168,7 @@ export function ProductDetail() {
 
   return (
     <div className="flex flex-col min-h-screen bg-nova-darker text-white font-sans">
-      <div className="container mx-auto px-6 md:px-12 py-8 max-w-7xl flex-1">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 py-6 md:py-8 max-w-7xl flex-1">
 
         {/* Breadcrumbs */}
         <div className="text-[10px] md:text-xs text-white/40 tracking-wider uppercase mb-6 md:mb-8 flex items-center gap-1.5 md:gap-2 overflow-hidden">
@@ -293,7 +293,7 @@ export function ProductDetail() {
                   <Star key={i} className="w-4 h-4 fill-current" />
                 ))}
               </div>
-              <span className="text-white/60 font-light">(4.8 rating based on 32 reviews)</span>
+              <span className="text-white/60 font-light text-xs md:text-sm">(4.8 rating based on 32 reviews)</span>
             </div>
 
             {/* Price section — hidden in catalog mode */}
@@ -315,7 +315,7 @@ export function ProductDetail() {
                 <span className="text-[10px] text-white/40">Inclusive of all local taxes & duties</span>
               </div>
             ) : (
-              <div className="glass-dark rounded-xl p-4 mb-8 border border-nova-gold/20 flex items-center justify-between relative overflow-hidden bg-gradient-to-r from-nova-gold/10 via-transparent to-transparent">
+              <div className="glass-dark rounded-xl p-4 mb-8 border border-nova-gold/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden bg-gradient-to-r from-nova-gold/10 via-transparent to-transparent">
                 <div>
                   <span className="text-nova-gold text-[11px] font-semibold tracking-widest uppercase block mb-0.5">925 Sterling Silver Showcase</span>
                   <span className="text-white/60 text-xs font-light">Certified Hallmarked Purity • Handcrafted Masterpiece</span>
@@ -344,7 +344,7 @@ export function ProductDetail() {
 
             {/* Quantity Selector — hidden in catalog mode */}
             {!CATALOG_MODE && (
-              <div className="flex items-center gap-4 mb-8">
+              <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-8">
                 <span className="text-xs uppercase tracking-widest text-white/50">Quantity</span>
                 <div className="flex bg-[#181c2b] border border-white/10 rounded-lg overflow-hidden items-center">
                   <button onClick={handleDecrement} className="px-3.5 py-2 hover:bg-white/5 text-white/75 transition-colors font-bold"><Minus className="w-3.5 h-3.5" /></button>

@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Search, Share2 } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, Search, X } from 'lucide-react';
 import { useState, useEffect, FormEvent } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
@@ -19,7 +19,18 @@ export function Header() {
   const { wishlistCount } = useWishlist();
   const { cartCount } = useCart();
   const [searchQuery, setSearchQuery] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const navLinks = [
+    { to: '/shop', label: 'Shop By Category' },
+    { to: '/gifts-for-him', label: 'Gifts For Him' },
+    { to: '/gifts-for-her', label: 'Gifts For Her' },
+    { to: '/kids', label: 'Kids' },
+    { to: '/Astro-collection', label: 'Astro Collection' },
+    { to: '/about', label: 'About Us' },
+  ];
 
   const announcements = [
     "FREE SHIPPING PAN INDIA | 100% PURE 925 STERLING SILVER",
@@ -29,6 +40,17 @@ export function Header() {
 
   const [announcementIndex, setAnnouncementIndex] = useState(0);
   const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [menuOpen]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -95,42 +117,52 @@ export function Header() {
   };
 
   return (
-    // OPTIMIZATION 2: GPU-Accelerated Transform on the Wrapper
+    <>
+    {/* OPTIMIZATION 2: GPU-Accelerated Transform on the Wrapper */}
     <header
       role="banner"
-      className={`sticky top-0 w-full z-100 shadow-md transition-transform duration-500 ease-in-out ${scrolled ? '-translate-y-10' : 'translate-y-0'
+      className={`sticky top-0 w-full z-100 shadow-md transition-transform duration-500 ease-in-out ${scrolled ? '-translate-y-9 md:-translate-y-10' : 'translate-y-0'
         }`}
     >
       {/* OPTIMIZATION 3: Fixed Height Announcement Bar */}
       <div
-        className="h-10 bg-sky-100 text-[9px] md:text-[11px] font-semibold text-nova-darker uppercase tracking-[0.2em] px-4 flex items-center justify-center border-b border-nova-gold/15 select-none"
+        className="h-9 md:h-10 bg-sky-100 text-[9px] sm:text-[11px] font-semibold text-nova-darker uppercase tracking-[0.08em] sm:tracking-[0.16em] md:tracking-[0.2em] px-3 sm:px-4 flex items-center justify-center border-b border-nova-gold/15 select-none"
       >
-        <div key={announcementIndex} className="animate-slide-up flex items-center gap-2 text-center">
-          <span>{announcements[announcementIndex]}</span>
-        </div>
+        <p key={announcementIndex} className="animate-slide-up w-full text-center truncate">
+          {announcements[announcementIndex]}
+        </p>
       </div>
 
       {/* Top Bar */}
-      {/* Top Bar */}
-      <div className="bg-white h-14 md:h-16 px-3 md:px-12 flex items-center justify-between">
+      <div className="bg-white min-h-14 md:h-16 px-3 md:px-12 py-1.5 md:py-0 flex items-center justify-between gap-2">
 
         {/* Logo + Delivery Pincode */}
-        <div className="flex items-center gap-2 md:gap-4 pt-5">
-          <Link to="/" className="flex items-center py-1 group">
+        <div className="flex items-center gap-2 md:gap-4 min-w-0">
+          <button
+            type="button"
+            className="md:hidden shrink-0 w-10 h-10 -ml-1 flex items-center justify-center rounded-full text-nova-dark hover:bg-nova-gold/10"
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-nav"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+          <Link to="/" className="flex items-center py-1 group min-w-0">
             <img
               src="/images/banners/logo_new.webp"
               alt="NOVA Jewellery — Home"
               width="180"
               height="48"
               fetchPriority="high"
-              className="h-16 md:h-20 -my-4 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+              className="h-10 sm:h-12 md:h-14 lg:h-20 w-auto max-w-[42vw] sm:max-w-none object-contain transition-transform duration-300 group-hover:scale-[1.03]"
             />
           </Link>
-          <DeliveryPincode />
+          <DeliveryPincode className="hidden lg:block" />
         </div>
 
         {/* Search (Desktop) */}
-        <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-2xl mx-8 relative">
+        <form onSubmit={handleSearchSubmit} className="hidden md:flex flex-1 max-w-2xl mx-4 lg:mx-8 relative min-w-0">
           <input
             type="text"
             placeholder="Search our luxury collection..."
@@ -144,7 +176,7 @@ export function Header() {
         </form>
 
         {/* Action Icons */}
-        <div className="flex items-center space-x-2.5 md:space-x-6">
+        <div className="flex items-center space-x-1 sm:space-x-2.5 md:space-x-6 shrink-0">
           <Link to="/wishlist" className="hover:opacity-80 transition-opacity duration-300 relative group flex items-center justify-center" aria-label="Wishlist">
             <img src="/images/icons/heart.png" alt="Wishlist" width="28" height="28" className="w-6.0 h-6.0 md:w-7 md:h-7 group-hover:scale-110 transition-transform" />
             {wishlistCount > 0 && (
@@ -193,41 +225,62 @@ export function Header() {
         </form>
       </div>
 
-      {/* Navigation */}
-      <nav aria-label="Main navigation" className="bg-white text-nova-dark uppercase text-xs tracking-[0.15em] font-medium">
-        <ul className="flex items-center justify-start md:justify-center space-x-5 md:space-x-10 px-4 md:px-6 py-2 md:py-3.5 overflow-x-auto whitespace-nowrap hide-scrollbar snap-x snap-mandatory scroll-pl-4">
-          <li>
-            <Link to="/shop" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              Shop By Category
-            </Link>
-          </li>
-          <li>
-            <Link to="/gifts-for-him" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              Gifts For Him
-            </Link>
-          </li>
-          <li>
-            <Link to="/gifts-for-her" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              Gifts For Her
-            </Link>
-          </li>
-          <li>
-            <Link to="/kids" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              Kids
-            </Link>
-          </li>
-          <li>
-            <Link to="/Astro-collection" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              Astro Collection
-            </Link>
-          </li>
-          <li>
-            <Link to="/about" className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
-              About Us
-            </Link>
-          </li>
+      {/* Navigation — desktop */}
+      <nav aria-label="Main navigation" className="hidden md:block bg-white text-nova-dark uppercase text-xs tracking-[0.15em] font-medium">
+        <ul className="flex items-center justify-start lg:justify-center gap-5 lg:gap-10 px-4 lg:px-6 py-3 overflow-x-auto whitespace-nowrap hide-scrollbar">
+          {navLinks.map((link) => (
+            <li key={link.to}>
+              <Link to={link.to} className="relative py-1 hover:text-nova-gold transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-px after:w-0 hover:after:w-full after:bg-nova-gold after:transition-all after:duration-300">
+                {link.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </header>
+
+    {menuOpen && (
+      <div className="fixed inset-0 z-[200] md:hidden">
+        <button
+          type="button"
+          className="absolute inset-0 bg-black/50"
+          aria-label="Close menu"
+          onClick={() => setMenuOpen(false)}
+        />
+        <nav
+          id="mobile-nav"
+          aria-label="Mobile navigation"
+          className="absolute top-0 left-0 h-full w-[min(100%,20rem)] bg-white text-nova-dark shadow-2xl overflow-y-auto px-5 pt-[max(1.25rem,env(safe-area-inset-top))] pb-8"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <span className="font-serif tracking-[0.2em] text-sm uppercase">Menu</span>
+            <button
+              type="button"
+              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-nova-gold/10"
+              aria-label="Close menu"
+              onClick={() => setMenuOpen(false)}
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+          <ul className="flex flex-col uppercase text-sm tracking-[0.14em] font-medium">
+            {navLinks.map((link) => (
+              <li key={link.to} className="border-b border-nova-dark/10">
+                <Link
+                  to={link.to}
+                  className={`block py-3.5 ${location.pathname === link.to ? 'text-nova-gold' : 'hover:text-nova-gold'}`}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-6">
+            <DeliveryPincode className="block" />
+          </div>
+        </nav>
+      </div>
+    )}
+    </>
   );
 }

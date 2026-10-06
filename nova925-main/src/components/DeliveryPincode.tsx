@@ -15,7 +15,7 @@ interface PincodeResponse {
   PostOffice: PostOffice[] | null;
 }
 
-export function DeliveryPincode() {
+export function DeliveryPincode({ className = '' }: { className?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [pincode, setPincode] = useState('');
   const [inputValue, setInputValue] = useState('');
@@ -123,12 +123,12 @@ export function DeliveryPincode() {
   }
 
   return (
-    <div ref={dropdownRef} className="relative hidden md:block">
+    <div ref={dropdownRef} className={`relative ${className}`}>
       {/* Trigger Button */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer group flex items-center gap-2 text-sm border border-nova-dark/30 rounded-lg px-3 py-2 hover:border-nova-gold/60 transition-all duration-300"
+        className="cursor-pointer group flex items-center gap-2 text-sm border border-nova-dark/30 rounded-lg px-3 py-2 hover:border-nova-gold/60 transition-all duration-300 max-w-full"
         aria-label="Update Delivery Pincode"
         aria-expanded={isOpen}
       >
@@ -137,7 +137,7 @@ export function DeliveryPincode() {
           <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
             {pincode ? 'Deliver to' : 'Where to Deliver?'}
           </span>
-          <span className="font-bold text-slate-900 text-xs">
+          <span className="font-bold text-slate-900 text-xs truncate max-w-[12rem] sm:max-w-[14rem]">
             {pincode ? (
               <>
                 {location || 'Location'}{' '}
@@ -162,7 +162,7 @@ export function DeliveryPincode() {
       {/* Dropdown Panel */}
       {isOpen && (
         <div
-          className="absolute top-full left-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-slate-200 z-50 animate-fade-in overflow-hidden"
+          className="absolute top-full left-0 mt-2 w-[min(20rem,calc(100vw-2rem))] bg-white rounded-xl shadow-2xl border border-slate-200 z-50 animate-fade-in overflow-hidden"
           role="dialog"
           aria-label="Enter delivery pincode"
         >
