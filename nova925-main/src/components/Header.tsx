@@ -211,7 +211,7 @@ export function Header() {
 
       {/* Mobile: pincode, then search on its own row under the logo bar */}
       <div className="md:hidden bg-white px-3 pt-0.5 pb-3 flex flex-col gap-2 border-b border-neutral-100">
-        <DeliveryPincode className="block" />
+        <DeliveryPincode variant="inline" className="block" />
         <form onSubmit={handleSearchSubmit} className="relative w-full">
           <input
             type="text"
