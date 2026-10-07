@@ -145,7 +145,7 @@ export function Kids() {
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-[#07090f]/95 via-[#07090f]/20 to-transparent opacity-90 transition-opacity"></div>
                                 <div className="absolute bottom-4 left-0 right-0 text-center">
-                                    <span className="text-[10px] md:text-sm font-semibold tracking-[0.25em] font-sans text-white group-hover:text-nova-gold transition-colors">{cat.name}</span>
+                                    <span className="text-[10px] md:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.25em] font-sans text-white group-hover:text-nova-gold transition-colors px-2">{cat.name}</span>
                                 </div>
                             </div>
                         </Link>
@@ -155,10 +155,10 @@ export function Kids() {
 
             {/* ─── Product Catalog Grid ─────────────────────────────────────────── */}
             <section className="container mx-auto px-6 md:px-12 py-12 max-w-7xl flex-1">
-                <div className="flex items-center justify-between pb-6 mb-8 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                        <CircleDot className="w-4 h-4 text-nova-dark animate-pulse" />
-                        <h3 className="text-lg font-serif text-nova-dark tracking-wide">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-6 mb-8 border-b border-white/10">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
+                        <CircleDot className="w-4 h-4 text-nova-dark animate-pulse shrink-0" />
+                        <h3 className="text-base sm:text-lg font-serif text-nova-dark tracking-wide">
                             {selectedCategory === 'all'
                                 ? 'All Kids Collection'
                                 : CATEGORIES.find((c) => c.id === selectedCategory)?.label || 'Collection'}
@@ -200,7 +200,7 @@ export function Kids() {
                     </div>
                 ) : (
                     /* Products Grid */
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 justify-items-center">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 justify-items-center">
                         {filteredProducts.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}

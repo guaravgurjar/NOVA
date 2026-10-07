@@ -177,7 +177,7 @@ export function FAQ() {
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#c5a880_1px,transparent_1px)] [background-size:16px_16px]"></div>
         <div className="container mx-auto px-6 md:px-12 max-w-5xl relative z-10">
           <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] text-nova-gold font-semibold mb-2">CUSTOMER SERVICES</span>
-          <h1 className="text-3xl md:text-4xl font-serif tracking-wider mb-2">Frequently Asked Questions (FAQ)</h1>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-serif tracking-wider mb-2">Frequently Asked Questions (FAQ)</h1>
           <p className="text-white/60 max-w-xl text-xs md:text-sm font-light">
             Find quick answers to delivery questions, return terms, and order handling.
           </p>

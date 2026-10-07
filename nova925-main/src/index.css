@@ -74,6 +74,20 @@ body {
   padding-right: env(safe-area-inset-right);
 }
 
+img,
+video {
+  max-width: 100%;
+}
+
+/* 16px inputs stop iOS from zooming the page on focus */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
 /* Fluid typography scale — mobile-first with clamp() */
 .text-fluid-xs {
   font-size: clamp(0.625rem, 0.55rem + 0.25vw, 0.75rem);

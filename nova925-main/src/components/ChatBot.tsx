@@ -174,7 +174,7 @@ export function ChatBot() {
       {!isOpen && (
         <button 
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-nova-gold-dark to-nova-gold text-nova-darker rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(197,168,128,0.3)] hover:scale-105 transition-all z-50 group border border-white/20 active:scale-95"
+          className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 md:bottom-6 md:right-6 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-tr from-nova-gold-dark to-nova-gold text-nova-darker rounded-full flex items-center justify-center shadow-[0_10px_30px_rgba(197,168,128,0.3)] hover:scale-105 transition-all z-50 group border border-white/20 active:scale-95"
           aria-label="Open Chat Assistant"
         >
           <MessageCircle className="w-7 h-7 group-hover:scale-110 transition-transform text-nova-darker" />
@@ -187,7 +187,7 @@ export function ChatBot() {
 
       {/* Frosted Glass Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[96vw] md:w-[420px] h-[75vh] md:h-[620px] max-h-[85vh] glass-dark rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col z-50 overflow-hidden border border-white/10 animate-fade-in">
+        <div className="fixed inset-x-3 bottom-3 sm:inset-x-auto sm:right-4 sm:bottom-4 sm:w-[min(420px,calc(100vw-2rem))] md:bottom-6 md:right-6 h-[min(75vh,620px)] max-h-[calc(100dvh-1.5rem)] glass-dark rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex flex-col z-50 overflow-hidden border border-white/10 animate-fade-in">
           
           {/* Header */}
           <div className="bg-gradient-to-r from-nova-darker via-nova-dark to-nova-darker text-white p-4.5 flex items-center justify-between border-b border-nova-gold/20 shadow-lg z-10">

@@ -351,7 +351,7 @@ export function Shop() {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 md:px-12 py-12 max-w-7xl flex-1">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 max-w-7xl flex-1">
 
         {/* Horizontal Dropdowns Filters & Sorting Row */}
         <div className="relative border-b border-white/10 pb-6 mb-8 flex flex-col gap-4">

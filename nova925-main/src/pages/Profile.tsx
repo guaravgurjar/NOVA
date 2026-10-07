@@ -491,13 +491,13 @@ export function Profile() {
       <div className="flex-1 flex flex-col md:flex-row">
         
         {/* Luxury Sidebar */}
-        <div className="bg-nova-dark w-full md:w-72 p-8 text-white flex flex-col gap-6 border-r border-white/5 md:min-h-screen">
-           <div className="flex items-center gap-3 pb-6 border-b border-white/5 mb-4">
+        <div className="bg-nova-dark w-full md:w-72 p-4 sm:p-8 text-white flex flex-col gap-4 md:gap-6 border-b md:border-b-0 md:border-r border-white/5 md:min-h-screen">
+           <div className="flex items-center gap-3 pb-4 md:pb-6 border-b border-white/5 mb-1 md:mb-4">
               <div className="w-12 h-12 rounded-full bg-nova-gold/15 border border-nova-gold/30 flex items-center justify-center text-nova-gold font-bold">
                  {getInitials(user)}
               </div>
-              <div>
-                 <h2 className="text-sm font-semibold tracking-wider">
+              <div className="min-w-0">
+                 <h2 className="text-sm font-semibold tracking-wider break-words">
                    {user.authMethod === 'phone' && user.firstName === 'Guest' ? `Guest (+91...${user.phoneNumber?.slice(-4)})` : `${user.firstName} ${user.lastName}`}
                  </h2>
                  <p className="text-[10px] text-white/40 uppercase tracking-widest">
@@ -506,9 +506,10 @@ export function Profile() {
               </div>
            </div>
 
+           <div className="flex md:flex-col gap-2 overflow-x-auto hide-scrollbar -mx-1 px-1">
            <button 
              onClick={() => setActiveTab('profile')}
-             className={`flex items-center gap-4 py-2 px-3 rounded-lg text-sm tracking-wide transition-all ${
+             className={`flex shrink-0 items-center gap-2 md:gap-4 py-2.5 px-3 rounded-lg text-sm tracking-wide transition-all ${
                activeTab === 'profile' 
                  ? 'bg-nova-gold/10 text-nova-gold font-medium border-l-2 border-nova-gold pl-2.5' 
                  : 'text-white/60 hover:text-white hover:bg-white/5'
@@ -518,7 +519,7 @@ export function Profile() {
            </button>
            <button 
              onClick={() => setActiveTab('orders')}
-             className={`flex items-center gap-4 py-2 px-3 rounded-lg text-sm tracking-wide transition-all ${
+             className={`flex shrink-0 items-center gap-2 md:gap-4 py-2.5 px-3 rounded-lg text-sm tracking-wide transition-all ${
                activeTab === 'orders' 
                  ? 'bg-nova-gold/10 text-nova-gold font-medium border-l-2 border-nova-gold pl-2.5' 
                  : 'text-white/60 hover:text-white hover:bg-white/5'
@@ -528,7 +529,7 @@ export function Profile() {
            </button>
            <button 
              onClick={() => setActiveTab('address')}
-             className={`flex items-center gap-4 py-2 px-3 rounded-lg text-sm tracking-wide transition-all ${
+             className={`flex shrink-0 items-center gap-2 md:gap-4 py-2.5 px-3 rounded-lg text-sm tracking-wide transition-all ${
                activeTab === 'address' 
                  ? 'bg-nova-gold/10 text-nova-gold font-medium border-l-2 border-nova-gold pl-2.5' 
                  : 'text-white/60 hover:text-white hover:bg-white/5'
@@ -536,20 +537,21 @@ export function Profile() {
            >
              <MapPin className="w-4 h-4" /> Saved Addresses
            </button>
+           </div>
            
            <button 
              onClick={handleSignOut}
-             className="flex items-center gap-4 py-2 px-3 rounded-lg text-sm tracking-wide text-white/40 hover:text-red-400 hover:bg-red-500/5 transition-all mt-auto md:mt-8 text-left"
+             className="flex items-center gap-4 py-2 px-3 rounded-lg text-sm tracking-wide text-white/40 hover:text-red-400 hover:bg-red-500/5 transition-all mt-2 md:mt-8 text-left"
            >
              <LogOut className="w-4 h-4" /> Sign Out
            </button>
         </div>
         
         {/* Main Content Area */}
-        <div className="flex-1 p-8 md:p-16 flex flex-col items-center overflow-y-auto">
-           <div className="w-full max-w-xl glass-dark p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl relative">
+        <div className="flex-1 p-4 sm:p-8 md:p-16 flex flex-col items-center overflow-y-auto">
+           <div className="w-full max-w-xl glass-dark p-4 sm:p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl relative">
               
-              <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-4 border-b border-white/5">
                 <h3 className="text-xl font-serif tracking-wide text-white">
                   {activeTab === 'profile' ? "Personal Profile" : activeTab === 'orders' ? "My Orders" : "Saved Addresses"}
                 </h3>

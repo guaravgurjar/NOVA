@@ -138,8 +138,8 @@ export function Cart() {
 
   return (
     <div className="flex flex-col min-h-screen bg-nova-darker text-white">
-      <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl flex-1">
-        <h1 className="text-3xl md:text-5xl font-serif text-center tracking-wider mb-16 font-light">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 py-10 md:py-16 max-w-7xl flex-1">
+        <h1 className="text-3xl md:text-5xl font-serif text-center tracking-wider mb-8 md:mb-16 font-light">
           {CATALOG_MODE ? 'NOVA Catalog' : 'Shopping Bag'}
         </h1>
         
@@ -241,7 +241,7 @@ export function Cart() {
               ) : (
                 /* Secure Checkout Form */
                 <form onSubmit={handlePlaceOrder} className="glass-dark border border-white/10 p-6 rounded-2xl space-y-6">
-                  <div className="flex justify-between items-center border-b border-white/5 pb-4">
+                  <div className="flex flex-wrap justify-between items-center gap-3 border-b border-white/5 pb-4">
                     <h3 className="text-base font-serif text-nova-gold uppercase tracking-wider flex items-center gap-2">
                       <Truck className="w-5 h-5" />
                       Shipping & Sourcing Details

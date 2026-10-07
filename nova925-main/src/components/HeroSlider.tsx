@@ -145,7 +145,7 @@ export function HeroSlider({
       role="region"
       aria-roledescription="carousel"
       aria-label="Hero Banner Slider"
-      className={`relative w-full overflow-hidden bg-black/5 select-none h-[55vh] sm:h-[65vh] md:h-[80vh] ${className}`}
+      className={`relative w-full overflow-hidden bg-black/5 select-none aspect-[3/1] h-auto sm:aspect-auto sm:h-[65vh] md:h-[80vh] ${className}`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}

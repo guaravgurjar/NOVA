@@ -226,11 +226,11 @@ export function Login() {
   const isOtpComplete = otpCode.length === OTP_LENGTH;
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center py-20 px-4 bg-sky-100 text-white min-h-[85vh] relative">
+    <div className="flex-1 flex flex-col items-center justify-center py-10 sm:py-20 px-4 bg-sky-100 text-white min-h-[85vh] relative">
       {/* Hidden reCAPTCHA anchor — must be in the DOM before OTP send */}
       <div id="recaptcha-container" className="hidden"></div>
 
-      <div className="w-full max-w-md glass-dark p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl relative z-10 animate-fade-in flex flex-col">
+      <div className="w-full max-w-md glass-dark p-5 sm:p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl relative z-10 animate-fade-in flex flex-col">
         {/* Brand Logo Header */}
         <div className="flex justify-center mb-6">
           <img src="/images/logo.png" alt="NOVA Jewellery" className="h-9 w-auto object-contain" />
