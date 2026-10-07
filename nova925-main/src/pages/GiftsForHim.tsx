@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react';
-import { shopCategories, reviews } from '../data';
+import { useState, useMemo, useRef } from 'react';
+import { giftsForHimCategories } from '../data/heroCategories';
 import { useProducts } from '../contexts/ProductsContext';
 import { ProductCard } from '../components/ProductCard';
-import { Sparkles, CircleDot, ShieldCheck, Tag, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { CategoryCardGrid } from '../components/CategoryCardGrid';
+import { Sparkles, CircleDot } from 'lucide-react';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'kada';
 
 interface CategoryPill {
   id: CategoryFilter;
@@ -52,6 +52,12 @@ export function GiftsForHim() {
   usePageSEO({ title: 'Gifts For Him', description: 'Discover the perfect gift for him — 925 sterling silver rings, bracelets, chains & ear studs from NOVA.' });
   const { products, isLoading } = useProducts();
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
+  const catalogRef = useRef<HTMLElement>(null);
+
+  const selectCategory = (id: string) => {
+    setSelectedCategory(id as CategoryFilter);
+    catalogRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   // Filter products by selected category.
   // Products added via admin have category='gifts-for-him' and a subcategory
@@ -76,7 +82,9 @@ export function GiftsForHim() {
       if (selectedCategory === 'earrings')
         return sub === 'earrings' || cat.includes('earring') || cat.includes('stud') || name.includes('stud');
       if (selectedCategory === 'bracelets')
-        return sub === 'bracelets' || cat.includes('bracelet') || cat.includes('kada') || name.includes('kada') || name.includes('bracelet');
+        return (sub === 'bracelets' || cat.includes('bracelet') || name.includes('bracelet')) && !name.includes('kada') && !String(product.id || '').includes('kada');
+      if (selectedCategory === 'kada')
+        return name.includes('kada') || String(product.id || '').includes('kada');
       if (selectedCategory === 'chains')
         return sub === 'chains' || cat.includes('chain') || cat.includes('necklace') || name.includes('chain');
 
@@ -105,31 +113,15 @@ export function GiftsForHim() {
           <div className="w-30 h-px bg-nova-darker mx-auto mt-4"></div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-          {shopCategories.map((cat) => (
-            <Link
-              to={`/category/${cat.id}`}
-              key={cat.id}
-              className="flex flex-col items-center group cursor-pointer"
-            >
-              <div className="w-full aspect-3/2 rounded-2xl overflow-hidden mb-4 shadow-xl border border-white/5 group-hover:border-nova-gold/45 transition-all duration-300 relative">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-[#07090f]/95 via-[#07090f]/20 to-transparent opacity-90 transition-opacity"></div>
-                <div className="absolute bottom-4 left-0 right-0 text-center">
-                  <span className="text-[10px] md:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.25em] font-sans text-white group-hover:text-nova-gold transition-colors px-2">{cat.name}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <CategoryCardGrid
+          categories={giftsForHimCategories}
+          selectedId={selectedCategory}
+          onSelect={selectCategory}
+        />
       </div>
 
       {/* ─── Product Catalog Grid ─────────────────────────────────────────── */}
-      <section className="container mx-auto px-6 md:px-12 py-12 max-w-7xl flex-1">
+      <section ref={catalogRef} className="container mx-auto px-6 md:px-12 py-12 max-w-7xl flex-1 scroll-mt-24">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-6 mb-8 border-b border-white/10">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
             <CircleDot className="w-4 h-4 text-nova-gold animate-pulse shrink-0" />

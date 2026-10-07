@@ -1,4 +1,5 @@
 import { Product, Category, Review } from './types';
+import { astroCategories, giftsForHerCategories } from './data/heroCategories';
 
 export const products: Product[] = [
   // ════════════════════════════════════════════════════════════════════════════
@@ -453,49 +454,49 @@ export const shopCategories: Category[] = [
     "id": "rings",
     "name": "Rings",
     "key": "rings",
-    "image": "/images/Products/01 Female/07 Female Rings/TYP 01/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'rings')!.image
   },
   {
     "id": "earrings",
     "name": "Earrings",
     "key": "earrings",
-    "image": "/images/Products/01 Female/01 Female Ear-Rings/TYP 01/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'earrings')!.image
   },
   {
     "id": "bracelets",
     "name": "Bracelets",
     "key": "bracelets",
-    "image": "/images/Products/01 Female/02 Female Bracelet/01 925 Silevr/TYP 01/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'bracelets')!.image
   },
   {
     "id": "pendants",
     "name": "Pendants",
     "key": "pendants",
-    "image": "/images/Products/01 Female/06 Female Pendant Set/TYP 01/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'pendants')!.image
   },
   {
     "id": "chains",
     "name": "Chains",
     "key": "chains",
-    "image": "/images/Products/01 Female/04 Female Chain/01 (925 silver) Female  chain/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'chains')!.image
   },
   {
     "id": "bangles",
     "name": "Bangles",
     "key": "bangles",
-    "image": "/images/Products/01 Female/03 Female Bangel/TYP 01/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'bangles')!.image
   },
   {
     "id": "sets",
     "name": "Sets",
     "key": "sets",
-    "image": "/images/Products/01 Female/05 Female sets/TYP 01/01/0101.webp"
+    "image": giftsForHerCategories.find((c) => c.id === 'sets')!.image
   },
   {
     "id": "astro",
     "name": "Personalised",
     "key": "astro",
-    "image": "/images/Products/04 Astro Jewellery/01 Astro Pendnat/TYP 01/01/0101.webp"
+    "image": astroCategories.find((c) => c.id === 'pendants')!.image
   }
 ];
 
