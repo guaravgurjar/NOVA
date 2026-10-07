@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react';
-import { shopCategories, reviews } from '../data';
+import { useState, useMemo, useRef } from 'react';
+import { giftsForHerCategories } from '../data/heroCategories';
 import { useProducts } from '../contexts/ProductsContext';
 import { ProductCard } from '../components/ProductCard';
-import { Sparkles, CircleDot, ShieldCheck, Tag, ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { CategoryCardGrid } from '../components/CategoryCardGrid';
+import { Sparkles, CircleDot } from 'lucide-react';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants' | 'sets' | 'anklets';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants' | 'sets' | 'anklets' | 'toe-rings' | 'nose-rings';
 
 interface CategoryPill {
     id: CategoryFilter;
@@ -76,6 +76,12 @@ export function GiftsForHer() {
     usePageSEO({ title: 'Gifts For Her', description: 'Discover the perfect gift for her — 925 sterling silver rings, bracelets, chains & ear studs from NOVA.', canonicalPath: '/gifts-for-her' });
     const { products, isLoading } = useProducts();
     const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>('all');
+    const catalogRef = useRef<HTMLElement>(null);
+
+    const selectCategory = (id: string) => {
+        setSelectedCategory(id as CategoryFilter);
+        catalogRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 
     // Filter products by selected category.
     // Exclude any empty product cards or products without valid images.
@@ -91,6 +97,7 @@ export function GiftsForHer() {
             const cat = (product.category || '').toLowerCase();
             const sub = (product.subcategory || '').toLowerCase();
             const name = (product.name || '').toLowerCase();
+            const id = String(product.id || '').toLowerCase();
 
             // Only show products that belong to the Gifts For Her page
             const isForHer = cat === 'gifts-for-her' ||
@@ -104,9 +111,13 @@ export function GiftsForHer() {
 
             // Match by subcategory field (new system) or category keyword (legacy)
             if (selectedCategory === 'rings')
-                return sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring');
+                return (sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring')) && !id.includes('toe') && !name.includes('toe');
+            if (selectedCategory === 'toe-rings')
+                return id.includes('toe') || name.includes('toe');
             if (selectedCategory === 'earrings')
-                return sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud') || sub === 'nose-rings' || name.includes('nose');
+                return (sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud')) && !id.includes('nose') && !name.includes('nose');
+            if (selectedCategory === 'nose-rings')
+                return id.includes('nose') || name.includes('nose');
             if (selectedCategory === 'bracelets')
                 return sub === 'bracelets' || cat === 'bracelets' || cat.includes('bracelet');
             if (selectedCategory === 'chains')
@@ -145,38 +156,22 @@ export function GiftsForHer() {
                     <div className="w-30 h-px bg-nova-darker mx-auto mt-4"></div>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                    {shopCategories.map((cat) => (
-                        <Link
-                            to={`/category/${cat.id}`}
-                            key={cat.id}
-                            className="flex flex-col items-center group cursor-pointer"
-                        >
-                            <div className="w-full aspect-3/2 rounded-2xl overflow-hidden mb-4 shadow-xl border border-white/5 group-hover:border-nova-gold/45 transition-all duration-300 relative">
-                                <img
-                                    src={cat.image}
-                                    alt={cat.name}
-                                    className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                                />
-                                <div className="absolute inset-0 bg-linear-to-t from-[#07090f]/95 via-[#07090f]/20 to-transparent opacity-90 transition-opacity"></div>
-                                <div className="absolute bottom-4 left-0 right-0 text-center">
-                                    <span className="text-[10px] md:text-sm font-semibold tracking-[0.08em] sm:tracking-[0.25em] font-sans text-white group-hover:text-nova-gold transition-colors px-2">{cat.name}</span>
-                                </div>
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                <CategoryCardGrid
+                    categories={giftsForHerCategories}
+                    selectedId={selectedCategory}
+                    onSelect={selectCategory}
+                />
             </div>
 
             {/* ─── Product Catalog Grid ─────────────────────────────────────────── */}
-            <section className="container mx-auto px-6 md:px-12 py-12 max-w-7xl flex-1">
+            <section ref={catalogRef} className="container mx-auto px-6 md:px-12 py-12 max-w-7xl flex-1 scroll-mt-24">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-6 mb-8 border-b border-white/10">
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 min-w-0">
                         <CircleDot className="w-4 h-4 text-nova-dark animate-pulse shrink-0" />
                         <h3 className="text-base sm:text-lg font-serif text-nova-dark tracking-wide">
                             {selectedCategory === 'all'
                                 ? 'All Gifts For Her'
-                                : CATEGORIES.find((c) => c.id === selectedCategory)?.label || 'Collection'}
+                                : giftsForHerCategories.find((c) => c.id === selectedCategory)?.name || 'Collection'}
                         </h3>
                         <span className="text-xs text-nova-dark bg-nova-gold/10 px-2.5 py-0.5 rounded-full border border-nova-gold/20 font-semibold">
                             {filteredProducts.length} items

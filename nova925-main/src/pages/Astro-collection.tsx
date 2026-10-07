@@ -1,7 +1,9 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { useProducts } from '../contexts/ProductsContext';
 import { ProductCard } from '../components/ProductCard';
-import { Sparkles, Stars, CircleDot } from 'lucide-react';
+import { CategoryCardGrid } from '../components/CategoryCardGrid';
+import { astroCategories } from '../data/heroCategories';
+import { Sparkles, Stars } from 'lucide-react';
 import { usePageSEO } from '../lib/usePageSEO';
 
 const ZODIAC_DATES: Record<string, string> = {
@@ -48,6 +50,12 @@ export function AstroCollection() {
 
   const { products, isLoading } = useProducts();
   const [astroFilter, setAstroFilter] = useState<AstroFilter>('all');
+  const catalogRef = useRef<HTMLElement>(null);
+
+  const selectCategory = (id: string) => {
+    setAstroFilter(id as AstroFilter);
+    catalogRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const astroProducts = useMemo(() => {
     if (!products) return [];
@@ -94,8 +102,21 @@ export function AstroCollection() {
         </picture>
       </div>
 
+      <div className="container mx-auto px-4 md:px-12 py-12 md:py-20 max-w-7xl">
+        <div className="text-center mb-8 md:mb-12">
+          <span className="text-nova-darker text-[10px] md:text-xs font-semibold uppercase tracking-[0.25em] block mb-2">CURATED FOR YOU</span>
+          <h2 className="text-3xl md:text-4xl font-serif tracking-wide font-light text-nova-darker">Shop By Category</h2>
+          <div className="w-20 md:w-30 h-px bg-nova-darker mx-auto mt-3 md:mt-4"></div>
+        </div>
+        <CategoryCardGrid
+          categories={astroCategories}
+          selectedId={astroFilter}
+          onSelect={selectCategory}
+        />
+      </div>
+
       {/* ─── Product Grid Section ───────────────────────────────────── */}
-      <section className="container mx-auto px-4 md:px-12 py-14 md:py-20 max-w-7xl flex-1">
+      <section ref={catalogRef} className="container mx-auto px-4 md:px-12 py-14 md:py-20 max-w-7xl flex-1 scroll-mt-24">
         {/* Section Heading */}
         {/* ─── Subcategory Filter Tabs ─────────────────────────────────── */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-6 mb-10 border-b border-neutral-200">
