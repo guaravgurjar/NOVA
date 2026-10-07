@@ -209,18 +209,19 @@ export function Header() {
         </div>
       </div>
 
-      {/* Mobile Search Bar (visible only on mobile) */}
-      <div className="block md:hidden bg-linear-to-r from-nova-darker via-nova-dark to-nova-darker px-4 pb-3 pt-0.5 border-b border-nova-gold/10">
+      {/* Mobile: pincode, then search on its own row under the logo bar */}
+      <div className="md:hidden bg-white px-3 pt-0.5 pb-3 flex flex-col gap-2 border-b border-neutral-100">
+        <DeliveryPincode className="block" />
         <form onSubmit={handleSearchSubmit} className="relative w-full">
           <input
             type="text"
-            placeholder="Search rings, earrings, bracelets..."
+            placeholder={'Search "Rings"'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-[#181c2b] text-white text-xs border border-nova-gold/20 rounded-full py-2 px-5 pr-10 focus:outline-none focus:ring-1 focus:ring-nova-gold focus:border-nova-gold transition-all duration-300"
+            className="w-full bg-white text-neutral-800 text-sm border border-neutral-300 rounded-full py-2.5 px-4 pr-11 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-800 transition-colors"
           />
-          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-nova-gold/60 hover:text-nova-gold transition-colors">
-            <Search className="w-3.5 h-3.5" />
+          <button type="submit" className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-700" aria-label="Search">
+            <Search className="w-4 h-4" />
           </button>
         </form>
       </div>
