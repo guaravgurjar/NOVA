@@ -15,7 +15,7 @@ interface PincodeResponse {
   PostOffice: PostOffice[] | null;
 }
 
-export function DeliveryPincode({ className = '' }: { className?: string }) {
+export function DeliveryPincode({ className = '', variant = 'default' }: { className?: string; variant?: 'default' | 'inline' }) {
   const [isOpen, setIsOpen] = useState(false);
   const [pincode, setPincode] = useState('');
   const [inputValue, setInputValue] = useState('');
@@ -128,26 +128,34 @@ export function DeliveryPincode({ className = '' }: { className?: string }) {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="cursor-pointer group flex items-center gap-2 text-sm border border-nova-dark/30 rounded-lg px-3 py-2 hover:border-nova-gold/60 transition-all duration-300 max-w-full"
+        className={
+          variant === 'inline'
+            ? 'cursor-pointer flex items-center gap-1.5 text-[13px] text-neutral-800 py-0.5'
+            : 'cursor-pointer group flex items-center gap-2 text-sm border border-nova-dark/30 rounded-lg px-3 py-2 hover:border-nova-gold/60 transition-all duration-300 max-w-full'
+        }
         aria-label="Update Delivery Pincode"
         aria-expanded={isOpen}
       >
-        <MapPin className="w-4 h-4 text-nova-gold shrink-0" />
-        <div className="flex flex-col items-start leading-tight">
-          <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-            {pincode ? 'Deliver to' : 'Where to Deliver?'}
-          </span>
-          <span className="font-bold text-slate-900 text-xs truncate max-w-[12rem] sm:max-w-[14rem]">
-            {pincode ? (
-              <>
-                {location || 'Location'}{' '}
-                <span className="text-nova-gold font-extrabold">{pincode}</span>
-              </>
-            ) : (
-              <span className="underline group-hover:no-underline">Update Pincode</span>
-            )}
-          </span>
-        </div>
+        <MapPin className={`shrink-0 ${variant === 'inline' ? 'w-3.5 h-3.5 text-rose-400' : 'w-4 h-4 text-nova-gold'}`} />
+        {variant === 'inline' ? (
+          <span>Update Delivery Pincode</span>
+        ) : (
+          <div className="flex flex-col items-start leading-tight">
+            <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
+              {pincode ? 'Deliver to' : 'Where to Deliver?'}
+            </span>
+            <span className="font-bold text-slate-900 text-xs truncate max-w-[12rem] sm:max-w-[14rem]">
+              {pincode ? (
+                <>
+                  {location || 'Location'}{' '}
+                  <span className="text-nova-gold font-extrabold">{pincode}</span>
+                </>
+              ) : (
+                <span className="underline group-hover:no-underline">Update Pincode</span>
+              )}
+            </span>
+          </div>
+        )}
         <svg
           aria-hidden="true"
           focusable="false"
