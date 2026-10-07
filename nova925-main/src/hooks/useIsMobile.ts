@@ -1,51 +1,35 @@
 import { useState, useEffect } from 'react';
 
-/**
- * Custom hook to detect if the viewport is below a given breakpoint (default: 768px).
- *
- * Specifications:
- * - SSR-safe initial state (checks `typeof window !== 'undefined'`)
- * - Listens for media query change events (`max-width: ${breakpoint - 1}px`, e.g. `max-width: 767px`)
- * - Updates state dynamically on window resize
- * - Cleans up the event listener on component unmount
- */
-export function useIsMobile(breakpoint = 768): boolean {
-  const [isMobile, setIsMobile] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return window.matchMedia(`(max-width: ${breakpoint - 1}px)`).matches;
-    }
-    return false;
-  });
+export const MOBILE_BREAKPOINT = 768; // px — same as Tailwind's `md`
+
+// ── Hook: detects mobile viewport, re-evaluates on resize ────────────────────
+export function useIsMobile(breakpoint: number = MOBILE_BREAKPOINT): boolean {
+  const [isMobile, setIsMobile] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.innerWidth < breakpoint
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const query = `(max-width: ${breakpoint - 1}px)`;
-    const mediaQuery = window.matchMedia(query);
+    const mq = window.matchMedia(`(max-width: ${breakpoint - 1}px)`);
 
-    const updateMatch = (matches: boolean) => {
-      setIsMobile(matches);
-    };
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
 
-    // Synchronize state with current media query match
-    updateMatch(mediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      updateMatch(e.matches);
-    };
-
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
+    // Use addEventListener for modern browsers, addListener as fallback
+    if (mq.addEventListener) {
+      mq.addEventListener('change', handler);
     } else {
-      // Fallback for older browsers
-      (mediaQuery as any).addListener(handleChange);
+      (mq as any).addListener(handler);
     }
 
+    // Sync immediately in case window resized before effect ran
+    setIsMobile(mq.matches);
+
     return () => {
-      if (mediaQuery.removeEventListener) {
-        mediaQuery.removeEventListener('change', handleChange);
+      if (mq.removeEventListener) {
+        mq.removeEventListener('change', handler);
       } else {
-        (mediaQuery as any).removeListener(handleChange);
+        (mq as any).removeListener(handler);
       }
     };
   }, [breakpoint]);

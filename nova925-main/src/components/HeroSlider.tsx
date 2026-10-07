@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useIsMobile } from '../hooks/useIsMobile';
 import type { Slide } from '../types';
 
 export type { Slide };
 
-export const DEFAULT_BANNER_SLIDES: Slide[] = [
+export const slides: Slide[] = [
   {
     id: 1,
-    image: '/images/banners/Web Banners/Female Web.webp',
+    image: '/images/banners/Web Banners/test.webp',
     mobileImage: '/images/banners/Mob Banners/Female Mob.webp',
     alt: "Women's 925 Sterling Silver Jewellery Collection",
     link: '/gifts-for-her',
@@ -37,6 +36,44 @@ export const DEFAULT_BANNER_SLIDES: Slide[] = [
   },
 ];
 
+export const DEFAULT_BANNER_SLIDES = slides;
+
+export const SLIDE_DURATION = 5000;
+export const MOBILE_BREAKPOINT = 768; // px — same as Tailwind's `md`
+
+// ── Hook: detects mobile viewport, re-evaluates on resize ────────────────────
+export function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState<boolean>(
+    () => typeof window !== 'undefined' && window.innerWidth < MOBILE_BREAKPOINT
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+
+    // Use addEventListener for modern browsers, addListener as fallback
+    if (mq.addEventListener) {
+      mq.addEventListener('change', handler);
+    } else {
+      (mq as any).addListener(handler);
+    }
+
+    // Sync immediately in case window resized before effect ran
+    setIsMobile(mq.matches);
+
+    return () => {
+      if (mq.removeEventListener) {
+        mq.removeEventListener('change', handler);
+      } else {
+        (mq as any).removeListener(handler);
+      }
+    };
+  }, []);
+
+  return isMobile;
+}
+
 interface HeroSliderProps {
   slides?: Slide[];
   autoPlayInterval?: number;
@@ -44,18 +81,17 @@ interface HeroSliderProps {
 }
 
 export function HeroSlider({
-  slides = DEFAULT_BANNER_SLIDES,
-  autoPlayInterval = 5500,
+  slides: sliderSlides = slides,
+  autoPlayInterval = SLIDE_DURATION,
   className = '',
 }: HeroSliderProps) {
-  // Mobile Viewport Detection via custom matchMedia hook (breakpoint = 768)
-  const isMobile = useIsMobile(768);
+  const isMobile = useIsMobile();
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
-  const totalSlides = slides.length;
+  const totalSlides = sliderSlides.length;
 
   const nextSlide = useCallback(() => {
     setActiveSlide((prev) => (prev + 1) % totalSlides);
@@ -124,7 +160,7 @@ export function HeroSlider({
           transform: `translateX(-${activeSlide * (100 / totalSlides)}%)`,
         }}
       >
-        {slides.map((slide, index) => {
+        {sliderSlides.map((slide, index) => {
           // Fallback rule: When rendering, if on mobile (< 768px) and mobileImage exists, use mobileImage.
           // Otherwise, fall back to desktop image.
           const currentImage = isMobile && slide.mobileImage ? slide.mobileImage : slide.image;
@@ -134,7 +170,7 @@ export function HeroSlider({
             <div className="relative w-full h-full">
               <picture className="w-full h-full block">
                 {slide.mobileImage && (
-                  <source media="(max-width: 767px)" srcSet={slide.mobileImage} />
+                  <source media={`(max-width: ${MOBILE_BREAKPOINT - 1}px)`} srcSet={slide.mobileImage} />
                 )}
                 <img
                   src={currentImage}
@@ -200,16 +236,15 @@ export function HeroSlider({
       {/* Carousel dot indicators */}
       {totalSlides > 1 && (
         <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 flex items-center space-x-2 sm:space-x-3">
-          {slides.map((slide, index) => (
+          {sliderSlides.map((slide, index) => (
             <button
               key={slide.id}
               type="button"
               onClick={() => goToSlide(index)}
-              className={`h-1.5 sm:h-2 rounded-full transition-all duration-500 cursor-pointer ${
-                activeSlide === index
-                  ? 'bg-nova-gold w-6 sm:w-8 shadow-[0_0_10px_rgba(197,168,128,0.7)]'
-                  : 'bg-white/50 hover:bg-white/80 w-1.5 sm:w-2'
-              }`}
+              className={`h-1.5 sm:h-2 rounded-full transition-all duration-500 cursor-pointer ${activeSlide === index
+                ? 'bg-nova-gold w-6 sm:w-8 shadow-[0_0_10px_rgba(197,168,128,0.7)]'
+                : 'bg-white/50 hover:bg-white/80 w-1.5 sm:w-2'
+                }`}
               aria-label={`Go to slide ${index + 1}`}
               aria-current={activeSlide === index ? 'true' : 'false'}
             />
