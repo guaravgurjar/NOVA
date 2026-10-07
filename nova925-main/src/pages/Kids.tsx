@@ -153,7 +153,7 @@ export function Kids() {
                         <h3 className="text-base sm:text-lg font-serif text-nova-dark tracking-wide">
                             {selectedCategory === 'all'
                                 ? 'All Kids Collection'
-                                : CATEGORIES.find((c) => c.id === selectedCategory)?.label || 'Collection'}
+                                : kidsCategories.find((c) => c.id === selectedCategory)?.name || 'Collection'}
                         </h3>
                         <span className="text-xs text-nova-dark bg-nova-gold/10 px-2.5 py-0.5 rounded-full border border-nova-gold/20 font-semibold">
                             {filteredProducts.length} items

@@ -6,7 +6,7 @@ import { CategoryCardGrid } from '../components/CategoryCardGrid';
 import { Sparkles, CircleDot } from 'lucide-react';
 import { usePageSEO } from '../lib/usePageSEO';
 
-type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants' | 'sets' | 'anklets';
+type CategoryFilter = 'all' | 'rings' | 'earrings' | 'bracelets' | 'chains' | 'bangles' | 'pendants' | 'sets' | 'anklets' | 'toe-rings' | 'nose-rings';
 
 interface CategoryPill {
     id: CategoryFilter;
@@ -97,6 +97,7 @@ export function GiftsForHer() {
             const cat = (product.category || '').toLowerCase();
             const sub = (product.subcategory || '').toLowerCase();
             const name = (product.name || '').toLowerCase();
+            const id = String(product.id || '').toLowerCase();
 
             // Only show products that belong to the Gifts For Her page
             const isForHer = cat === 'gifts-for-her' ||
@@ -110,9 +111,13 @@ export function GiftsForHer() {
 
             // Match by subcategory field (new system) or category keyword (legacy)
             if (selectedCategory === 'rings')
-                return sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring');
+                return (sub === 'rings' || cat === 'rings' || cat.includes('ring') || name.includes('ring')) && !id.includes('toe') && !name.includes('toe');
+            if (selectedCategory === 'toe-rings')
+                return id.includes('toe') || name.includes('toe');
             if (selectedCategory === 'earrings')
-                return sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud') || sub === 'nose-rings' || name.includes('nose');
+                return (sub === 'earrings' || cat === 'earrings' || cat.includes('earring') || cat.includes('stud')) && !id.includes('nose') && !name.includes('nose');
+            if (selectedCategory === 'nose-rings')
+                return id.includes('nose') || name.includes('nose');
             if (selectedCategory === 'bracelets')
                 return sub === 'bracelets' || cat === 'bracelets' || cat.includes('bracelet');
             if (selectedCategory === 'chains')
@@ -166,7 +171,7 @@ export function GiftsForHer() {
                         <h3 className="text-base sm:text-lg font-serif text-nova-dark tracking-wide">
                             {selectedCategory === 'all'
                                 ? 'All Gifts For Her'
-                                : CATEGORIES.find((c) => c.id === selectedCategory)?.label || 'Collection'}
+                                : giftsForHerCategories.find((c) => c.id === selectedCategory)?.name || 'Collection'}
                         </h3>
                         <span className="text-xs text-nova-dark bg-nova-gold/10 px-2.5 py-0.5 rounded-full border border-nova-gold/20 font-semibold">
                             {filteredProducts.length} items

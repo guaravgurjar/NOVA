@@ -128,7 +128,7 @@ export function GiftsForHim() {
             <h3 className="text-base sm:text-lg font-serif text-white tracking-wide">
               {selectedCategory === 'all'
                 ? 'All Gifts For Him'
-                : CATEGORIES.find((c) => c.id === selectedCategory)?.label || 'Collection'}
+                : giftsForHimCategories.find((c) => c.id === selectedCategory)?.name || 'Collection'}
             </h3>
             <span className="text-xs text-nova-gold bg-nova-gold/10 px-2.5 py-0.5 rounded-full border border-nova-gold/20 font-semibold">
               {filteredProducts.length} items

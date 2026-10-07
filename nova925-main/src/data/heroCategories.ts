@@ -4,42 +4,44 @@ export interface HeroCategoryCard {
   image: string;
 }
 
-function heroImage(section: string, file: string) {
-  return `/images/${encodeURIComponent('hero category products')}/${encodeURIComponent(section)}/${encodeURIComponent(file)}.webp`;
+function heroImage(...parts: string[]) {
+  return `/images/${['hero category products', ...parts].map(encodeURIComponent).join('/')}`;
 }
 
 export const giftsForHerCategories: HeroCategoryCard[] = [
-  { id: 'rings', name: 'Rings', image: heroImage('Gifts for her', 'rings') },
-  { id: 'earrings', name: 'Earrings', image: heroImage('Gifts for her', 'earrings') },
-  { id: 'bracelets', name: 'Bracelets', image: heroImage('Gifts for her', 'bracelets') },
-  { id: 'pendants', name: 'Pendants', image: heroImage('Gifts for her', 'pendants') },
-  { id: 'chains', name: 'Chains', image: heroImage('Gifts for her', 'chains') },
-  { id: 'bangles', name: 'Bangles', image: heroImage('Gifts for her', 'bangles') },
-  { id: 'sets', name: 'Sets', image: heroImage('Gifts for her', 'sets') },
-  { id: 'anklets', name: 'Anklets', image: heroImage('Gifts for her', 'anklets') },
+  { id: 'rings', name: 'Rings', image: heroImage('01 Female', '07 Female Ring.webp') },
+  { id: 'earrings', name: 'Earrings', image: heroImage('01 Female', '01 Ear ring.webp') },
+  { id: 'bracelets', name: 'Bracelets', image: heroImage('01 Female', '02 Female Bracelet.webp') },
+  { id: 'pendants', name: 'Pendants', image: heroImage('01 Female', '06 Female Prndant Set.webp') },
+  { id: 'chains', name: 'Chains', image: heroImage('01 Female', '04 Female Chain.webp') },
+  { id: 'bangles', name: 'Bangles', image: heroImage('01 Female', '03 Female Bangles.webp') },
+  { id: 'sets', name: 'Sets', image: heroImage('01 Female', '05 Female Set.webp') },
+  { id: 'anklets', name: 'Anklets', image: heroImage('01 Female', '08 Female Anklet.webp') },
+  { id: 'toe-rings', name: 'Toe Rings', image: heroImage('01 Female', '09 Female Toes Rings.webp') },
+  { id: 'nose-rings', name: 'Nose Rings', image: heroImage('01 Female', '10 Female Nose-ring.webp') },
 ];
 
 export const giftsForHimCategories: HeroCategoryCard[] = [
-  { id: 'rings', name: 'Rings', image: heroImage('Gifts for him', 'rings') },
-  { id: 'earrings', name: 'Ear Studs', image: heroImage('Gifts for him', 'earrings') },
-  { id: 'bracelets', name: 'Bracelets', image: heroImage('Gifts for him', 'bracelets') },
-  { id: 'chains', name: 'Chains', image: heroImage('Gifts for him', 'chains') },
-  { id: 'kada', name: 'Kada', image: heroImage('Gifts for him', 'kada') },
+  { id: 'rings', name: 'Rings', image: heroImage('02 Male', '02 Male Rings.webp') },
+  { id: 'earrings', name: 'Ear Studs', image: heroImage('02 Male', '04 Male Ear-Rings.webp') },
+  { id: 'bracelets', name: 'Bracelets', image: heroImage('02 Male', '01 Male Bracelet.webp') },
+  { id: 'chains', name: 'Chains', image: heroImage('02 Male', '03 Male Chains.webp') },
+  { id: 'kada', name: 'Kada', image: heroImage('02 Male', '05 Male Kada.webp') },
 ];
 
 export const kidsCategories: HeroCategoryCard[] = [
-  { id: 'pendants', name: 'Pendants', image: heroImage('Kids', 'pendants') },
-  { id: 'rings', name: 'Rings', image: heroImage('Kids', 'rings') },
-  { id: 'bracelets', name: 'Bracelets', image: heroImage('Kids', 'bracelets') },
-  { id: 'bangles', name: 'Bangles', image: heroImage('Kids', 'bangles') },
-  { id: 'chains', name: 'Chains', image: heroImage('Kids', 'chains') },
-  { id: 'anklets', name: 'Anklets', image: heroImage('Kids', 'anklets') },
-  { id: 'nazar', name: 'Nazariya', image: heroImage('Kids', 'nazar') },
+  { id: 'pendants', name: 'Pendants', image: heroImage('03 Kids Jewerlley', '01 Kids Pendant.webp') },
+  { id: 'rings', name: 'Rings', image: heroImage('03 Kids Jewerlley', '02 Kids Rings.webp') },
+  { id: 'bracelets', name: 'Bracelets', image: heroImage('03 Kids Jewerlley', '05 Kids Chain Bracelet.webp') },
+  { id: 'bangles', name: 'Bangles', image: heroImage('03 Kids Jewerlley', '04 Kids Bangles.webp') },
+  { id: 'chains', name: 'Chains', image: heroImage('03 Kids Jewerlley', '07 Kids Chain.webp') },
+  { id: 'anklets', name: 'Anklets', image: heroImage('03 Kids Jewerlley', '03 Kids Anklet.webp') },
+  { id: 'nazar', name: 'Nazariya', image: heroImage('03 Kids Jewerlley', '06 Kids Nazar Jewellery.webp') },
 ];
 
 export const astroCategories: HeroCategoryCard[] = [
-  { id: 'pendants', name: 'Pendants', image: heroImage('Astro', 'pendants') },
-  { id: 'rings', name: 'Rings', image: heroImage('Astro', 'rings') },
-  { id: 'coins', name: 'Coins', image: heroImage('Astro', 'coins') },
-  { id: 'idols', name: 'Idols', image: heroImage('Astro', 'idols') },
+  { id: 'pendants', name: 'Pendants', image: heroImage('04 Astro Jewellery', '01 Astro Pendnat.webp') },
+  { id: 'rings', name: 'Rings', image: heroImage('04 Astro Jewellery', '02 Astro Rings.webp') },
+  { id: 'coins', name: 'Coins', image: heroImage('04 Astro Jewellery', '03 Silver Coins.webp') },
+  { id: 'idols', name: 'Idols', image: heroImage('04 Astro Jewellery', '04 Astro Idol Pendant.webp') },
 ];
