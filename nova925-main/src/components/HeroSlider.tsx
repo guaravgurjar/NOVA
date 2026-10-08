@@ -8,7 +8,7 @@ export type { Slide };
 export const slides: Slide[] = [
   {
     id: 1,
-    image: '/images/banners/Web Banners/test.webp',
+    image: '/images/banners/Web Banners/test.png',
     mobileImage: '/images/banners/Mob Banners/Female Mob.webp',
     alt: "Women's 925 Sterling Silver Jewellery Collection",
     link: '/gifts-for-her',
