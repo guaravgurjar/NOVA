@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
 import { shopCategories, reviews } from '../data';
 import { ProductCard } from '../components/ProductCard';
+import { CategoryCardGrid } from '../components/CategoryCardGrid';
 import { useProducts } from '../contexts/ProductsContext';
 import { PromoStrip } from '../components/PromoStrip';
 import { HeroSlider } from '../components/HeroSlider';
@@ -64,28 +64,10 @@ export function Home() {
           <div className="w-20 md:w-30 h-px bg-nova-darker mx-auto mt-3 md:mt-4"></div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-          {shopCategories.map((cat) => (
-            <Link
-              to={`/category/${cat.id}`}
-              key={cat.id}
-              className="flex flex-col items-center group cursor-pointer"
-            >
-              <div className="w-full aspect-3/2 rounded-xl md:rounded-2xl overflow-hidden mb-3 md:mb-4 shadow-xl border border-white/5 group-hover:border-nova-gold/45 transition-all duration-300 relative">
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-[#07090f]/95 via-[#07090f]/20 to-transparent opacity-90 transition-opacity"></div>
-                <div className="absolute bottom-3 md:bottom-4 left-0 right-0 text-center">
-                  <span className="text-[9px] md:text-sm font-semibold tracking-[0.2em] md:tracking-[0.25em] font-sans text-white group-hover:text-nova-gold transition-colors">{cat.name}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <CategoryCardGrid
+          categories={shopCategories}
+          getHref={(cat) => `/category/${cat.id}`}
+        />
       </section>
 
       {/* Premium Sale Campaign Banner */}
