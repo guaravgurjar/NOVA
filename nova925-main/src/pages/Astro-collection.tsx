@@ -104,8 +104,8 @@ export function AstroCollection() {
 
       <div className="container mx-auto px-4 md:px-12 py-12 md:py-20 max-w-7xl">
         <div className="text-center mb-8 md:mb-12">
-          <span className="text-nova-darker text-[10px] md:text-xs font-semibold uppercase tracking-[0.25em] block mb-2">CURATED FOR YOU</span>
-          <h2 className="text-3xl md:text-4xl font-serif tracking-wide font-light text-nova-darker">Shop By Category</h2>
+          <span className="text-nova-darker text-[10px] md:text-xs font-semibold uppercase tracking-[0.25em] block mb-2">Written in the Stars.</span>
+          <h2 className="text-3xl md:text-4xl font-serif tracking-wide font-light text-nova-darker">Discover authentic wellness aesthetics and celestial energy collections.</h2>
           <div className="w-20 md:w-30 h-px bg-nova-darker mx-auto mt-3 md:mt-4"></div>
         </div>
         <CategoryCardGrid

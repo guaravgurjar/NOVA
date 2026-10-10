@@ -133,8 +133,8 @@ export function Kids() {
             {/* Grid Categories Section */}
             <div className="container mx-auto px-6 md:px-12 py-20 max-w-7xl">
                 <div className="text-center mb-12">
-                    <span className="text-nova-darker text-xs font-semibold uppercase tracking-[0.25em] block mb-2">CURATED FOR LITTLE ONES</span>
-                    <h2 className="text-3xl md:text-4xl font-serif tracking-wide font-light text-nova-darker">Shop By Category</h2>
+                    <span className="text-nova-darker text-xs font-semibold uppercase tracking-[0.25em] block mb-2">Little Sparks of Joy</span>
+                    <h2 className="text-3xl md:text-4xl font-serif tracking-wide font-light text-nova-darker">Discover delicate lightweight aesthetics and joyful everyday collections..</h2>
                     <div className="w-30 h-px bg-nova-darker mx-auto mt-4"></div>
                 </div>
 
