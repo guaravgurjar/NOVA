@@ -52,8 +52,8 @@ export const ROUTE_SEO_CONFIGS: Record<string, RouteSEOOptions> = {
     ogType: 'website',
   },
   '/about': {
-    title: 'About Us — Heritage & Craftsmanship',
-    description: 'Discover NOVA Jewellery by Utkarsh Jewellers — our legacy of craftsmanship, ethical sourcing, and commitment to luxury silver.',
+    title: 'About Us — A Legacy of Trust',
+    description: 'NOVA is a contemporary silver jewellery brand from Utkarsh Jewellers, established in 1995. A legacy of trust, and a story of you.',
     keywords: 'about nova jewellery, utkarsh jewellers, sterling silver brand, luxury jewellery history',
     canonicalPath: '/about',
     ogType: 'website',
