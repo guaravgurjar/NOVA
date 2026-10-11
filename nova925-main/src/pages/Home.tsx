@@ -69,18 +69,17 @@ export function Home() {
           getHref={(cat) => `/category/${cat.id}`}
         />
       </section>
-
-      {/* Premium Sale Campaign Banner */}
-      <section aria-label="Sale campaign" className="relative w-full h-48 md:h-100 lg:h-120 flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            src="/images/banners/him.webp"
-            alt="Sale Banner"
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        </div>
+      <section aria-label="Our promises" className="w-full h-24 md:h-32 lg:h-37 overflow-hidden">
+        <img
+          src="/images/banners/promises.webp"
+          alt="Our Promises"
+          className="w-full h-full object-cover"
+          loading="lazy"
+        />
       </section>
+
+
+
 
       {/* Featured Products */}
       <section aria-label="Featured products" className="container mx-auto px-4 md:px-12 py-12 md:py-20 max-w-7xl">
