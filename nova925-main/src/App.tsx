@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, MemoryRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, MemoryRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/Header';
+import { CartHeader } from './components/CartHeader';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -48,10 +49,13 @@ function PageFallback() {
 }
 
 export function AppContent() {
+  const location = useLocation();
+  const isCartPage = location.pathname === '/cart';
+
   return (
     <div className="flex flex-col min-h-screen font-sans bg-white text-[#111]">
       <RouteSEOObserver />
-      <Header />
+      {isCartPage ? <CartHeader /> : <Header />}
       <main className="flex-1 flex flex-col">
         <Suspense fallback={<PageFallback />}>
           <Routes>

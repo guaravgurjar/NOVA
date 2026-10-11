@@ -137,12 +137,14 @@ export function Cart() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-nova-darker text-white">
-      <div className="container mx-auto px-4 sm:px-6 md:px-12 py-10 md:py-16 max-w-7xl flex-1">
-        <h1 className="text-3xl md:text-5xl font-serif text-center tracking-wider mb-8 md:mb-16 font-light">
-          {CATALOG_MODE ? 'NOVA Catalog' : 'Shopping Bag'}
-        </h1>
-        
+    <div className="flex flex-col min-h-screen bg-cyan-20 text-nova-darker">
+      <div className="container mx-auto px-4 sm:px-6 md:px-12 py-8 md:py-12 max-w-7xl flex-1">
+        {CATALOG_MODE && (
+          <h1 className="text-3xl md:text-5xl font-serif text-center tracking-wider mb-8 md:mb-16 font-light">
+            NOVA Catalog
+          </h1>
+        )}
+
         {CATALOG_MODE ? (
           <div className="text-center py-16 md:py-20 glass-dark rounded-2xl border border-nova-gold/20 max-w-lg mx-auto p-8 shadow-2xl bg-gradient-to-b from-white/5 to-transparent">
             <div className="w-16 h-16 rounded-full bg-nova-gold/10 border border-nova-gold/30 flex items-center justify-center mx-auto mb-6 shadow-inner">
@@ -164,21 +166,21 @@ export function Cart() {
           </div>
         ) : resolvedItems.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-            
+
             {/* Left Column: Cart items / Checkout Form */}
             <div className="lg:col-span-2 space-y-6">
               {!showCheckoutForm ? (
                 <div className="space-y-4">
                   {resolvedItems.map((item) => (
                     <div
-                      key={item.product.id} 
+                      key={item.product.id}
                       className="glass-dark border border-white/5 p-3 md:p-4 rounded-xl flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center sm:justify-between"
                     >
                       <div className="flex gap-4 items-center">
-                        <img 
-                          src={item.product.image} 
-                          alt={item.product.name} 
-                          className="w-16 h-16 object-cover rounded border border-white/10" 
+                        <img
+                          src={item.product.image}
+                          alt={item.product.name}
+                          className="w-16 h-16 object-cover rounded border border-white/10"
                         />
                         <div>
                           <h4 className="text-sm font-medium text-white/90">{item.product.name}</h4>
@@ -187,13 +189,12 @@ export function Cart() {
                           </p>
                           {/* Stock limit badge */}
                           {item.product.stock !== undefined && (
-                            <p className={`text-[10px] mt-1 font-medium ${
-                              item.quantity >= item.product.stock
-                                ? 'text-amber-400'
-                                : item.product.stock <= 3
+                            <p className={`text-[10px] mt-1 font-medium ${item.quantity >= item.product.stock
+                              ? 'text-amber-400'
+                              : item.product.stock <= 3
                                 ? 'text-rose-400'
                                 : 'text-white/30'
-                            }`}>
+                              }`}>
                               {item.quantity >= item.product.stock
                                 ? '✓ Max stock reached'
                                 : `${item.product.stock - item.quantity} left in stock`}
@@ -204,27 +205,26 @@ export function Cart() {
 
                       <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6">
                         <div className="flex items-center border border-white/10 rounded-lg">
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.product.id, Math.max(1, item.quantity - 1), item.product.stock)}
                             className="px-2.5 py-1 text-xs hover:bg-white/5 text-white/50 hover:text-white"
                           >
                             -
                           </button>
                           <span className="px-3 text-xs font-mono">{item.quantity}</span>
-                          <button 
+                          <button
                             onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.product.stock)}
                             disabled={item.product.stock !== undefined && item.quantity >= item.product.stock}
-                            className={`px-2.5 py-1 text-xs transition-colors ${
-                              item.product.stock !== undefined && item.quantity >= item.product.stock
-                                ? 'text-white/20 cursor-not-allowed'
-                                : 'hover:bg-white/5 text-white/50 hover:text-white'
-                            }`}
+                            className={`px-2.5 py-1 text-xs transition-colors ${item.product.stock !== undefined && item.quantity >= item.product.stock
+                              ? 'text-white/20 cursor-not-allowed'
+                              : 'hover:bg-white/5 text-white/50 hover:text-white'
+                              }`}
                           >
                             +
                           </button>
                         </div>
 
-                        <button 
+                        <button
                           onClick={() => {
                             removeFromCart(item.product.id);
                             addToast('Removed from cart');
@@ -246,8 +246,8 @@ export function Cart() {
                       <Truck className="w-5 h-5" />
                       Shipping & Sourcing Details
                     </h3>
-                    <button 
-                      type="button" 
+                    <button
+                      type="button"
                       onClick={() => setShowCheckoutForm(false)}
                       className="text-xs text-white/50 hover:text-white"
                     >
@@ -258,11 +258,11 @@ export function Cart() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-wider text-white/60">Buyer Name</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={buyerName}
                         onChange={(e) => setBuyerName(e.target.value)}
-                        placeholder="e.g. Arjun Mehta" 
+                        placeholder="e.g. Arjun Mehta"
                         required
                         className="w-full bg-[#0b0e17] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-nova-gold/50"
                       />
@@ -270,11 +270,11 @@ export function Cart() {
 
                     <div className="space-y-1.5">
                       <label className="text-[10px] font-bold uppercase tracking-wider text-white/60">Email Address</label>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         value={buyerEmail}
                         onChange={(e) => setBuyerEmail(e.target.value)}
-                        placeholder="e.g. arjun@gmail.com" 
+                        placeholder="e.g. arjun@gmail.com"
                         required
                         className="w-full bg-[#0b0e17] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-nova-gold/50"
                       />
@@ -283,10 +283,10 @@ export function Cart() {
 
                   <div className="space-y-1.5">
                     <label className="text-[10px] font-bold uppercase tracking-wider text-white/60">Full Shipping Address</label>
-                    <textarea 
+                    <textarea
                       value={shippingAddress}
                       onChange={(e) => setShippingAddress(e.target.value)}
-                      placeholder="Street address, Sector, City, State, Pincode" 
+                      placeholder="Street address, Sector, City, State, Pincode"
                       rows={3}
                       required
                       className="w-full bg-[#0b0e17] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-nova-gold/50"
@@ -298,11 +298,11 @@ export function Cart() {
                       <ClipboardSignature className="w-3.5 h-3.5 text-nova-gold" />
                       Custom Engraving / Sizing Notes (Optional)
                     </label>
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       value={engravingText}
                       onChange={(e) => setOriginalEngraving(e.target.value)}
-                      placeholder="e.g. Forever yours A&M (Size 7)" 
+                      placeholder="e.g. Forever yours A&M (Size 7)"
                       className="w-full bg-[#0b0e17] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-nova-gold/50"
                     />
                   </div>
@@ -357,7 +357,7 @@ export function Cart() {
 
               <div className="glass-dark border border-white/10 rounded-2xl p-6 shadow-xl">
                 <h3 className="text-sm font-semibold tracking-[0.2em] mb-6 font-serif text-nova-gold uppercase">Order Summary</h3>
-                
+
                 <div className="space-y-4 text-xs text-white/70 font-light mb-6">
                   <div className="flex justify-between">
                     <span>Total Price (MRP)</span>
@@ -372,7 +372,7 @@ export function Cart() {
                     <span className="text-emerald-400 font-medium">FREE</span>
                   </div>
                 </div>
-                
+
                 <div className="border-t border-white/10 pt-4 mb-6">
                   <div className="flex justify-between items-end">
                     <span className="font-serif text-sm font-medium tracking-wide">Estimated Total</span>
@@ -382,13 +382,13 @@ export function Cart() {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-center py-2.5 rounded-lg text-xs font-medium mb-5">
                   You save Rs. {discount.toLocaleString('en-IN')}/- on this order!
                 </div>
-                
+
                 {!showCheckoutForm && (
-                  <button 
+                  <button
                     onClick={handleCheckoutToggle}
                     className="btn-premium w-full bg-nova-gold text-nova-darker py-3.5 rounded-xl font-semibold text-xs uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-nova-gold-light hover:shadow-lg hover:shadow-nova-gold/25 transition-all cursor-pointer"
                   >
@@ -398,24 +398,28 @@ export function Cart() {
                 )}
               </div>
             </div>
-            
+
           </div>
         ) : (
-          <div className="text-center py-20 glass-dark rounded-2xl border border-white/5 max-w-lg mx-auto">
-             <span className="text-4xl block mb-4">🛒</span>
-             <h3 className="font-serif text-lg mb-2">Your Shopping Bag is Empty</h3>
-             <p className="text-white/50 text-xs font-light mb-6">Looks like you haven't added any luxury pieces yet.</p>
-             <Link to="/shop" className="btn-premium inline-block bg-nova-gold text-nova-darker px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider">
-               Continue Shopping
-             </Link>
+          <div className="text-center py-20 bg-white rounded-2xl border border-nova-dark  max-w-lg mx-auto">
+            <img
+              src="/images/icons/emptyCart.gif"
+              alt="Empty Cart"
+              className="w-48 h-48 md:w-56 md:h-56 object-contain mx-auto mb-4"
+            />
+            <h3 className="font-serif text-2xl mb-2 ">Why so  Empty!</h3>
+            <p className="text-white/50 text-xs font-light mb-6">Looks like you haven't added any luxury pieces yet.</p>
+            <Link to="/shop" className="btn-premium inline-block bg-nova-dark text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider">
+              Continue Shopping
+            </Link>
           </div>
         )}
       </div>
-      
+
       {/* Recommended Grid */}
       <div className="container mx-auto px-6 md:px-12 py-16 max-w-7xl border-t border-white/5">
-         <h2 className="text-2xl font-serif tracking-wider font-light mb-10 text-center">Complete Your Look</h2>
-         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-8">
+        <h2 className="text-2xl font-serif tracking-wider font-light mb-10 text-center">Complete Your Look</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-8">
           {products.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
