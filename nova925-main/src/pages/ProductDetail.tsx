@@ -389,6 +389,7 @@ export function ProductDetail() {
             ) : (
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <button
+                  type="button"
                   onClick={() => addToCart(product.id, quantity, stockLimit)}
                   className="flex-1 bg-nova-gold hover:bg-nova-gold-light text-nova-darker py-4 rounded-xl font-sans font-bold tracking-[0.2em] text-xs uppercase transition-all duration-300 shadow-md shadow-nova-gold/15 flex items-center justify-center gap-2"
                 >

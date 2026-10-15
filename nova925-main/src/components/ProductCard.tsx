@@ -3,8 +3,6 @@ import { Heart, Star } from 'lucide-react';
 import { Product } from '../types';
 import { useWishlist } from '../contexts/WishlistContext';
 import { useCart } from '../contexts/CartContext';
-import { useAuth } from '../contexts/AuthContext';
-import { useLoginModal } from '../contexts/LoginModalContext';
 import { Link } from 'react-router-dom';
 
 // ─── CATALOG MODE ─────────────────────────────────────────────────────────────
@@ -17,8 +15,6 @@ export function ProductCard({ product }: { product: Product }) {
   const [imageError, setImageError] = useState(false);
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const { user } = useAuth();
-  const { openLoginModal } = useLoginModal();
 
   // If product is empty or has no image or the image failed to load, do not render card
   if (
@@ -122,13 +118,10 @@ export function ProductCard({ product }: { product: Product }) {
       {!CATALOG_MODE && (
         <div className="px-2.5 pb-2.5 md:px-4 md:pb-4 pt-0">
           <button
+            type="button"
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              if (!user) {
-                openLoginModal('Sign in to add items to your cart.');
-                return;
-              }
               addToCart(product.id, 1, product.stock);
             }}
             className="w-full bg-linear-to-r from-blue-900 to-blue-300 hover:from-blue-700 hover:to-indigo-700 text-white font-medium py-2 md:py-3 rounded-xl shadow-md hover:shadow-lg active:scale-[0.98] transition-all duration-300 text-[11px] md:text-sm tracking-wide flex items-center justify-center gap-2 cursor-pointer"
