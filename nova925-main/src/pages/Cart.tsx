@@ -34,13 +34,21 @@ export function Cart() {
   const [orderAnimating, setOrderAnimating] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
+  // Continue checkout after a guest signs in from the cart.
+  const [resumeCheckout, setResumeCheckout] = useState(false);
+
   // Auto-fill buyer details if logged in
   useEffect(() => {
     if (user) {
       setBuyerName(`${user.firstName} ${user.lastName}`);
       setBuyerEmail(user.email);
+      if (resumeCheckout) {
+        setResumeCheckout(false);
+        setShowCheckoutForm(true);
+        window.scrollTo({ top: 300, behavior: 'smooth' });
+      }
     }
-  }, [user]);
+  }, [user, resumeCheckout]);
 
   // Resolve products from data source
   const getProductById = (id: string): Product | undefined => {
@@ -64,6 +72,7 @@ export function Cart() {
 
   const handleCheckoutToggle = () => {
     if (!user) {
+      setResumeCheckout(true);
       openLoginModal('Please sign in to place your order.');
       return;
     }
@@ -73,6 +82,11 @@ export function Cart() {
 
   const handlePlaceOrder = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) {
+      setResumeCheckout(true);
+      openLoginModal('Please sign in to place your order.');
+      return;
+    }
     if (!buyerName || !buyerEmail || !shippingAddress) {
       addToast('Please fill in all required checkout fields.');
       return;
@@ -301,7 +315,7 @@ export function Cart() {
                     <input
                       type="text"
                       value={engravingText}
-                      onChange={(e) => setOriginalEngraving(e.target.value)}
+                      onChange={(e) => setEngravingText(e.target.value)}
                       placeholder="e.g. Forever yours A&M (Size 7)"
                       className="w-full bg-[#0b0e17] border border-white/10 rounded-lg px-4 py-2.5 text-xs text-white focus:outline-none focus:border-nova-gold/50"
                     />
@@ -427,9 +441,4 @@ export function Cart() {
       </div>
     </div>
   );
-
-  // Small helper to avoid compilation error on setOriginalEngraving
-  function setOriginalEngraving(val: string) {
-    setEngravingText(val);
-  }
 }

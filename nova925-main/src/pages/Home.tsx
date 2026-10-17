@@ -4,8 +4,9 @@ import { CategoryCardGrid } from '../components/CategoryCardGrid';
 import { useProducts } from '../contexts/ProductsContext';
 import { PromoStrip } from '../components/PromoStrip';
 import { HeroSlider } from '../components/HeroSlider';
-import { ShieldCheck, Award, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { PromisesStrip } from '../components/PromisesStrip';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 
 import { usePageSEO } from '../lib/usePageSEO';
 
@@ -69,14 +70,7 @@ export function Home() {
           getHref={(cat) => `/category/${cat.id}`}
         />
       </section>
-      <section aria-label="Our promises" className="w-full h-24 md:h-32 lg:h-37 overflow-hidden">
-        <img
-          src="/images/banners/promises.svg"
-          alt="Our Promises"
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
-      </section>
+      <PromisesStrip />
 
 
 

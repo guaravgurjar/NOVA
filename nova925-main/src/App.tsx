@@ -97,17 +97,17 @@ export function AppServer({ url }: { url: string }) {
   return (
     <ToastProvider>
       <AuthProvider>
-        <LoginModalProvider>
-          <ProductsProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <MemoryRouter initialEntries={[url]}>
+        <ProductsProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <MemoryRouter initialEntries={[url]}>
+                <LoginModalProvider>
                   <AppContent />
-                </MemoryRouter>
-              </CartProvider>
-            </WishlistProvider>
-          </ProductsProvider>
-        </LoginModalProvider>
+                </LoginModalProvider>
+              </MemoryRouter>
+            </CartProvider>
+          </WishlistProvider>
+        </ProductsProvider>
       </AuthProvider>
     </ToastProvider>
   );
@@ -117,17 +117,17 @@ export default function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <LoginModalProvider>
-          <ProductsProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <Router>
+        <ProductsProvider>
+          <WishlistProvider>
+            <CartProvider>
+              <Router>
+                <LoginModalProvider>
                   <AppContent />
-                </Router>
-              </CartProvider>
-            </WishlistProvider>
-          </ProductsProvider>
-        </LoginModalProvider>
+                </LoginModalProvider>
+              </Router>
+            </CartProvider>
+          </WishlistProvider>
+        </ProductsProvider>
       </AuthProvider>
     </ToastProvider>
   );
