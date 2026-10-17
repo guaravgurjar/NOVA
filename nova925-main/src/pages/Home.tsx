@@ -71,7 +71,7 @@ export function Home() {
       </section>
       <section aria-label="Our promises" className="w-full h-24 md:h-32 lg:h-37 overflow-hidden">
         <img
-          src="/images/banners/promises.webp"
+          src="/images/banners/promises.svg"
           alt="Our Promises"
           className="w-full h-full object-cover"
           loading="lazy"
